@@ -1,0 +1,20 @@
+.DS_Store
+.idea
+.vscode
+config/system/settings.php
+composer.lock
+.Build
+var
+Build/testing-docker/.env
+
+.php-cs-fixer.cache
+
+# Config for DDEV START
+
+.ddev
+!.ddev
+.ddev/*
+!.ddev/config.yaml
+
+# Config for DDEV END
+
