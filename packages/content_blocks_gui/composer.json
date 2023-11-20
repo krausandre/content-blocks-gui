@@ -1,12 +1,19 @@
 {
   "name": "contentblocks/content-blocks-gui",
   "description": "",
+  "license": "GPL-2.0-or-later",
+  "type": "typo3-cms-extension",
   "require": {
     "typo3/cms-core": "*"
   },
   "autoload": {
     "psr-4": {
       "ContentBlocks\\ContentBlocksGui\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "content_blocks_gui"
     }
   }
 }

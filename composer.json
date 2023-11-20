@@ -51,6 +51,11 @@
       "[ $(echo 'SHOW TABLES' | mysql | wc -l ) -gt 0 ] && vendor/bin/typo3 database:updateschema || true",
       "@typo3:flush"
     ],
+    "build-for:deployment": [
+      "@npm-content_blocks_gui ci",
+      "@npm-content_blocks_gui run build"
+    ],
+    "npm-content_blocks_gui":  "npm --prefix packages/content_blocks_gui/Build/frontend/",
     "typo3": [
       "Composer\\Config::disableProcessTimeout",
       "typo3 --ansi"

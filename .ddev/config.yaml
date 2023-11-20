@@ -14,6 +14,7 @@ database:
 hooks:
     post-start:
         - composer: install
+        - composer: build-for:deployment
         - exec: |
             [ $(mysql <<< "SHOW TABLES" | wc -l ) -eq 0 ] && \
               vendor/bin/typo3 setup --no-interaction --force \

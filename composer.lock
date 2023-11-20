@@ -125,17 +125,25 @@
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
-                "reference": "3d870b708e8be479af5001077c3f0dc96134bca0"
+                "reference": "ec02610e7901c92ca410084bfcbab5bec3b5515a"
             },
             "require": {
                 "typo3/cms-core": "*"
             },
-            "type": "library",
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "content_blocks_gui"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "ContentBlocks\\ContentBlocksGui\\": "Classes/"
                 }
             },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
             "transport-options": {
                 "relative": true
             }
