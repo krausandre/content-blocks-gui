@@ -1,0 +1,12 @@
+{
+  "name": "contentblocks/content-blocks-gui",
+  "description": "",
+  "require": {
+    "typo3/cms-core": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "ContentBlocks\\ContentBlocksGui\\": "Classes/"
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-sass-guidelines"
+  ],
+  "configBaseDir": "./packages/sitepackage/Build/node_modules/",
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "comment-empty-line-before": null,
+    "comment-whitespace-inside": null,
+    "no-descending-specificity": null,
+    "selector-no-qualifying-type": [
+      true,
+      {
+        "ignore": [
+          "attribute",
+          "class",
+          "id"
+        ]
+      }
+    ],
+    "selector-max-compound-selectors": 50,
+    "selector-max-id": 3,
+    "max-nesting-depth": 10,
+    "selector-class-pattern": "[a-z-_]",
+    "order/order": [
+      "dollar-variables",
+      "custom-properties",
+      "declarations",
+      "rules"
+    ]
+  }
+}

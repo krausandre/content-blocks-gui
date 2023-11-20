@@ -1,20 +1,15 @@
-.DS_Store
-.idea
-.vscode
-config/system/settings.php
-composer.lock
-.Build
-var
-Build/testing-docker/.env
+.idea/
+/.vscode/
+*Thumbs.db
+
+# volatile data
+/data/*
 
 .php-cs-fixer.cache
 
-# Config for DDEV START
-
-.ddev
-!.ddev
-.ddev/*
-!.ddev/config.yaml
-
-# Config for DDEV END
-
+/var/*
+!/var/labels
+node_modules
+/vendor
+/vendor-bin/**/vendor
+/public/*
