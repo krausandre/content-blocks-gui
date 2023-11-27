@@ -28,7 +28,18 @@ return [
         'extensionName' => 'content_blocks_gui',
         'controllerActions' => [
             ContentBlocksGuiController::class => [
-                'list',
+                'listCb',
+            ],
+            ContentBlocksGuiAjaxController::class => [
+                'createCb',
+                'getCb',
+                'deleteCb',
+                'getCb',
+                'translateCb',
+                'saveCb',
+                'downloadCb',
+                'copyCb',
+                'listExt',
             ]
         ],
     ],
