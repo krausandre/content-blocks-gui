@@ -9,11 +9,16 @@ export default defineConfig({
   base: './',
   build: {
     outDir: '../../Resources/Public/dist/',
-    emptyOutDir: true
+    emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        entryFileNames: "index.js",
+      }
+    }
   },
   plugins: [
     vue(),
-    vueJsx(),
+    //vueJsx(),
   ],
   resolve: {
     alias: {
