@@ -19,7 +19,7 @@ use ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxContro
 $_LLL_mod = 'LLL:EXT:content_blocks_gui/Resources/Private/Language/locallang_mod.xlf:';
 return [
     'web_ContentBlocksGui' => [
-        'parent' => 'web',
+        'parent' => 'tools',
         'position' => ['after' => 'web_info'],
         'access' => 'admin',
         'workspaces' => 'live',
