@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "537eff048737e376342ccb5006c605a6",
+    "content-hash": "dae50b281c881916fc87c52e5a9c9ede",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -121,16 +121,16 @@
         },
         {
             "name": "contentblocks/content-blocks",
-            "version": "0.3.0",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nhovratov/content-blocks.git",
-                "reference": "5e85bd58b0ba1b572867b5f15d2993e2dcc29143"
+                "reference": "28dbac592b9c5a7cfadaa552a74b9c077ab8816c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/5e85bd58b0ba1b572867b5f15d2993e2dcc29143",
-                "reference": "5e85bd58b0ba1b572867b5f15d2993e2dcc29143",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/28dbac592b9c5a7cfadaa552a74b9c077ab8816c",
+                "reference": "28dbac592b9c5a7cfadaa552a74b9c077ab8816c",
                 "shasum": ""
             },
             "require": {
@@ -163,6 +163,7 @@
                 "typo3/coding-standards": "^0.7",
                 "typo3/testing-framework": "^8.0"
             },
+            "default-branch": true,
             "type": "typo3-cms-extension",
             "extra": {
                 "branch-alias": {
@@ -200,11 +201,11 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-11-27T07:15:24+00:00"
+            "time": "2023-11-27T20:57:40+00:00"
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-feature/update/manu",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
@@ -7714,6 +7715,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "contentblocks/content-blocks": 20,
         "contentblocks/content-blocks-gui": 20,
         "contentblocks/examples": 20
     },
