@@ -19,11 +19,15 @@ namespace ContentBlocks\ContentBlocksGui\Utility;
 
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
+use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentBlocksUtility
 {
     public function __construct(
-        protected ContentBlockLoader $contentBlocksLoader
+        protected ContentBlockLoader $contentBlocksLoader,
+        protected ContentBlockRegistry $contentBlockRegistry,
     ) {
     }
 
@@ -40,18 +44,35 @@ class ContentBlocksUtility
         foreach ($contentBlocksList as $contentBlock) {
             switch ($contentBlock->getTable()) {
                 case 'tt_content':
-                    $resultList['ContentElements'][] = $contentBlock;
+                    $resultList['ContentElements'] = $this->dataForContentBlockList($contentBlock, $resultList['ContentElements']);
                     break;
 
                 case 'pages':
-                    $resultList['PageTypes'][] = $contentBlock;
+                    $resultList['PageTypes'] = $this->dataForContentBlockList($contentBlock, $resultList['PageTypes']);
                     break;
 
                 default:
-                    $resultList['RecordTypes'][] = $contentBlock;
+                    $resultList['RecordTypes'] = $this->dataForContentBlockList($contentBlock, $resultList['RecordTypes']);
                     break;
             }
         }
         return $resultList;
+    }
+
+    protected function dataForContentBlockList(TableDefinition $tableDefinition, array $list): array
+    {
+        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
+                ->createFromUserPreferences($GLOBALS['BE_USER']);
+        foreach ($tableDefinition->getContentTypeDefinitionCollection() as $typeDefinition) {
+            $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($typeDefinition->getName());
+            $list[] = [
+                'identifier' => $loadedContentBlock->getName(),
+                'name' => $languageService->sL(
+                    $typeDefinition->getLanguagePathTitle()
+                ),
+                'extension' => $loadedContentBlock->getHostExtension(),
+            ];
+        }
+        return $list;
     }
 }

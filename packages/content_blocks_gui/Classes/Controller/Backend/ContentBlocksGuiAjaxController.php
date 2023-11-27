@@ -22,7 +22,9 @@ use ContentBlocks\ContentBlocksGui\Utility\ExtensionUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[Controller]
@@ -44,7 +46,7 @@ final class ContentBlocksGuiAjaxController extends ActionController
     {
         $cbList = $this->contentBlocksUtility->getAvailableContentBlocks();
         $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true, 'test'=>'ja']);
+        return new JsonResponse(['success' => true, 'list' => $cbList]);
     }
 
     public function createCbAction(ServerRequestInterface $request): ResponseInterface
