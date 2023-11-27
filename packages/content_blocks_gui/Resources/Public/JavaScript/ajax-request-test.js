@@ -1,5 +1,4 @@
 // TODO: remove if vue app can send the specified ajax requests
-
 import AjaxRequest from "@typo3/core/ajax/ajax-request.js";
 
 class AjaxRequestTest {
