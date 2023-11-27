@@ -38,7 +38,7 @@ final class ContentBlocksGuiController extends ActionController
     public function initializeAction(): void
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui/dummy.js');
+        $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui/index.js');
     }
 
     public function listAction(): ResponseInterface
