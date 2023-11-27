@@ -3,6 +3,7 @@
   "description": "",
   "require": {
     "contentblocks/content-blocks-gui": "@dev",
+    "contentblocks/examples": "@dev",
     "helhum/typo3-console": "*",
     "typo3/cms-about": "*",
     "typo3/cms-adminpanel": "*",

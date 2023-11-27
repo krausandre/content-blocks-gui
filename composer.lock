@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "84f9642e7ad608645aeb9f98ffd0e261",
+    "content-hash": "8c0428d45fa286d3d6190ef21bfe71b4",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -120,14 +120,98 @@
             "time": "2021-02-26T10:19:33+00:00"
         },
         {
+            "name": "contentblocks/content-blocks",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nhovratov/content-blocks.git",
+                "reference": "5e85bd58b0ba1b572867b5f15d2993e2dcc29143"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/5e85bd58b0ba1b572867b5f15d2993e2dcc29143",
+                "reference": "5e85bd58b0ba1b572867b5f15d2993e2dcc29143",
+                "shasum": ""
+            },
+            "require": {
+                "typo3/cms-backend": "^12.4",
+                "typo3/cms-core": "^12.4",
+                "typo3/cms-fluid": "^12.4",
+                "typo3/cms-frontend": "^12.4"
+            },
+            "conflict": {
+                "typo3/cms": "*"
+            },
+            "replace": {
+                "typo3/cms-content-blocks": "*"
+            },
+            "require-dev": {
+                "bnf/phpstan-psr-container": "^1.0.1",
+                "contentblocks/examples": "@dev",
+                "friendsofphp/php-cs-fixer": "^3.22",
+                "friendsoftypo3/phpstan-typo3": "^0.9.0",
+                "phpstan/phpstan": "^1.10.22",
+                "phpstan/phpstan-phpunit": "^1.3.13",
+                "typo3/cms-extbase": "^12.4",
+                "typo3/cms-extensionmanager": "^12.4",
+                "typo3/cms-filelist": "^12.4",
+                "typo3/cms-install": "^12.4",
+                "typo3/cms-lowlevel": "^12.4",
+                "typo3/cms-rte-ckeditor": "^12.4",
+                "typo3/cms-tstemplate": "^12.4",
+                "typo3/cms-workspaces": "^12.4",
+                "typo3/coding-standards": "^0.7",
+                "typo3/testing-framework": "^8.0"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "13.0.x-dev"
+                },
+                "typo3/cms": {
+                    "web-dir": ".Build/public",
+                    "extension-key": "content_blocks",
+                    "Package": {
+                        "partOfFactoryDefault": false
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "TYPO3\\CMS\\ContentBlocks\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Content Types Team",
+                    "email": "typo3cms@typo3.org",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 CMS Content Blocks - Content Types API",
+            "homepage": "https://typo3.org",
+            "support": {
+                "chat": "https://typo3.org/help",
+                "docs": "https://docs.typo3.org/p/contentblocks/content-blocks/main/en-us/",
+                "issues": "https://forge.typo3.org",
+                "source": "https://github.com/typo3/typo3"
+            },
+            "time": "2023-11-27T07:15:24+00:00"
+        },
+        {
             "name": "contentblocks/content-blocks-gui",
             "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
-                "reference": "ec02610e7901c92ca410084bfcbab5bec3b5515a"
+                "reference": "dede8946fd696cb90ad23e889bbdd85a0ce7705b"
             },
             "require": {
+                "contentblocks/content-blocks": "*",
                 "typo3/cms-core": "*"
             },
             "type": "typo3-cms-extension",
@@ -147,6 +231,57 @@
             "transport-options": {
                 "relative": true
             }
+        },
+        {
+            "name": "contentblocks/examples",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TYPO3-Initiatives/content-blocks-examples.git",
+                "reference": "7d19858d8fe8e7b20845aacb008115fb34ad63e5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TYPO3-Initiatives/content-blocks-examples/zipball/7d19858d8fe8e7b20845aacb008115fb34ad63e5",
+                "reference": "7d19858d8fe8e7b20845aacb008115fb34ad63e5",
+                "shasum": ""
+            },
+            "require": {
+                "typo3/cms-content-blocks": "13.0.*@dev"
+            },
+            "default-branch": true,
+            "type": "typo3-cms-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "13.0.x-dev"
+                },
+                "typo3/cms": {
+                    "extension-key": "content_blocks_examples"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ContentBlocks\\Examples\\": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Content Types Team",
+                    "role": "Developer"
+                }
+            ],
+            "description": "TYPO3 CMS Content Blocks examples",
+            "homepage": "https://typo3.org",
+            "support": {
+                "docs": "https://docs.typo3.org/c/typo3/cms-content-blocks/main/en-us/",
+                "issues": "",
+                "source": ""
+            },
+            "time": "2023-11-23T22:04:43+00:00"
         },
         {
             "name": "dasprid/enum",
@@ -7547,7 +7682,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "contentblocks/content-blocks-gui": 20
+        "contentblocks/content-blocks-gui": 20,
+        "contentblocks/examples": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
