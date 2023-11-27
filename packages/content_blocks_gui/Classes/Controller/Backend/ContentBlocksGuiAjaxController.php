@@ -17,15 +17,17 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Controller\Backend;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[Controller]
-final class ContentBlocksGuiController extends ActionController
+final class ContentBlocksGuiAjaxController extends ActionController
 {
     protected ModuleTemplate $moduleTemplate;
 
@@ -37,13 +39,15 @@ final class ContentBlocksGuiController extends ActionController
 
     public function initializeAction(): void
     {
-        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
-        $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui/index.js');
     }
 
-    public function listCbAction(): ResponseInterface
+    public function createCbAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('ContentBlocksGui/ListCb');
+        $parsedBody = $request->getParsedBody();
+
+        // TODO: do magic things
+
+        return new JsonResponse(['success' => true]);
     }
 }
 
