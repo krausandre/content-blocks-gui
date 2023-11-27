@@ -44,9 +44,41 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function createCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-
-        // TODO: do magic things
-
+        return new JsonResponse(['success' => true]);
+    }
+    public function getCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function deleteCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function translateAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function saveCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function downloadCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function copyCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true]);
+    }
+    public function listExtAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $parsedBody = $request->getParsedBody();
         return new JsonResponse(['success' => true]);
     }
 }
