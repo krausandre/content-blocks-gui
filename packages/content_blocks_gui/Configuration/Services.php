@@ -30,10 +30,4 @@ return function (ContainerConfigurator $configurator, ContainerBuilder $containe
     $services->load('ContentBlocks\\ContentBlocksGui\\', __DIR__ . '/../Classes/')->exclude([
         __DIR__ . '/../Classes/Domain/Model',
     ]);
-
-    // $services->set('ContentBlocks\\ContentBlocksGui\\Controller\\Backend\\ContentBlocksController')
-    //     ->tag('backend.controller')
-    //     ->autowire()
-    //     ->autoconfigure()
-    //     ->public();
 };
