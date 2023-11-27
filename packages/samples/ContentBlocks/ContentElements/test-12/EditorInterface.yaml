@@ -1,0 +1,8 @@
+name: test-12/test-12
+group: common
+prefixFields: true
+prefixType: full
+fields:
+  -
+    identifier: header
+    useExistingField: true

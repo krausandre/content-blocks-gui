@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c0428d45fa286d3d6190ef21bfe71b4",
+    "content-hash": "537eff048737e376342ccb5006c605a6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -204,7 +204,7 @@
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-main",
+            "version": "dev-feature/update/manu",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
@@ -282,6 +282,38 @@
                 "source": ""
             },
             "time": "2023-11-23T22:04:43+00:00"
+        },
+        {
+            "name": "contentblocks/samples",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/samples",
+                "reference": "d8a78bb3028e7569a235e9f04c4e94c2c213ef84"
+            },
+            "require": {
+                "contentblocks/content-blocks": "*"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "samples5"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Content Types Team",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Example content blocks for TYPO3 CMS Content Blocks.",
+            "homepage": "https://typo3.org",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "dasprid/enum",
@@ -1978,16 +2010,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.24.3",
+            "version": "1.24.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "12f01d214f1c73b9c91fdb3b1c415e4c70652083"
+                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/12f01d214f1c73b9c91fdb3b1c415e4c70652083",
-                "reference": "12f01d214f1c73b9c91fdb3b1c415e4c70652083",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6bd0c26f3786cd9b7c359675cb789e35a8e07496",
+                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496",
                 "shasum": ""
             },
             "require": {
@@ -2019,9 +2051,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.3"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.4"
             },
-            "time": "2023-11-18T20:15:32+00:00"
+            "time": "2023-11-26T18:29:22+00:00"
         },
         {
             "name": "psr/cache",

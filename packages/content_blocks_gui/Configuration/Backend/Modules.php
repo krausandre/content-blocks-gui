@@ -29,7 +29,7 @@ return [
         'extensionName' => 'content_blocks_gui',
         'controllerActions' => [
             ContentBlocksGuiController::class => [
-                'listCb',
+                'list',
             ],
             ContentBlocksGuiAjaxController::class => [
                 'createCb',
