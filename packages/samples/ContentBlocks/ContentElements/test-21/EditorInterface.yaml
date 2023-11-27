@@ -1,0 +1,8 @@
+name: test-21/test-21
+group: common
+prefixFields: true
+prefixType: full
+fields:
+  -
+    identifier: header
+    useExistingField: true

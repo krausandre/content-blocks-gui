@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Controller\Backend;
 
+use ContentBlocks\ContentBlocksGui\Utility\ExtensionUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
 use Psr\Http\Message\ResponseInterface;
@@ -29,11 +30,8 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 #[Controller]
 final class ContentBlocksGuiAjaxController extends ActionController
 {
-    protected ModuleTemplate $moduleTemplate;
-
     public function __construct(
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected PageRenderer $pageRenderer
+        protected ExtensionUtility $extensionUtility
     ) {
     }
 
@@ -78,8 +76,12 @@ final class ContentBlocksGuiAjaxController extends ActionController
     }
     public function listExtAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
+        $availableExtensions = $this->extensionUtility->getAvailableExtensions();
+        return new JsonResponse(
+            [
+                'extensions' => $availableExtensions
+            ]
+        );
     }
 }
 

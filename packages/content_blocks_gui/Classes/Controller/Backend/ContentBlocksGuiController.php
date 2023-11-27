@@ -46,9 +46,9 @@ final class ContentBlocksGuiController extends ActionController
         $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui-testfiles/ajax-request-test.js');
     }
 
-    public function listCbAction(): ResponseInterface
+    public function listAction(): ResponseInterface
     {
-        return $this->moduleTemplate->renderResponse('ContentBlocksGui/ListCb');
+        return $this->moduleTemplate->renderResponse('ContentBlocksGui/List');
     }
 }
 

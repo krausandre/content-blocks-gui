@@ -14,10 +14,10 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['create_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['list_ext'])
       .post(
         {
-          test: "Ich bin ein Test"
+          //test: "Ich bin ein Test"
         }
       )
       .then(async function (response) {
