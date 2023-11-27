@@ -19,21 +19,31 @@ namespace ContentBlocks\ContentBlocksGui\Controller\Backend;
 
 use TYPO3\CMS\Backend\Attribute\Controller;
 use Psr\Http\Message\ResponseInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[Controller]
-final class ContentBlocksController extends ActionController
+final class ContentBlocksGuiController extends ActionController
 {
+    protected ModuleTemplate $moduleTemplate;
+
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected PageRenderer $pageRenderer
     ) {
+    }
+
+    public function initializeAction(): void
+    {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui/index.js');
     }
 
     public function listAction(): ResponseInterface
     {
-        return $this->htmlResponse();
+        return $this->moduleTemplate->renderResponse('ContentBlocksGui/List');
     }
-
 }
 

@@ -13,8 +13,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-use ContentBlocks\ContentBlocksGui\Controller\Backend\BasicsController;
-use ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksController;
+use ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiController;
 
 $_LLL_mod = 'LLL:EXT:content_blocks_gui/Resources/Private/Language/locallang_mod.xlf:';
 return [
@@ -28,12 +27,9 @@ return [
         'labels' => $_LLL_mod . 'content-blocks-gui',
         'extensionName' => 'content_blocks_gui',
         'controllerActions' => [
-            ContentBlocksController::class => [
+            ContentBlocksGuiController::class => [
                 'list',
-            ],
-            BasicsController::class => [
-                'list',
-            ],
+            ]
         ],
     ],
 ];
