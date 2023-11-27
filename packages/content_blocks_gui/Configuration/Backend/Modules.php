@@ -14,6 +14,7 @@
  */
 
 use ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiController;
+use ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController;
 
 $_LLL_mod = 'LLL:EXT:content_blocks_gui/Resources/Private/Language/locallang_mod.xlf:';
 return [
