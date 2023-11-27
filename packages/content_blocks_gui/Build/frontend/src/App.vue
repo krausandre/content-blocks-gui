@@ -1,25 +1,12 @@
 <template>
-  <h1>{{ fetchFromState }}</h1>
+  <h1>{{store.getName}}</h1>
 </template>
 
-<script>
+<script setup lang="ts">
+import {useContentBlockStore} from './store/contentBlockStore'
 
-export default {
-  data() {
-    return {
-    }
-  },
-  computed: {
-    fetchFromState(){
-      return this.$store.getters.currentContentBlock;
-    }
-  }
-}
-
-
+const store = useContentBlockStore();
 </script>
-
-
 
 <style scoped>
 </style>
