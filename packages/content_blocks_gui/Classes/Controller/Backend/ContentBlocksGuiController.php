@@ -39,6 +39,8 @@ final class ContentBlocksGuiController extends ActionController
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui/index.js');
+        // TODO: remove if vue app can send the specified ajax requests
+        $this->pageRenderer->loadJavaScriptModule('@contentblocks/content-blocks-gui-testfiles/ajax-request-test.js');
     }
 
     public function listCbAction(): ResponseInterface
