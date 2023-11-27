@@ -17,7 +17,41 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
+use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
+use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
+
 class ContentBlocksUtility
 {
+    public function __construct(
+        protected ContentBlockLoader $contentBlocksLoader
+    ) {
+    }
 
+    public function getAvailableContentBlocks(): array
+    {
+        $resultList = [
+            'ContentElements' => [],
+            'PageTypes' => [],
+            'RecordTypes' => [],
+        ];
+        $contentBlocksList = $this->contentBlocksLoader->load(false);
+
+        /** @var TableDefinition */
+        foreach ($contentBlocksList as $contentBlock) {
+            switch ($contentBlock->getTable()) {
+                case 'tt_content':
+                    $resultList['ContentElements'][] = $contentBlock;
+                    break;
+
+                case 'pages':
+                    $resultList['PageTypes'][] = $contentBlock;
+                    break;
+
+                default:
+                    $resultList['RecordTypes'][] = $contentBlock;
+                    break;
+            }
+        }
+        return $resultList;
+    }
 }

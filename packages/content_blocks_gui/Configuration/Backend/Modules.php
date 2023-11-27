@@ -32,6 +32,7 @@ return [
                 'list',
             ],
             ContentBlocksGuiAjaxController::class => [
+                'listCb',
                 'createCb',
                 'getCb',
                 'deleteCb',

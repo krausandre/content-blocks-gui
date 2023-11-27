@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Controller\Backend;
 
+use ContentBlocks\ContentBlocksGui\Utility\ContentBlocksUtility;
 use ContentBlocks\ContentBlocksGui\Utility\ExtensionUtility;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\Controller;
@@ -28,7 +29,10 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 final class ContentBlocksGuiAjaxController extends ActionController
 {
     public function __construct(
-        protected ExtensionUtility $extensionUtility
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected PageRenderer $pageRenderer,
+        protected ExtensionUtility $extensionUtility,
+        protected ContentBlocksUtility $contentBlocksUtility,
     ) {
     }
 
@@ -36,11 +40,19 @@ final class ContentBlocksGuiAjaxController extends ActionController
     {
     }
 
+    public function listCbAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $cbList = $this->contentBlocksUtility->getAvailableContentBlocks();
+        $parsedBody = $request->getParsedBody();
+        return new JsonResponse(['success' => true, 'test'=>'ja']);
+    }
+
     public function createCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
         return new JsonResponse(['success' => true]);
     }
+
     public function getCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();

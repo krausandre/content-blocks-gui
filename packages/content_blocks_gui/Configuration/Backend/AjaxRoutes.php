@@ -4,6 +4,10 @@
  * Definitions for routes provided by EXT:content_blocks_gui
  */
 return [
+    'list_cb' => [
+        'path' => '/contentblocks/gui/cb/list',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listCbAction',
+    ],
     'create_cb' => [
         'path' => '/contentblocks/gui/cb/create',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::createCbAction',
