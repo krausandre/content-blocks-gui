@@ -17,7 +17,15 @@ class AjaxRequestTest {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_cb'])
       .post(
         {
-          name: "test-123/test-12"
+          vendor: "test-99",
+          name: "test-99",
+          extension: "samples",
+          fields: [
+            {
+              identifier: 'header',
+              useExistingField: true,
+            }
+         ]
         }
       )
       .then(async function (response) {
