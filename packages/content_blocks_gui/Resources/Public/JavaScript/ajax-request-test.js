@@ -14,7 +14,7 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['delete_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_cb'])
       .post(
         {
           name: "test-123/test-12"

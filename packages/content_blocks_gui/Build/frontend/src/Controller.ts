@@ -6,7 +6,7 @@ export class Controller {
 
         const data = useContentBlockStore().getAsJson;
         fetch(
-            TYPO3.settings.ajaxUrls.save_cb,
+            TYPO3.settings.ajaxUrls.content_blocks_gui_save_cb,
             {
                 method: 'POST',
                 body: JSON.stringify(data),

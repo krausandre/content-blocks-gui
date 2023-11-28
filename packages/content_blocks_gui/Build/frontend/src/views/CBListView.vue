@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex flex-column" >
     <h1>Liste:</h1>
-    <ListTable 
+    <ListTable
       v-for="(table, name , index) in contentBlocksStore.getList"
       :title="getHeaderFromTable(index)"
       :key="table.key"
@@ -20,7 +20,7 @@ const contentBlocksStore = useContentBlocksListStore();
 const updateContentBlocksList = () => {
   // Get the list from the backend
 
-  axios.get(TYPO3.settings.ajaxUrls.list_cb).then((response) => {
+  axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_cb).then((response) => {
     console.log(response.data)
     contentBlocksStore.setList(response.data.list)
   })
