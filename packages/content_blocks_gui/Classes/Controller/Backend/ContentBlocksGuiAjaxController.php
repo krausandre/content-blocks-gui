@@ -99,5 +99,10 @@ final class ContentBlocksGuiAjaxController extends ActionController
     {
         return $this->extensionUtility->getAvailableExtensions()->getResponse();
     }
+
+    public function listIconsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->getIconsList()->getResponse();
+    }
 }
 

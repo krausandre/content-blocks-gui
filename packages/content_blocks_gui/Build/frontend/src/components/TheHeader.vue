@@ -6,27 +6,49 @@
           @click="globalPropertiesStore.setCurrentViewToCbListView"
           v-if="globalPropertiesStore.getIsEditView"
           type="button"
-      ><IconComponent identifier="actions-arrow-left" /> Back to overview</button>
-      <button
-          type="button"
-          class="btn btn-primary"
-          @click="globalPropertiesStore.setCurrentViewToEditView()"
-          v-if="globalPropertiesStore.getIsCbListView"
-      ><IconComponent identifier="actions-extension-add" /> Add content block
+      >
+        <IconComponent identifier="actions-arrow-left"/>
+        Back to overview
       </button>
+
       <button
           type="button"
           class="btn btn-primary"
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
-      ><IconComponent identifier="actions-extension-add" />Add record type
+      >
+        <IconComponent identifier="actions-extension-add"/>
+        Add content block
       </button>
+
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="controller.saveCb()"
+          v-if="globalPropertiesStore.getIsEditView"
+      >
+        <IconComponent identifier="actions-save"/>
+        Save
+      </button>
+
       <button
           type="button"
           class="btn btn-primary"
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
-      ><IconComponent identifier="actions-extension-add" /> Add page type
+      >
+        <IconComponent identifier="actions-extension-add"/>
+        Add record type
+      </button>
+
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="globalPropertiesStore.setCurrentViewToEditView()"
+          v-if="globalPropertiesStore.getIsCbListView"
+      >
+        <IconComponent identifier="actions-extension-add"/>
+        Add page type
       </button>
     </div>
   </nav>
@@ -35,6 +57,7 @@
 <script setup>
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import IconComponent from "@/components/icons/IconComponent.vue";
+import controller from "@/Controller";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
 

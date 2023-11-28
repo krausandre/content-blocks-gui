@@ -40,4 +40,8 @@ return [
         'path' => '/contentblocks/gui/ext/list',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listExtAction',
     ],
+    'list_icons' => [
+        'path' => '/contentblocks/gui/icons/list',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listIconsAction',
+    ],
 ];
