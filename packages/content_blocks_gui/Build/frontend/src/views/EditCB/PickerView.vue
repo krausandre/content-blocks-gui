@@ -1,8 +1,3 @@
-<script setup lang="ts">
-import Tabs from '../../components/Tabs.vue'
-import Tab from '../../components/Tab.vue'
-</script>
-
 <template>
   <h1>Picker</h1>
 
@@ -11,11 +6,15 @@ import Tab from '../../components/Tab.vue'
       <form>
         <div class="mb-3">
           <label for="xxx" class="form-label">Identifier</label>
-          <input class="form-control" id="xxx" aria-describedby="xxx">
+          <input class="form-control" id="xxx" aria-describedby="xxx"
+                 :value="useContentBlockStore().getPackage"
+          >
         </div>
         <div class="mb-3">
           <label for="xxx" class="form-label">Vendor</label>
-          <input class="form-control" id="xxx" aria-describedby="xxx">
+          <input class="form-control" id="xxx" aria-describedby="xxx"
+                 :value="useContentBlockStore().getVendor"
+          >
         </div>
         <div class="mb-3">
           <label for="xxx" class="form-label">Group</label>
@@ -34,6 +33,12 @@ import Tab from '../../components/Tab.vue'
   </Tabs>
 
 </template>
+
+<script setup lang="ts">
+import Tabs from '../../components/Tabs.vue'
+import Tab from '../../components/Tab.vue'
+import {useContentBlockStore} from "@/store/contentBlockStore";
+</script>
 
 <style scoped>
 </style>
