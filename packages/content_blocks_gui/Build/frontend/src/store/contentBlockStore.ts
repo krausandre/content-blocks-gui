@@ -3,14 +3,23 @@ import {defineStore} from "pinia";
 export const useContentBlockStore = defineStore('contentBlock',{
   state:() => ({
     vendor: "contentblocks",
-    name:"contentblocks-gui"
+    package:"contentblocks-gui",
+    extensionKey: "ext_content_blocks_gui",
   }),
   getters: {
-    getName: state => state.name,  // Getter um Namen zu lesen
+    getVendor: state => state.vendor,
+    getPackage: state => state.package,
+    getExtensionKey: state => state.extensionKey,
   },
   actions: {
-    setName(newName: string) {
-      this.name = newName;  // Aktion um Namen zu ändern
+    setVendor(newVendor: string) {
+      this.vendor = newVendor;  // Aktion um Namen zu ändern
+    },
+    setPackage(newPackage: string) {
+      this.package = newPackage;  // Aktion um Namen zu ändern
+    },
+    setExtensionKey(newExtensionKey: string) {
+      this.extensionKey = newExtensionKey;  // Aktion um Namen zu ändern
     },
   },
 });
