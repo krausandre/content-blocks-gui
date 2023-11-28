@@ -24,6 +24,7 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
@@ -179,7 +180,7 @@ class ContentBlocksUtility
                 $contentBlockAsArray = $loadedContentBlock->toArray();
                 $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
                 return new DataAnswer(
-                    'list',
+                    'ContentBlock',
                     $contentBlockAsArray
                 );
             }
@@ -199,6 +200,22 @@ class ContentBlocksUtility
         return new DataAnswer(
             'iconList',
             $resultList
+        );
+    }
+
+    public function getGroupsList(): AnswerInterface
+    {
+        $result = [];
+        $languageService = $this->getLanguageService();
+        $pageTsConfig = BackendUtility::getPagesTSconfig(0);
+        $contentWizardGroups = $pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.'] ?? [];
+        foreach ($contentWizardGroups as $key => $value) {
+            $result[str_replace('.', '', $key)] = $languageService->sL($value['header']);
+        }
+
+        return new DataAnswer(
+            'groupList',
+            $result
         );
     }
 

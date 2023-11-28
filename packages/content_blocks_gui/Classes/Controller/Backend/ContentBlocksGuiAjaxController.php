@@ -103,5 +103,10 @@ final class ContentBlocksGuiAjaxController extends ActionController
     {
         return $this->contentBlocksUtility->getIconsList()->getResponse();
     }
+
+    public function listGroupsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->getGroupsList()->getResponse();
+    }
 }
 
