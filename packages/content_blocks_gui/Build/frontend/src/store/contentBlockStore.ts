@@ -10,6 +10,13 @@ export const useContentBlockStore = defineStore('contentBlock',{
     getVendor: state => state.vendor,
     getPackage: state => state.package,
     getExtensionKey: state => state.extensionKey,
+    getAsJson: state => JSON.stringify(
+        {
+            vendor: state.vendor,
+            package: state.package,
+            extensionKey: state.extensionKey,
+        }
+    ),
   },
   actions: {
     setVendor(newVendor: string) {
