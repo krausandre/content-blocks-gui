@@ -48,4 +48,8 @@ return [
         'path' => '/contentblocks/gui/basics/list',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listBasicsAction',
     ],
+    'content_blocks_gui_get_basics' => [
+        'path' => '/contentblocks/gui/basics/get',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::getBasicsAction',
+    ],
 ];

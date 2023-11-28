@@ -19,7 +19,9 @@ namespace ContentBlocks\ContentBlocksGui\Utility;
 
 use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorBasicNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingBasicIndentifierAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
@@ -333,6 +335,21 @@ class ContentBlocksUtility
             'basicList',
             $resultList
         );
+    }
+
+    public function getBasicByName(null|array|object $parsedBody): AnswerInterface
+    {
+        $this->basicsLoader->load();
+        if (array_key_exists('identifier', $parsedBody)) {
+            if ($this->basicsRegistry->hasBasic($parsedBody['identifier'])) {
+                return new DataAnswer(
+                    'basicList',
+                    $this->basicsRegistry->getBasic($parsedBody['identifier'])->toArray()
+                );
+            }
+            return new ErrorBasicNotFoundAnswer($parsedBody['identifier']);
+        }
+        return new ErrorMissingBasicIndentifierAnswer();
     }
 
     public function hasContentBlock(string $name): bool
