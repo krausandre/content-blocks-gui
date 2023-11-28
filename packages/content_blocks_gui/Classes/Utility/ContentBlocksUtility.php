@@ -165,6 +165,20 @@ class ContentBlocksUtility
         return new ErrorMissingContentBlockNameAnswer();
     }
 
+    public function getIconsList(): AnswerInterface
+    {
+        $resultList = [];
+        foreach ($this->tableDefinitionCollection as $tableDefinition) {
+            foreach ($tableDefinition->getContentTypeDefinitionCollection() ?? [] as $typeDefinition) {
+                $resultList[$typeDefinition->getTypeName()] = $typeDefinition->getTypeIconIdentifier();
+            }
+        }
+        return new DataAnswer(
+            'iconList',
+            $resultList
+        );
+    }
+
     public function hasContentBlock(string $name): bool
     {
         return $this->contentBlockRegistry->hasContentBlock($name);
