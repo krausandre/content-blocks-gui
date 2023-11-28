@@ -73,9 +73,7 @@ const edit = (name: string) => {
       )
       .then(
           (response) => {
-            console.log("kkk", response.data)
-
-            const nameParts = response.data.body.list.name.split('/')
+            const nameParts = response.data.body.ContentBlock.name.split('/')
 
             contentBlockStore.setVendor(nameParts[0])
             contentBlockStore.setPackage(nameParts[1])

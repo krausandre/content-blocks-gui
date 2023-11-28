@@ -21,8 +21,7 @@ const updateContentBlocksList = () => {
   // Get the list from the backend
 
   axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_cb).then((response) => {
-    console.log(response.data)
-    contentBlocksStore.setList(response.data.list)
+    contentBlocksStore.setList(response.data.body.list)
   })
       .catch((error) => {
         console.log(error)
