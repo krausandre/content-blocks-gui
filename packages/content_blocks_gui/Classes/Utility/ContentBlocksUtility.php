@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
+use ContentBlocks\ContentBlocksGui\Controller\Answer\AnswerInterface;
+use ContentBlocks\ContentBlocksGui\Controller\Answer\DataAnswer;
+use ContentBlocks\ContentBlocksGui\Controller\Answer\ErrorContentBlockNotFoundAnswer;
+use ContentBlocks\ContentBlocksGui\Controller\Answer\ErrorMissingContentBlockNameAnswer;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
@@ -144,12 +148,21 @@ class ContentBlocksUtility
         return $list;
     }
 
-    public function getContentBlockByName(string $name): array
+    public function getContentBlockByName(null|array|object $parsedBody): AnswerInterface
     {
-        $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($name);
-        $contentBlockAsArray = $loadedContentBlock->toArray();
-        $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($name);
-        return $contentBlockAsArray;
+        if (array_key_exists('name', $parsedBody)) {
+            if ($this->hasContentBlock($parsedBody['name'])) {
+                $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($parsedBody['name']);
+                $contentBlockAsArray = $loadedContentBlock->toArray();
+                $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
+                return new DataAnswer(
+                    'list',
+                    $contentBlockAsArray
+                );
+            }
+            return new ErrorContentBlockNotFoundAnswer($parsedBody['name']);
+        }
+        return new ErrorMissingContentBlockNameAnswer();
     }
 
     public function hasContentBlock(string $name): bool
