@@ -23,7 +23,7 @@
           v-for="item in contentBlocksStore.getList.CONTENT_ELEMENT"
           :key="item.identifier"
       >
-       <td><img src="../assets/logo.svg" alt=""></td>
+       <td><img src="../assets/icons/DefaultContentElementIcon.svg" alt=""></td>
        <td> {{item.name}} </td>
        <td> {{item.identifier}} </td>
        <td> {{item.extension}} </td>
@@ -51,7 +51,7 @@
           v-for="item in contentBlocksStore.getList.PAGE_TYPE"
           :key="item.identifier"
       >
-       <td><img src="../assets/logo.svg" alt=""></td>
+       <td><img src="../assets/icons/DefaultPageTypeIcon.svg" alt=""></td>
        <td> {{item.name}} </td>
        <td> {{item.identifier}} </td>
        <td> {{item.extension}} </td>
@@ -79,7 +79,7 @@
           v-for="item in contentBlocksStore.getList.RECORD_TYPE"
           :key="item.identifier"
       >
-       <td><img src="../assets/logo.svg" alt=""></td>
+       <td><img src="../assets/icons/DefaultRecordTypeIcon.svg" alt=""></td>
        <td> {{item.name}} </td>
        <td> {{item.identifier}} </td>
        <td> {{item.extension}} </td>
