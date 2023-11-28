@@ -19,7 +19,7 @@ indent_size = 2
 [{*.scss,*.css}]
 indent_size = 2
 
-[*.html]
+[{*.html,*.vue}]
 indent_size = 2
 
 [*.rst]
