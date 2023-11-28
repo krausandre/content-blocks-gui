@@ -18,61 +18,47 @@ declare(strict_types=1);
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
-use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
+use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Localization\LanguageService;
 
 class ContentBlocksUtility
 {
     public function __construct(
-        protected ContentBlockLoader $contentBlocksLoader,
-        protected ContentBlockRegistry $contentBlockRegistry,
+        protected readonly TableDefinitionCollection $tableDefinitionCollection,
+        protected readonly ContentBlockRegistry $contentBlockRegistry,
     ) {
     }
 
     public function getAvailableContentBlocks(): array
     {
-        $resultList = [
-            'ContentElements' => [],
-            'PageTypes' => [],
-            'RecordTypes' => [],
-        ];
-        $contentBlocksList = $this->contentBlocksLoader->load(false);
-
-        /** @var TableDefinition */
-        foreach ($contentBlocksList as $contentBlock) {
-            switch ($contentBlock->getTable()) {
-                case 'tt_content':
-                    $resultList['ContentElements'] = $this->dataForContentBlockList($contentBlock, $resultList['ContentElements']);
-                    break;
-
-                case 'pages':
-                    $resultList['PageTypes'] = $this->dataForContentBlockList($contentBlock, $resultList['PageTypes']);
-                    break;
-
-                default:
-                    $resultList['RecordTypes'] = $this->dataForContentBlockList($contentBlock, $resultList['RecordTypes']);
-                    break;
-            }
+        $resultList = [];
+        foreach ($this->tableDefinitionCollection as $tableDefinition) {
+            $contentType = $tableDefinition->getContentType();
+            $resultList[$contentType->name] ??= [];
+            $resultList[$contentType->name] += $this->getLoadedContentBlocksForTable($tableDefinition);
         }
         return $resultList;
     }
 
-    protected function dataForContentBlockList(TableDefinition $tableDefinition, array $list): array
+    protected function getLoadedContentBlocksForTable(TableDefinition $tableDefinition): array
     {
-        $languageService = GeneralUtility::makeInstance(LanguageServiceFactory::class)
-                ->createFromUserPreferences($GLOBALS['BE_USER']);
+        $list = [];
+        $languageService = $this->getLanguageService();
         foreach ($tableDefinition->getContentTypeDefinitionCollection() as $typeDefinition) {
             $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($typeDefinition->getName());
-            $list[] = [
+            $name = $languageService->sL($typeDefinition->getLanguagePathTitle());
+            $list[$loadedContentBlock->getName()] = [
                 'identifier' => $loadedContentBlock->getName(),
-                'name' => $languageService->sL(
-                    $typeDefinition->getLanguagePathTitle()
-                ),
+                'name' => $name,
                 'extension' => $loadedContentBlock->getHostExtension(),
             ];
         }
         return $list;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }
