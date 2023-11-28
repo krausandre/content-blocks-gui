@@ -11,6 +11,8 @@ import EditCbView from './components/EditCbView.vue';
 const currentComponent = ref('edit-cb-view')
 
 const store = useContentBlockStore();
+
+
 </script>
 
 <style scoped>
