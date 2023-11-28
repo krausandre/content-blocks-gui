@@ -62,6 +62,10 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function deleteCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
+        if(!isset($parsedBody['identifier'])) {
+            return new JsonResponse(['success' => false, 'message' => 'No identifier given']);
+        }
+        $this->contentBlocksUtility->deleteContentBlockByIdentifier($parsedBody['identifier']);
         return new JsonResponse(['success' => true]);
     }
     public function translateAction(ServerRequestInterface $request): ResponseInterface

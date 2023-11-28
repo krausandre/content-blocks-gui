@@ -125,12 +125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nhovratov/content-blocks.git",
-                "reference": "28dbac592b9c5a7cfadaa552a74b9c077ab8816c"
+                "reference": "f88ddc5a8b6c00f11704d54d37a66354a8087efe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/28dbac592b9c5a7cfadaa552a74b9c077ab8816c",
-                "reference": "28dbac592b9c5a7cfadaa552a74b9c077ab8816c",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/f88ddc5a8b6c00f11704d54d37a66354a8087efe",
+                "reference": "f88ddc5a8b6c00f11704d54d37a66354a8087efe",
                 "shasum": ""
             },
             "require": {
@@ -201,11 +201,11 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-11-27T20:57:40+00:00"
+            "time": "2023-11-27T23:27:18+00:00"
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-main",
+            "version": "dev-feature/update/manu",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
@@ -290,7 +290,7 @@
             "dist": {
                 "type": "path",
                 "url": "packages/samples",
-                "reference": "d8a78bb3028e7569a235e9f04c4e94c2c213ef84"
+                "reference": "11244c04f00d124a056ea14de0a34217ce774bb3"
             },
             "require": {
                 "contentblocks/content-blocks": "*"
@@ -298,7 +298,7 @@
             "type": "typo3-cms-extension",
             "extra": {
                 "typo3/cms": {
-                    "extension-key": "samples5"
+                    "extension-key": "samples"
                 }
             },
             "license": [
@@ -7604,16 +7604,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "2.9.3",
+            "version": "2.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "7d0b08409ac5b9567819442e71ec2059a99003fd"
+                "reference": "d521f00f60d783c0a7326c132475917350188c42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/7d0b08409ac5b9567819442e71ec2059a99003fd",
-                "reference": "7d0b08409ac5b9567819442e71ec2059a99003fd",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/d521f00f60d783c0a7326c132475917350188c42",
+                "reference": "d521f00f60d783c0a7326c132475917350188c42",
                 "shasum": ""
             },
             "require": {
@@ -7650,7 +7650,7 @@
                 "issues": "https://github.com/TYPO3/Fluid/issues",
                 "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2023-10-30T21:48:21+00:00"
+            "time": "2023-11-27T11:50:12+00:00"
         },
         {
             "name": "webmozart/assert",

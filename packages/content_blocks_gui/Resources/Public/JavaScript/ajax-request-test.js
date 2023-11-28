@@ -14,7 +14,7 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['list_ext'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['download_cb'])
       .post(
         {
           identifier: "test-12/test-12"

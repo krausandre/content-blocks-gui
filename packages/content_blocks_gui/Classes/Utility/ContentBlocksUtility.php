@@ -21,6 +21,9 @@ use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Package\Exception;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ContentBlocksUtility
 {
@@ -28,6 +31,42 @@ class ContentBlocksUtility
         protected readonly TableDefinitionCollection $tableDefinitionCollection,
         protected readonly ContentBlockRegistry $contentBlockRegistry,
     ) {
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function deleteContentBlockByIdentifier(string $identifier): void
+    {
+        $contentBlockPath = $this->contentBlockRegistry->getContentBlockPath($identifier);
+        $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlockPath);
+        //delete files and folders recursively from path
+        $this->deleteDirectoryRecurisvely($absoluteContentBlockPath);
+    }
+
+    private function deleteDirectoryRecurisvely($contentBlockPath): void
+    {
+        if (is_dir($contentBlockPath)) {
+            $currentDirectory = opendir($contentBlockPath);
+
+            while (($file = readdir($currentDirectory)) !== false) {
+                if ($file != "." && $file != "..") {
+                    $currentFile = $contentBlockPath . DIRECTORY_SEPARATOR . $file;
+
+                    if (is_dir($currentFile)) {
+                        $this->deleteDirectoryRecurisvely($currentFile);
+                    } else {
+                        unlink($currentFile);
+                    }
+                }
+            }
+            closedir($currentDirectory);
+            rmdir($contentBlockPath);
+        } elseif (is_file($contentBlockPath)) {
+            unlink($contentBlockPath);
+        } else {
+            // TODO: throw exception or give hint that some parts could not be deleted?!
+        }
     }
 
     public function getAvailableContentBlocks(): array
