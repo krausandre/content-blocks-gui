@@ -1,37 +1,90 @@
 <template>
   <div class="d-flex flex-column" >
     <h1>Liste:</h1>
-    <hr>
-    <span>Content Elements</span>
-    <ul>
-      <li
+    <h2>Content Elements</h2>
+    <table class="cb-list-table">
+      <thead>
+        <tr>
+          <th>
+
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Identifier
+          </th>
+          <th>
+            Extension
+          </th>
+        </tr>
+      </thead>
+      <tr
           v-for="item in contentBlocksStore.getList.CONTENT_ELEMENT"
           :key="item.identifier"
       >
-        {{item.identifier}}
-      </li>
-    </ul>
-
-    <hr>
-    <span>Page Types</span>
-    <ul>
-      <li
+       <td><img src="../assets/logo.svg" alt=""></td>
+       <td> {{item.name}} </td>
+       <td> {{item.identifier}} </td>
+       <td> {{item.extension}} </td>
+      </tr>
+    </table>
+    <h2>Page Types</h2>
+    <table class="cb-list-table">
+      <thead>
+        <tr>
+          <th>
+            
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Identifier
+          </th>
+          <th>
+            Extension
+          </th>
+        </tr>
+      </thead>
+      <tr
           v-for="item in contentBlocksStore.getList.PAGE_TYPE"
           :key="item.identifier"
       >
-        {{item.identifier}}
-      </li>
-    </ul>
-    <hr>
-    <span>Record Types</span>
-    <ul>
-      <li
+       <td><img src="../assets/logo.svg" alt=""></td>
+       <td> {{item.name}} </td>
+       <td> {{item.identifier}} </td>
+       <td> {{item.extension}} </td>
+      </tr>
+    </table>
+    <h2>Record Types</h2>
+    <table class="cb-list-table">
+      <thead>
+        <tr>
+          <th>
+            
+          </th>
+          <th>
+            Name
+          </th>
+          <th>
+            Identifier
+          </th>
+          <th>
+            Extension
+          </th>
+        </tr>
+      </thead>
+      <tr
           v-for="item in contentBlocksStore.getList.RECORD_TYPE"
           :key="item.identifier"
       >
-        {{item.identifier}}
-      </li>
-    </ul>
+       <td><img src="../assets/logo.svg" alt=""></td>
+       <td> {{item.name}} </td>
+       <td> {{item.identifier}} </td>
+       <td> {{item.extension}} </td>
+      </tr>
+    </table>
   </div>
 </template>
 
