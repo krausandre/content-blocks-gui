@@ -45,7 +45,6 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function listCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $cbList = $this->contentBlocksUtility->getAvailableContentBlocks();
-        $parsedBody = $request->getParsedBody();
         return new JsonResponse(['success' => true, 'list' => $cbList]);
     }
 
@@ -90,7 +89,8 @@ final class ContentBlocksGuiAjaxController extends ActionController
         $availableExtensions = $this->extensionUtility->getAvailableExtensions();
         return new JsonResponse(
             [
-                'extensions' => $availableExtensions
+                'success' => true,
+                'list' => $availableExtensions
             ]
         );
     }
