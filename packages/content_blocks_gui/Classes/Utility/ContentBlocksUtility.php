@@ -21,6 +21,8 @@ use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
@@ -31,12 +33,11 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 class ContentBlocksUtility
 {
     public function __construct(
+        protected readonly LoggerInterface $logger,
         protected readonly TableDefinitionCollection $tableDefinitionCollection,
         protected readonly ContentBlockRegistry $contentBlockRegistry,
         protected readonly ContentBlockPathUtility $contentBlockPathUtility,
@@ -44,45 +45,60 @@ class ContentBlocksUtility
     ) {
     }
 
+    public function deleteContentBlock(null|array|object $parsedBody): AnswerInterface
+    {
+        if (array_key_exists('name', $parsedBody)) {
+            try {
+                $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath(
+                    $this->contentBlockRegistry->getContentBlockPath($parsedBody['name'])
+                );
+                return new DataAnswer(
+                    'list',
+                    $this->deleteDirectoryRecursively($absoluteContentBlockPath)
+                );
+            } catch (Exception $e) {
+                $this->logger->error($e->getMessage());
+                return new ErrorUnknownContentBlockPathAnswer($parsedBody['name']);
+            }
+        } else {
+            return new ErrorMissingContentBlockNameAnswer();
+        }
+    }
+
     /**
      * @throws Exception
      */
-    public function deleteContentBlockByIdentifier(string $identifier): void
+    private function deleteDirectoryRecursively(string $path): array
     {
-        $contentBlockPath = $this->contentBlockRegistry->getContentBlockPath($identifier);
-        $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlockPath);
-        //delete files and folders recursively from path
-        $this->deleteDirectoryRecurisvely($absoluteContentBlockPath);
-    }
-
-    private function deleteDirectoryRecurisvely($contentBlockPath): void
-    {
-        if (is_dir($contentBlockPath)) {
-            $currentDirectory = opendir($contentBlockPath);
+        $notDeletedFilePaths = [];
+        if (is_dir($path)) {
+            $currentDirectory = opendir($path);
 
             while (($file = readdir($currentDirectory)) !== false) {
                 if ($file != "." && $file != "..") {
-                    $currentFile = $contentBlockPath . DIRECTORY_SEPARATOR . $file;
+                    $currentFile = $path . DIRECTORY_SEPARATOR . $file;
 
                     if (is_dir($currentFile)) {
-                        $this->deleteDirectoryRecurisvely($currentFile);
+                        $this->deleteDirectoryRecursively($currentFile);
                     } else {
                         unlink($currentFile);
                     }
                 }
             }
             closedir($currentDirectory);
-            rmdir($contentBlockPath);
-        } elseif (is_file($contentBlockPath)) {
-            unlink($contentBlockPath);
+            rmdir($path);
+        } elseif (is_file($path)) {
+            unlink($path);
         } else {
-            // TODO: throw exception or give hint that some parts could not be deleted?!
+            // add hint that some parts could not be deleted
+            $notDeletedFilePaths[] = $path;
         }
+        return $notDeletedFilePaths;
     }
 
-    public function createZipFileFromContentBlockPath(string $identifier): string
+    public function createZipFileFromContentBlockPath(string $name): string
     {
-        $contentBlock = $this->contentBlockRegistry->getContentBlock($identifier);
+        $contentBlock = $this->contentBlockRegistry->getContentBlock($name);
         $contentBlockPath = $contentBlock->getExtPath();
         $contentBlockPackage = '/' . $contentBlock->getPackage();
         $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlockPath);

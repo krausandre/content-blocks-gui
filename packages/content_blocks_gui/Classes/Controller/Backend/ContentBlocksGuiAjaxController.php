@@ -49,12 +49,6 @@ final class ContentBlocksGuiAjaxController extends ActionController
         return new JsonResponse(['success' => true, 'list' => $cbList]);
     }
 
-    public function createCbAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
-    }
-
     public function getCbAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->contentBlocksUtility->getContentBlockByName(
@@ -64,12 +58,9 @@ final class ContentBlocksGuiAjaxController extends ActionController
 
     public function deleteCbAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
-        if(!isset($parsedBody['identifier'])) {
-            return new JsonResponse(['success' => false, 'message' => 'No identifier given']);
-        }
-        $this->contentBlocksUtility->deleteContentBlockByIdentifier($parsedBody['identifier']);
-        return new JsonResponse(['success' => true]);
+        return $this->contentBlocksUtility->deleteContentBlock(
+            $request->getParsedBody()
+        )->getResponse();
     }
     public function translateAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -84,10 +75,10 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function downloadCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-        if(!isset($parsedBody['identifier'])) {
-            return new JsonResponse(['success' => false, 'message' => 'No identifier given']);
+        if(!isset($parsedBody['name'])) {
+            return new JsonResponse(['success' => false, 'message' => 'No Content Block name given.']);
         }
-        $fileName = $this->contentBlocksUtility->createZipFileFromContentBlockPath($parsedBody['identifier']);
+        $fileName = $this->contentBlocksUtility->createZipFileFromContentBlockPath($parsedBody['name']);
         $response = $this->responseFactory
             ->createResponse()
             ->withAddedHeader('Content-Type', 'application/zip')
@@ -106,13 +97,7 @@ final class ContentBlocksGuiAjaxController extends ActionController
     }
     public function listExtAction(ServerRequestInterface $request): ResponseInterface
     {
-        $availableExtensions = $this->extensionUtility->getAvailableExtensions();
-        return new JsonResponse(
-            [
-                'success' => true,
-                'list' => $availableExtensions
-            ]
-        );
+        return $this->extensionUtility->getAvailableExtensions()->getResponse();
     }
 }
 

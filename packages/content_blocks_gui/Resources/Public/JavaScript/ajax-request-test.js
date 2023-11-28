@@ -14,10 +14,10 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['download_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['delete_cb'])
       .post(
         {
-          identifier: "test-123/test-12"
+          name: "test-123/test-12"
         }
       )
       .then(async function (response) {

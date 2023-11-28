@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
+use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
+use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ExtensionUtility
@@ -29,7 +29,7 @@ class ExtensionUtility
         protected PackageResolver $packageResolver
     ) {
     }
-    public function getAvailableExtensions(): array
+    public function getAvailableExtensions(): AnswerInterface
     {
         // TODO: test in legacy mode
         $availablePackages = $this->packageResolver->getAvailablePackages();
@@ -57,6 +57,9 @@ class ExtensionUtility
                 'icon' => PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($availablePackages[$packageKey]->getPackagePath(), true))
             ];
         }
-        return $availableExtensions;
+        return new DataAnswer(
+            'list',
+            $availableExtensions
+        );
     }
 }
