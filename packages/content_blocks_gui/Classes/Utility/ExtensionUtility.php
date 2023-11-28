@@ -18,6 +18,10 @@ declare(strict_types=1);
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ExtensionUtility
 {
@@ -46,13 +50,11 @@ class ExtensionUtility
             if(!$requiredContentBlocksPackage) {
                 continue;
             }
-            // TODO: add and convert icon
-            // $iconFile = $availablePackages[$packageKey]->getPackagePath() . 'Resource/Public/Icons/Extension.svg';
             $availableExtensions[] = [
                 'vendor' => explode('/', $availablePackages[$packageKey]->getValueFromComposerManifest('name'))[0],
                 'package' => explode('/', $availablePackages[$packageKey]->getValueFromComposerManifest('name'))[1],
-                'extKey' => $packageKey,
-                'icon' => ''
+                'extension' => $packageKey,
+                'icon' => PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($availablePackages[$packageKey]->getPackagePath(), true))
             ];
         }
         return $availableExtensions;

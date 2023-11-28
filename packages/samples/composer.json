@@ -14,7 +14,7 @@
   },
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "samples5"
+			"extension-key": "samples"
 		}
 	}
 }

@@ -17,7 +17,7 @@ class AjaxRequestTest {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['list_ext'])
       .post(
         {
-          //test: "Ich bin ein Test"
+          identifier: "test-12/test-12"
         }
       )
       .then(async function (response) {
