@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace ContentBlocks\ContentBlocksGui\Controller\Answer;
+namespace ContentBlocks\ContentBlocksGui\Answer;
 
 use TYPO3\CMS\Core\Http\JsonResponse;
 

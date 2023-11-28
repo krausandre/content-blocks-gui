@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace ContentBlocks\ContentBlocksGui\Utility;
 
-use ContentBlocks\ContentBlocksGui\Controller\Answer\AnswerInterface;
-use ContentBlocks\ContentBlocksGui\Controller\Answer\DataAnswer;
-use ContentBlocks\ContentBlocksGui\Controller\Answer\ErrorContentBlockNotFoundAnswer;
-use ContentBlocks\ContentBlocksGui\Controller\Answer\ErrorMissingContentBlockNameAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
+use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
