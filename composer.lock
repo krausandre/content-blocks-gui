@@ -125,12 +125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nhovratov/content-blocks.git",
-                "reference": "f88ddc5a8b6c00f11704d54d37a66354a8087efe"
+                "reference": "d6631b191f900de2bfd17aa129866d75fe82f5ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/f88ddc5a8b6c00f11704d54d37a66354a8087efe",
-                "reference": "f88ddc5a8b6c00f11704d54d37a66354a8087efe",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/d6631b191f900de2bfd17aa129866d75fe82f5ed",
+                "reference": "d6631b191f900de2bfd17aa129866d75fe82f5ed",
                 "shasum": ""
             },
             "require": {
@@ -201,7 +201,7 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-11-27T23:27:18+00:00"
+            "time": "2023-11-28T11:52:07+00:00"
         },
         {
             "name": "contentblocks/content-blocks-gui",

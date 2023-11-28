@@ -17,7 +17,7 @@ class AjaxRequestTest {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['download_cb'])
       .post(
         {
-          identifier: "test-12/test-12"
+          identifier: "test-123/test-12"
         }
       )
       .then(async function (response) {

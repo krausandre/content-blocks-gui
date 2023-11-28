@@ -20,10 +20,13 @@ namespace ContentBlocks\ContentBlocksGui\Utility;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
+use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 
 class ContentBlocksUtility
 {
@@ -67,6 +70,47 @@ class ContentBlocksUtility
         } else {
             // TODO: throw exception or give hint that some parts could not be deleted?!
         }
+    }
+
+    public function createZipFileFromContentBlockPath(string $identifier): string
+    {
+        $contentBlock = $this->contentBlockRegistry->getContentBlock($identifier);
+        $contentBlockPath = $contentBlock->getExtPath();
+        $contentBlockPackage = '/' . $contentBlock->getPackage();
+        $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlockPath);
+        $temporaryPath = Environment::getVarPath() . '/transient/';
+        if (!@is_dir($temporaryPath)) {
+            GeneralUtility::mkdir($temporaryPath);
+        }
+        $fileName = $temporaryPath . $contentBlock->getPackage() . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
+
+        $zip = new \ZipArchive();
+        $zip->open($fileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
+
+        $files = GeneralUtility::getAllFilesAndFoldersInPath(
+            [], // No files pre-added
+            $absoluteContentBlockPath . '/', // Start from here
+            '', // Do not filter files by extension
+            true, // Include subdirectories
+            PHP_INT_MAX
+        );
+        // Make paths relative to content block directory.
+        $files = GeneralUtility::removePrefixPathFromList($files, $absoluteContentBlockPath);
+        $files = is_array($files) ? $files : [];
+
+        foreach ($files as $file) {
+            $fullPath = $absoluteContentBlockPath . $file;
+            // Distinguish between files and directories, as creation of the archive
+            // fails on Windows when trying to add a directory with "addFile".
+            if (is_dir($fullPath)) {
+                $zip->addEmptyDir($contentBlockPackage . $file);
+            } else {
+                $zip->addFile($fullPath, $contentBlockPackage . $file);
+            }
+        }
+        $zip->close();
+
+        return $fileName;
     }
 
     public function getAvailableContentBlocks(): array
