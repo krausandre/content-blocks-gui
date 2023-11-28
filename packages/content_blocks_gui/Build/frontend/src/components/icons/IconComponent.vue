@@ -22,4 +22,5 @@ let icon = ref('');
 top.TYPO3.Icons.getIcon(props.identifier, props.size).then(svg => {
   icon.value = svg;
 });
+
 </script>

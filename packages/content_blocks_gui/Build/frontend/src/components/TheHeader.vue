@@ -50,6 +50,12 @@
         <IconComponent identifier="actions-extension-add"/>
         Add page type
       </button>
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="getIcons"
+      ><IconComponent identifier="actions-extension-add" /> GetIconsAsList
+      </button>
     </div>
   </nav>
 </template>
@@ -57,10 +63,18 @@
 <script setup>
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import IconComponent from "@/components/icons/IconComponent.vue";
-import controller from "@/Controller";
+import axios from "axios";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
 
+const getIcons = () => {
+  axios.get(TYPO3.settings.ajaxUrls.list_icons).then((response) => {
+    console.log(response.data)
+  })
+  .catch((error) => {
+    console.log(error)
+  });
+}
 </script>
 
 <style scoped>

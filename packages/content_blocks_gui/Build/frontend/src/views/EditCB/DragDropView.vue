@@ -1,38 +1,22 @@
 <template>
   <div class="">
     <div class="">
-      <h3>Draggable 1</h3>
-      <draggable
-        class="dragArea list-group"
-        :list="list1"
-        :group="{ name: 'people', pull: 'clone', put: false }"
-        @change="log"
-      >
-        <template #item="{ element: item }">
-          <li>
-            {{ item.name }}
-          </li>
-        </template>
-      </draggable>
-    </div>
-
-    <div class="">
-      <h3>Draggable 2</h3>
       <draggable
         class="dragArea list-group"
         :list="list2"
         group="people"
         @change="log"
+        item-key="identifier"
       >
         <template #item="{ element: item }">
-          <li>
-            {{ item.name }}
-          </li>
+          <component
+              :is="item.componentName"
+              :identifier="item.identifier"
+              :label="item.label + ' (' + item.identifier + ')'"
+              :icon-identifier="item.iconIdentifier"/>
         </template>
       </draggable>
     </div>
-
-    <rawDisplayer class="col-3" :value="list1" title="List 1" />
 
     <rawDisplayer class="col-3" :value="list2" title="List 2" />
   </div>
@@ -40,11 +24,13 @@
 
 <script>
 import draggable from "vuedraggable";
+import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 export default {
   name: "clone",
   display: "Clone",
   order: 2,
   components: {
+    BaseFieldType,
     draggable
   },
   data() {

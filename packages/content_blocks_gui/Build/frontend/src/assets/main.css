@@ -38,6 +38,10 @@
   margin: 25px 0;
 }
 
+.fieldtype {
+  max-width: max-content;
+}
+
 @media (hover: hover) {
 
 }
