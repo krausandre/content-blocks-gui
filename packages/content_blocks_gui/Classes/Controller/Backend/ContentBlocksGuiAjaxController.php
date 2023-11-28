@@ -57,8 +57,15 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function getCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
+        if (array_key_exists('name', $parsedBody)) {
+            if ($this->contentBlocksUtility->hasContentBlock($parsedBody['name'])) {
+                return new JsonResponse(['success' => true, 'body' => $this->contentBlocksUtility->getContentBlockByName($parsedBody['name'])]);
+            }
+            return new JsonResponse(['success' => false, 'message' => 'Content Block with name ' . $parsedBody['name'] . ' not found.']);
+        }
+        return new JsonResponse(['success' => false, 'message' => 'No identifier given.']);
     }
+
     public function deleteCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();

@@ -20,6 +20,8 @@ namespace ContentBlocks\ContentBlocksGui\Utility;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
+use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
+use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -30,6 +32,8 @@ class ContentBlocksUtility
     public function __construct(
         protected readonly TableDefinitionCollection $tableDefinitionCollection,
         protected readonly ContentBlockRegistry $contentBlockRegistry,
+        protected readonly ContentBlockPathUtility $contentBlockPathUtility,
+        protected readonly LanguageFileRegistry $languageFileRegistry,
     ) {
     }
 
@@ -86,14 +90,27 @@ class ContentBlocksUtility
         $languageService = $this->getLanguageService();
         foreach ($tableDefinition->getContentTypeDefinitionCollection() as $typeDefinition) {
             $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($typeDefinition->getName());
-            $name = $languageService->sL($typeDefinition->getLanguagePathTitle());
+            $label = $languageService->sL($typeDefinition->getLanguagePathTitle());
             $list[$loadedContentBlock->getName()] = [
-                'identifier' => $loadedContentBlock->getName(),
-                'name' => $name,
+                'name' => $loadedContentBlock->getName(),
+                'label' => $label,
                 'extension' => $loadedContentBlock->getHostExtension(),
             ];
         }
         return $list;
+    }
+
+    public function getContentBlockByName(string $name): array
+    {
+        $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($name);
+        $contentBlockAsArray = $loadedContentBlock->toArray();
+        $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($name);
+        return $contentBlockAsArray;
+    }
+
+    public function hasContentBlock(string $name): bool
+    {
+        return $this->contentBlockRegistry->hasContentBlock($name);
     }
 
     protected function getLanguageService(): LanguageService
