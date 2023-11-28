@@ -73,7 +73,7 @@ const edit = (name: string) => {
       )
       .then(
           (response) => {
-            const nameParts = response.data.body.ContentBlock.name.split('/')
+            const nameParts = response.data.body.contentBlock.name.split('/')
 
             contentBlockStore.setVendor(nameParts[0])
             contentBlockStore.setPackage(nameParts[1])

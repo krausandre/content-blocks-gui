@@ -279,7 +279,7 @@ class ContentBlocksUtility
                 $contentBlockAsArray = $loadedContentBlock->toArray();
                 $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
                 return new DataAnswer(
-                    'ContentBlock',
+                    'contentBlock',
                     $contentBlockAsArray
                 );
             }
