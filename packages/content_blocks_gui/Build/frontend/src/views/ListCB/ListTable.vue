@@ -20,7 +20,7 @@
         </thead>
         <tr
             v-for="item in props.items"
-            :key="item.identifier"
+            :key="item.name"
         >
         <td><img src="../../assets/icons/DefaultContentElementIcon.svg" alt=""></td>
         <td> {{item.name}} </td>
