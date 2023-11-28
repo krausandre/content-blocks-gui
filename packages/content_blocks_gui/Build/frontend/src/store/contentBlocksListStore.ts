@@ -2,13 +2,13 @@ import {defineStore} from "pinia";
 
 export const useContentBlocksListStore = defineStore('contentBlocksList',{
   state:() => ({
-    list: [] as string[]
+    list: [] as any
   }),
   getters: {
     getList: state => state.list,
   },
   actions: {
-    setList(newItems: string[]) {
+    setList(newItems: any) {
       this.list = newItems;
     },
   },
