@@ -45,8 +45,7 @@ final class ContentBlocksGuiAjaxController extends ActionController
 
     public function listCbAction(ServerRequestInterface $request): ResponseInterface
     {
-        $cbList = $this->contentBlocksUtility->getAvailableContentBlocks();
-        return new JsonResponse(['success' => true, 'list' => $cbList]);
+        return $this->contentBlocksUtility->getAvailableContentBlocks()->getResponse();
     }
 
     public function getCbAction(ServerRequestInterface $request): ResponseInterface

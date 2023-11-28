@@ -21,6 +21,7 @@ use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
@@ -137,7 +138,7 @@ class ContentBlocksUtility
         return $fileName;
     }
 
-    public function getAvailableContentBlocks(): array
+    public function getAvailableContentBlocks(): AnswerInterface
     {
         $resultList = [];
         foreach ($this->tableDefinitionCollection as $tableDefinition) {
@@ -145,7 +146,13 @@ class ContentBlocksUtility
             $resultList[$contentType->name] ??= [];
             $resultList[$contentType->name] += $this->getLoadedContentBlocksForTable($tableDefinition);
         }
-        return $resultList;
+        if (empty($resultList)) {
+            return new ErrorNoContentBlocksAvailableAnswer();
+        }
+        return new DataAnswer(
+            'list',
+            $resultList
+        );
     }
 
     protected function getLoadedContentBlocksForTable(TableDefinition $tableDefinition): array
