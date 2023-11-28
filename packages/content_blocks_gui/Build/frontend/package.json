@@ -2,9 +2,12 @@
   "name": "content-blocks-gui",
   "version": "0.0.0",
   "private": true,
+  "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "vite",
+    "serve": "vite",
     "build": "run-p type-check \"build-only {@}\" --",
+    "watch": "vite build --watch",
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",

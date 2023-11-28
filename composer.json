@@ -58,6 +58,17 @@
       "@npm-content_blocks_gui ci",
       "@npm-content_blocks_gui run build"
     ],
+    "build": [
+      "@npm-content_blocks_gui run build"
+    ],
+    "build:watch": [
+      "Composer\\Config::disableProcessTimeout",
+      "@npm-content_blocks_gui run watch"
+    ],
+    "build:serve": [
+      "Composer\\Config::disableProcessTimeout",
+      "@npm-content_blocks_gui run serve"
+    ],
     "npm-content_blocks_gui":  "npm --prefix packages/content_blocks_gui/Build/frontend/",
     "typo3": [
       "Composer\\Config::disableProcessTimeout",

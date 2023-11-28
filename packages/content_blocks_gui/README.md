@@ -28,5 +28,12 @@ See also [our inittiative page](https://typo3.org/community/teams/typo3-developm
 * username: contentblocks
 * password: TYPO3-Contentblocks-GUI-12
 
+## Building the VueJS App
 
+Single-shot: `ddev composer build`
 
+Watch mode: `ddev composer build:watch`
+
+Livereload (only the VueJS App):
+
+`ddev composer build:serve` – The app is live-reloading on https://content-blocks-gui.ddev.site:5173
