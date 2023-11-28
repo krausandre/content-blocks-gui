@@ -44,4 +44,8 @@ return [
         'path' => '/contentblocks/gui/groups/list',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listGroupsAction',
     ],
+    'content_blocks_gui_list_basics' => [
+        'path' => '/contentblocks/gui/basics/list',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listBasicsAction',
+    ],
 ];
