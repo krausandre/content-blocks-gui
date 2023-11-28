@@ -39,10 +39,6 @@ final class ContentBlocksGuiAjaxController extends ActionController
     ) {
     }
 
-    public function initializeAction(): void
-    {
-    }
-
     public function listCbAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->contentBlocksUtility->getAvailableContentBlocks()->getResponse();
