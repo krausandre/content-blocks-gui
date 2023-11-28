@@ -24,6 +24,10 @@ class AjaxRequestTest {
             {
               identifier: 'header',
               useExistingField: true,
+            },
+            {
+              identifier: 'bodytext',
+              type: 'text',
             }
          ])
         }

@@ -24,6 +24,7 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
@@ -68,25 +69,44 @@ class ContentBlocksUtility
         $table = $getParsedBody['table'] ?? 'tt_content';
         $typeField = $getParsedBody['typeField'] ?? 'CType';
 
-        $this->saveContentBlockConfiguration(
-            $vendor,
-            $name,
-            $fields,
-            $basics,
-            $group,
-            $prefixFields,
-            $prefixType,
-            $table,
-            $typeField,
-            $extension,
-        );
+        if($this->hasContentBlock($vendor . '/' . $name)) {
+            $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
+                $vendor,
+                $name,
+                $fields,
+                $basics,
+                $group,
+                $prefixFields,
+                $prefixType,
+                $table,
+                $typeField
+            );
+            $basePath = $this->createContentType->getBasePath($this->packageResolver->getAvailablePackages(), $extension, ContentType::CONTENT_ELEMENT);
+            file_put_contents(
+                $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
+                Yaml::dump($yamlConfiguration, 10, 2),
+            );
+        } else {
+            $this->createContentBlockConfiguration(
+                $vendor,
+                $name,
+                $fields,
+                $basics,
+                $group,
+                $prefixFields,
+                $prefixType,
+                $table,
+                $typeField,
+                $extension,
+            );
+        }
         return new DataAnswer(
             'list',
             [ 'name' => $vendor . '/' . $name ]
         );
     }
 
-    protected function saveContentBlockConfiguration(
+    protected function createContentBlockConfiguration(
         $vendor,
         $name,
         $fields,
