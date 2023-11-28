@@ -6,27 +6,27 @@
           @click="globalPropertiesStore.setCurrentViewToCbListView"
           v-if="globalPropertiesStore.getIsEditView"
           type="button"
-      ><BackIconComponent /> Back to overview</button>
+      ><IconComponent identifier="actions-arrow-left" /> Back to overview</button>
       <button
           type="button"
           class="btn btn-primary"
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
-      ><PlusIconComponent /> Add content block
+      ><IconComponent identifier="actions-extension-add" /> Add content block
       </button>
       <button
           type="button"
           class="btn btn-primary"
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
-      ><PlusIconComponent />Add record type
+      ><IconComponent identifier="actions-extension-add" />Add record type
       </button>
       <button
           type="button"
           class="btn btn-primary"
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
-      ><PlusIconComponent /> Add page type
+      ><IconComponent identifier="actions-extension-add" /> Add page type
       </button>
     </div>
   </nav>
@@ -34,8 +34,7 @@
 
 <script setup>
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import BackIconComponent from "@/components/icons/BackIconComponent.vue";
-import PlusIconComponent from "@/components/icons/PlusIconComponent.vue";
+import IconComponent from "@/components/icons/IconComponent.vue";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
 
