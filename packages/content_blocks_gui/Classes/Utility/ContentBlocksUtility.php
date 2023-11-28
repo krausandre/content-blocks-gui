@@ -23,10 +23,15 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use Psr\Log\LoggerInterface;
+use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
+use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
+use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
+use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
+use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -42,7 +47,49 @@ class ContentBlocksUtility
         protected readonly ContentBlockRegistry $contentBlockRegistry,
         protected readonly ContentBlockPathUtility $contentBlockPathUtility,
         protected readonly LanguageFileRegistry $languageFileRegistry,
+        protected readonly PackageResolver $packageResolver,
+        protected readonly CreateContentType $createContentType,
+        protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
     ) {
+    }
+
+    public function saveContentBlock(object|array|null $getParsedBody)
+    {
+
+    }
+
+    protected function createContentBlockConfiguration(
+        $vendor,
+        $name,
+        $fields,
+        $basics = [],
+        $group,
+        $prefixFields,
+        $prefixType,
+        $table,
+        $typeField,
+        $extension,
+    ): ContentBlockConfiguration {
+        $availablePackages = $this->packageResolver->getAvailablePackages();
+        $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
+            $vendor,
+            $name,
+            $fields,
+            $basics,
+            $group,
+            $prefixFields,
+            $prefixType,
+            $table,
+            $typeField
+        );
+
+        $contentBlockConfiguration = new ContentBlockConfiguration(
+            yamlConfig: $yamlConfiguration,
+            basePath: $this->createContentType->getBasePath($availablePackages, $extension, ContentType::CONTENT_ELEMENT),
+            contentType: ContentType::CONTENT_ELEMENT
+        );
+
+        $this->contentBlockBuilder->create($contentBlockConfiguration);
     }
 
     public function deleteContentBlock(null|array|object $parsedBody): AnswerInterface
