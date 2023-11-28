@@ -1,96 +1,18 @@
 <template>
   <div class="d-flex flex-column" >
     <h1>Liste:</h1>
-    <h2>Content Elements</h2>
-    <table class="cb-list-table">
-      <thead>
-        <tr>
-          <th>
-
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Identifier
-          </th>
-          <th>
-            Extension
-          </th>
-        </tr>
-      </thead>
-      <tr
-          v-for="item in contentBlocksStore.getList.CONTENT_ELEMENT"
-          :key="item.identifier"
-      >
-       <td><img src="../assets/icons/DefaultContentElementIcon.svg" alt=""></td>
-       <td> {{item.name}} </td>
-       <td> {{item.identifier}} </td>
-       <td> {{item.extension}} </td>
-      </tr>
-    </table>
-    <h2>Page Types</h2>
-    <table class="cb-list-table">
-      <thead>
-        <tr>
-          <th>
-            
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Identifier
-          </th>
-          <th>
-            Extension
-          </th>
-        </tr>
-      </thead>
-      <tr
-          v-for="item in contentBlocksStore.getList.PAGE_TYPE"
-          :key="item.identifier"
-      >
-       <td><img src="../assets/icons/DefaultPageTypeIcon.svg" alt=""></td>
-       <td> {{item.name}} </td>
-       <td> {{item.identifier}} </td>
-       <td> {{item.extension}} </td>
-      </tr>
-    </table>
-    <h2>Record Types</h2>
-    <table class="cb-list-table">
-      <thead>
-        <tr>
-          <th>
-            
-          </th>
-          <th>
-            Name
-          </th>
-          <th>
-            Identifier
-          </th>
-          <th>
-            Extension
-          </th>
-        </tr>
-      </thead>
-      <tr
-          v-for="item in contentBlocksStore.getList.RECORD_TYPE"
-          :key="item.identifier"
-      >
-       <td><img src="../assets/icons/DefaultRecordTypeIcon.svg" alt=""></td>
-       <td> {{item.name}} </td>
-       <td> {{item.identifier}} </td>
-       <td> {{item.extension}} </td>
-      </tr>
-    </table>
+    <ListTable 
+      v-for="(table, name , index) in contentBlocksStore.getList"
+      :title="getHeaderFromTable(index)"
+      :key="table.key"
+      :items="table"/>
   </div>
 </template>
 
 
 <script setup lang="ts">
 import {useContentBlocksListStore} from '../store/contentBlocksListStore'
+import ListTable from './ListCB/ListTable.vue'
 import axios from "axios";
 
 const contentBlocksStore = useContentBlocksListStore();
@@ -107,5 +29,9 @@ const updateContentBlocksList = () => {
       });
 }
 
+function getHeaderFromTable(index: number) {
+  const headers = Object.keys(contentBlocksStore.getList);
+  return headers[index].replace('_', " ");
+}
 updateContentBlocksList()
 </script>
