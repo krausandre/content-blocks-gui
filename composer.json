@@ -2,7 +2,7 @@
   "name": "typo3-contentblocks/content-blocks-site",
   "description": "",
   "require": {
-    "contentblocks/content-blocks": "@dev",
+    "contentblocks/content-blocks": "dev-feat/add-service-create-content-type",
     "contentblocks/content-blocks-gui": "@dev",
     "contentblocks/examples": "@dev",
     "contentblocks/samples": "^1.0",

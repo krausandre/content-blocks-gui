@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dae50b281c881916fc87c52e5a9c9ede",
+    "content-hash": "02359eb80c1eb6ea2ba564093f3172c4",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -121,16 +121,16 @@
         },
         {
             "name": "contentblocks/content-blocks",
-            "version": "dev-main",
+            "version": "dev-feat/add-service-create-content-type",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nhovratov/content-blocks.git",
-                "reference": "252a752addb80b809f1ea4b4f11461cc94cdaad5"
+                "reference": "437eab5c211e281f8b7ea60ff3f5dcdfcee22a39"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/252a752addb80b809f1ea4b4f11461cc94cdaad5",
-                "reference": "252a752addb80b809f1ea4b4f11461cc94cdaad5",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/437eab5c211e281f8b7ea60ff3f5dcdfcee22a39",
+                "reference": "437eab5c211e281f8b7ea60ff3f5dcdfcee22a39",
                 "shasum": ""
             },
             "require": {
@@ -163,7 +163,6 @@
                 "typo3/coding-standards": "^0.7",
                 "typo3/testing-framework": "^8.0"
             },
-            "default-branch": true,
             "type": "typo3-cms-extension",
             "extra": {
                 "branch-alias": {
@@ -201,11 +200,11 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-11-28T14:54:17+00:00"
+            "time": "2023-11-28T16:35:12+00:00"
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-main",
+            "version": "dev-feature/update/manu",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",

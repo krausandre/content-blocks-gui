@@ -53,23 +53,49 @@ class ContentBlocksUtility
     ) {
     }
 
-    public function saveContentBlock(object|array|null $getParsedBody)
+    public function saveContentBlock(object|array|null $getParsedBody): DataAnswer
     {
+        $vendor = $getParsedBody['vendor'];
+        $name = $getParsedBody['name'];
+        $extension = $getParsedBody['extension'];
+        $fields = $getParsedBody['fields'];
+        $basics = $getParsedBody['basics'] ?? [];
+        $group = $getParsedBody['group'] ?? 'common';
+        $prefixFields = $getParsedBody['prefixFields'] ?? true;
+        $prefixType = $getParsedBody['prefixType'] ?? 'full';
+        $table = $getParsedBody['table'] ?? 'tt_content';
+        $typeField = $getParsedBody['typeField'] ?? 'CType';
 
+        $this->saveContentBlockConfiguration(
+            $vendor,
+            $name,
+            $fields,
+            $basics,
+            $group,
+            $prefixFields,
+            $prefixType,
+            $table,
+            $typeField,
+            $extension,
+        );
+        return new DataAnswer(
+            'list',
+            [ 'name' => $vendor . '/' . $name ]
+        );
     }
 
-    protected function createContentBlockConfiguration(
+    protected function saveContentBlockConfiguration(
         $vendor,
         $name,
         $fields,
-        $basics = [],
+        $basics,
         $group,
         $prefixFields,
         $prefixType,
         $table,
         $typeField,
         $extension,
-    ): ContentBlockConfiguration {
+    ): void {
         $availablePackages = $this->packageResolver->getAvailablePackages();
         $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
             $vendor,
