@@ -20,12 +20,12 @@ class AjaxRequestTest {
           vendor: "test-99",
           name: "test-99",
           extension: "samples",
-          fields: [
+          fields: JSON.stringify([
             {
               identifier: 'header',
               useExistingField: true,
             }
-         ]
+         ])
         }
       )
       .then(async function (response) {

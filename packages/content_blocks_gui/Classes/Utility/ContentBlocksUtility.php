@@ -60,7 +60,7 @@ class ContentBlocksUtility
         $vendor = $getParsedBody['vendor'];
         $name = $getParsedBody['name'];
         $extension = $getParsedBody['extension'];
-        $fields = $getParsedBody['fields'];
+        $fields = json_decode($getParsedBody['fields'], true);
         $basics = $getParsedBody['basics'] ?? [];
         $group = $getParsedBody['group'] ?? 'common';
         $prefixFields = $getParsedBody['prefixFields'] ?? true;
