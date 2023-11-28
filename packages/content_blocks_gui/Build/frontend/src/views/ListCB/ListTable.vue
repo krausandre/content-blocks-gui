@@ -11,7 +11,7 @@
                 Name
             </th>
             <th>
-                Identifier
+                Label
             </th>
             <th>
                 Extension
@@ -24,7 +24,7 @@
         >
         <td><img src="../../assets/icons/DefaultContentElementIcon.svg" alt=""></td>
         <td> {{item.name}} </td>
-        <td> {{item.identifier}} </td>
+        <td> {{item.label}} </td>
         <td> {{item.extension}} </td>
         </tr>
         </table>
@@ -35,7 +35,7 @@
 
 interface Item {
     name: string;
-    identifier: string;
+    label: string;
     extension: string;
 }
 
