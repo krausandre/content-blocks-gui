@@ -153,6 +153,7 @@ class ContentBlocksUtility
         if (array_key_exists('name', $parsedBody)) {
             try {
                 $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath(
+                    // @todo rename to getContentBlockExtPath, when this breaks.
                     $this->contentBlockRegistry->getContentBlockPath($parsedBody['name'])
                 );
                 return new DataAnswer(
