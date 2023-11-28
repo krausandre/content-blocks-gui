@@ -105,5 +105,17 @@ final class ContentBlocksGuiAjaxController extends ActionController
     {
         return $this->contentBlocksUtility->getGroupsList()->getResponse();
     }
+
+    public function listBasicsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->getBasicList()->getResponse();
+    }
+
+    public function getBasicsAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->getBasicByName(
+            $request->getParsedBody()
+        )->getResponse();
+    }
 }
 

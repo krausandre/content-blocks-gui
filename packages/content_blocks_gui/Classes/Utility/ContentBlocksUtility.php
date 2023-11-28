@@ -19,13 +19,19 @@ namespace ContentBlocks\ContentBlocksGui\Utility;
 
 use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorBasicNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingBasicIndentifierAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
+use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
+use TYPO3\CMS\ContentBlocks\Basics\LoadedBasic;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
@@ -50,6 +56,8 @@ class ContentBlocksUtility
         protected readonly ContentBlockRegistry $contentBlockRegistry,
         protected readonly ContentBlockPathUtility $contentBlockPathUtility,
         protected readonly LanguageFileRegistry $languageFileRegistry,
+        protected readonly BasicsRegistry $basicsRegistry,
+        protected readonly BasicsLoader $basicsLoader,
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
@@ -273,7 +281,7 @@ class ContentBlocksUtility
                 $contentBlockAsArray = $loadedContentBlock->toArray();
                 $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
                 return new DataAnswer(
-                    'ContentBlock',
+                    'contentBlock',
                     $contentBlockAsArray
                 );
             }
@@ -310,6 +318,38 @@ class ContentBlocksUtility
             'groupList',
             $result
         );
+    }
+
+    public function getBasicList(): AnswerInterface
+    {
+        $resultList = [];
+        $this->basicsLoader->load();
+        /** @var LoadedBasic */
+        foreach ($this->basicsRegistry->getAllBasics() as $basic) {
+            $resultList[$basic->getIdentifier()] = $basic->toArray();
+        }
+        if (empty($resultList)) {
+            return new ErrorNoBasicsAvailableAnswer();
+        }
+        return new DataAnswer(
+            'basicList',
+            $resultList
+        );
+    }
+
+    public function getBasicByName(null|array|object $parsedBody): AnswerInterface
+    {
+        $this->basicsLoader->load();
+        if (array_key_exists('identifier', $parsedBody)) {
+            if ($this->basicsRegistry->hasBasic($parsedBody['identifier'])) {
+                return new DataAnswer(
+                    'basicList',
+                    $this->basicsRegistry->getBasic($parsedBody['identifier'])->toArray()
+                );
+            }
+            return new ErrorBasicNotFoundAnswer($parsedBody['identifier']);
+        }
+        return new ErrorMissingBasicIndentifierAnswer();
     }
 
     public function hasContentBlock(string $name): bool
