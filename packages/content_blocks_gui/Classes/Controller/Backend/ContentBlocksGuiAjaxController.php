@@ -25,6 +25,7 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[Controller]
@@ -88,7 +89,20 @@ final class ContentBlocksGuiAjaxController extends ActionController
     public function downloadCbAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
+        if(!isset($parsedBody['identifier'])) {
+            return new JsonResponse(['success' => false, 'message' => 'No identifier given']);
+        }
+        $fileName = $this->contentBlocksUtility->createZipFileFromContentBlockPath($parsedBody['identifier']);
+        $response = $this->responseFactory
+            ->createResponse()
+            ->withAddedHeader('Content-Type', 'application/zip')
+            ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
+            ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
+            ->withBody($this->streamFactory->createStreamFromFile($fileName));
+
+        unlink($fileName);
+
+        return $response;
     }
     public function copyCbAction(ServerRequestInterface $request): ResponseInterface
     {
