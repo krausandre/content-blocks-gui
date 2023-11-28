@@ -15,9 +15,7 @@
 </template>
 
 <script setup lang="ts">
-
 import PickerView from "@/views/EditCB/PickerView.vue";
 import DragDropView from "@/views/EditCB/DragDropView.vue";
 import PropertiesView from "@/views/EditCB/PropertiesView.vue";
-
 </script>

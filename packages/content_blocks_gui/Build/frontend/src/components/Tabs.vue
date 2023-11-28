@@ -1,3 +1,20 @@
+<template>
+  <div id="tabs-container" :class="customClass" ref="tabContainer">
+    <div id="tab-headers">
+      <ul>
+        <!-- this shows all of the titles -->
+        <li v-for="(tab, index) in tabs" :key="index" :class="activeTabIndex == index ? 'active' : ''"
+            @click="changeTab(index)" ref="tabHeaders">{{ tab.title }}
+        </li>
+      </ul>
+    </div>
+    <!-- this is where the tabs go, in this slot -->
+    <div id="active-tab">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import {onMounted, ref} from 'vue';
 
@@ -24,23 +41,6 @@ const changeTab = (index) => {
   tabHeaders.value[activeTabIndex].classList.add('active')
 }
 </script>
-
-<template>
-  <div id="tabs-container" :class="customClass" ref="tabContainer">
-    <div id="tab-headers">
-      <ul>
-        <!-- this shows all of the titles -->
-        <li v-for="(tab, index) in tabs" :key="index" :class="activeTabIndex == index ? 'active' : ''"
-            @click="changeTab(index)" ref="tabHeaders">{{ tab.title }}
-        </li>
-      </ul>
-    </div>
-    <!-- this is where the tabs go, in this slot -->
-    <div id="active-tab">
-      <slot></slot>
-    </div>
-  </div>
-</template>
 
 <style>
 #tab-headers ul {
