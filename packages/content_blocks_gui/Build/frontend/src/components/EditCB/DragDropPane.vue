@@ -1,25 +1,21 @@
 <template>
-  <div class="">
-    <div class="">
-      <draggable
-        class="dragArea list-group"
-        :list="fieldsList"
-        group="people"
-        @change="log"
-        item-key="identifier"
-      >
-        <template #item="{ element: item }">
-          <component
-              :isInDragArea="true"
-              :is="item.componentName"
-              :identifier="item.identifier"
-              :label="item.label + ' (' + item.identifier + ')'"
-              :icon-identifier="item.iconIdentifier"/>
-        </template>
-      </draggable>
-    </div>
-
-    <rawDisplayer class="col-3" :value="fieldsList" title="List 2" />
+  <div class="drag-drop-pane">
+    <draggable
+      class="dragArea list-group"
+      :list="fieldsList"
+      group="people"
+      @change="log"
+      item-key="identifier"
+    >
+      <template #item="{ element: item }">
+        <component
+            :isInDragArea="true"
+            :is="item.componentName"
+            :identifier="item.identifier"
+            :label="item.label + ' (' + item.identifier + ')'"
+            :icon-identifier="item.iconIdentifier"/>
+      </template>
+    </draggable>
   </div>
 </template>
 
