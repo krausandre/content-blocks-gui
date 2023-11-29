@@ -48,6 +48,8 @@ class ContentTypeService
             $data['contentBlock']['prefixType'] = $getParsedBody['contentBlock']['prefixType'] ?? 'full';
         } else if($data['contentType'] === 'record-type') {
             $data['contentBlock']['typeName'] = $getParsedBody['contentBlock']['typeName'] ?? '';
+        } else if($data['contentType'] === 'basic') {
+            $data['contentBlock']['fields'] = json_decode($getParsedBody['contentBlock']['fields'], true);
         }
 
         return $data;
@@ -143,28 +145,28 @@ class ContentTypeService
 
     public function createBasic(array $data): AnswerInterface
     {
-        $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
+        $identifier = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
+        $yamlConfiguration['identifier'] = $identifier;
+        $yamlConfiguration['fields'] = $data['contentBlock']['fields'];
 
-        $yamlConfiguration = $this->createContentBlockBasicConfiguration(
-            $data['contentBlock']['vendor'],
-            $data['contentBlock']['name'],
-            $data['contentBlock']['fields']
-        );
+        $availablePackages = $this->packageResolver->getAvailablePackages();
+        $basePath = $availablePackages[$data['extension']]->getPackagePath() . ContentBlockPathUtility::getRelativeBasicsPath();
 
-        $this->createOrBuildContentType(
-            $data['mode'],
-            $data['extension'],
-            $data['contentBlock']['vendor'],
-            $data['contentBlock']['name'],
-            $yamlConfiguration,
-            ContentType::RECORD_TYPE
+        $basicsFileName = ucfirst($data['contentBlock']['name']) . '.yaml';
+
+        if(!is_dir($basePath)) {
+            mkdir($basePath, 0775, true);
+        }
+        file_put_contents(
+            $basePath . '/' . $basicsFileName,
+            Yaml::dump($yamlConfiguration, 10, 2),
         );
 
         return new DataAnswer(
             'contentType',
             [
                 'type' => 'basic',
-                'identifier' => $contentTypeName
+                'identifier' => $identifier
             ]
         );
     }

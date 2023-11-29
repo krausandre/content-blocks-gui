@@ -16,6 +16,7 @@ class AjaxRequestTest {
   sendAjaxRequest() {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_content_type'])
       .post(
+        /*
         // save content block with content type "Content Element"
         {
           extension: "samples",
@@ -40,6 +41,7 @@ class AjaxRequestTest {
             ]),
           },
         }
+         */
         /*
         // save content block with content type "Page Type"
         {
@@ -65,6 +67,28 @@ class AjaxRequestTest {
           }
         }
         */
+        // save content block with content type "Basic"
+        {
+          extension: "samples",
+          contentType: "basic",
+          mode: "create",
+          contentBlock: {
+            vendor: "test-99",
+            name: "test-99",
+            fields: JSON.stringify([
+              {
+                identifier: 'appearance_tab',
+                type: 'Tab',
+                label: 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.appearance'
+              },
+              {
+                identifier: 'link_tab',
+                type: 'Tab',
+                label: 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.link'
+              }
+            ]),
+          }
+        }
         // delete content block
         /*
         {
