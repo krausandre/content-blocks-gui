@@ -14,12 +14,15 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_delete_cb'])
       .post(
+        // save content block with content type "Content Element"
+
         {
           vendor: "test-99",
           name: "test-99",
           extension: "samples",
+          contentType: "content-element",
           fields: JSON.stringify([
             {
               identifier: 'header',
@@ -27,10 +30,17 @@ class AjaxRequestTest {
             },
             {
               identifier: 'bodytext',
-              type: 'text',
+              type: 'Text',
             }
          ])
         }
+
+        // delete content block
+        /*
+        {
+          name: "test-123/test-12",
+        }
+         */
       )
       .then(async function (response) {
         const resolved = await response.resolve();

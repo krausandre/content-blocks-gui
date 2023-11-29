@@ -125,12 +125,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nhovratov/content-blocks.git",
-                "reference": "ba54e027b6757cffaddb6826d94e038bbeaaf917"
+                "reference": "9ca3b61f6a97c1b842d4be15f2586dc2363ce4ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/ba54e027b6757cffaddb6826d94e038bbeaaf917",
-                "reference": "ba54e027b6757cffaddb6826d94e038bbeaaf917",
+                "url": "https://api.github.com/repos/nhovratov/content-blocks/zipball/9ca3b61f6a97c1b842d4be15f2586dc2363ce4ca",
+                "reference": "9ca3b61f6a97c1b842d4be15f2586dc2363ce4ca",
                 "shasum": ""
             },
             "require": {
@@ -200,11 +200,11 @@
                 "issues": "https://forge.typo3.org",
                 "source": "https://github.com/typo3/typo3"
             },
-            "time": "2023-11-28T18:37:05+00:00"
+            "time": "2023-11-29T08:56:22+00:00"
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-main",
+            "version": "dev-feature/update/manu",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
