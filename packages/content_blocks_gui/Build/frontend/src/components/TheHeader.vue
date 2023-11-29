@@ -44,6 +44,16 @@
       <button
           type="button"
           class="btn btn-primary"
+          @click="contentBlockStore.resetContentBlock('@todo basic'); globalPropertiesStore.setCurrentViewToEditView()"
+          v-if="globalPropertiesStore.getIsCbListView"
+      >
+        <Icon identifier="actions-extension-add"/>
+        Add Basic
+      </button>
+
+      <button
+          type="button"
+          class="btn btn-primary"
           @click="controller.saveCb()"
           v-if="globalPropertiesStore.getIsEditView"
       >
