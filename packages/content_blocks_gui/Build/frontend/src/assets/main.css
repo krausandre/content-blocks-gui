@@ -36,6 +36,11 @@
 
 .list-table-container {
   margin: 25px 0;
+  order: 1;
+}
+
+.list-table-container.CONTENT_ELEMENT {
+  order: 0;
 }
 
 .fieldtype {

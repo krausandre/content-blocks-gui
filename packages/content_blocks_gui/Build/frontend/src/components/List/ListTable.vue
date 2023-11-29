@@ -1,6 +1,6 @@
 <template>
-  <div class="list-table-container">
-    <h2>{{ props.title }}</h2>
+  <div class="list-table-container" :class="props.title">
+    <h2>{{ tableHeader(props.title) }}</h2>
     <table class="cb-list-table">
       <thead>
       <tr>
@@ -14,14 +14,14 @@
         <th>
           Extension
         </th>
-        <th></th>
+        <th>Actions</th>
       </tr>
       </thead>
       <tr
           v-for="item in props.items"
           :key="item.name"
       >
-        <td><img src="../../assets/icons/DefaultContentElementIcon.svg" alt=""></td>
+        <td><Icon :identifier="getTypeOfRecord()" size="medium"/></td>
         <td> {{ item.name }}</td>
         <td> {{ item.label }}</td>
         <td> {{ item.extension }}</td>
@@ -59,6 +59,21 @@ const props = defineProps({
   title: String,
   items: Array<Item>
 })
+
+function getTypeOfRecord() {
+  switch (props.title) {
+    case 'RECORD_TYPE':
+      return 'content-extension';
+    case 'CONTENT_ELEMENT':
+      return 'content-beside-text-img-below-right';
+    case 'PAGE_TYPE':
+      return 'mimetypes-text-typoscript';
+  }
+}
+
+function tableHeader(title: any) {
+  return title.replace('_', " ");
+}
 
 const edit = (name: string) => {
   globalPropertiesStore.setCurrentViewToEditView()

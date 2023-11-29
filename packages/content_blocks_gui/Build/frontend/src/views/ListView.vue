@@ -13,6 +13,7 @@
 <script setup lang="ts">
 import {useContentBlocksListStore} from '../store/contentBlocksListStore'
 import ListTable from '@/components/List/ListTable.vue'
+import Icon from '@/components/icons/Icon.vue'
 import axios from "axios";
 
 const contentBlocksStore = useContentBlocksListStore();
@@ -22,6 +23,7 @@ const updateContentBlocksList = () => {
 
   axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_cb).then((response) => {
     contentBlocksStore.setList(response.data.body.list)
+    console.log(response.data.body.list);
   })
       .catch((error) => {
         console.log(error)
@@ -30,7 +32,7 @@ const updateContentBlocksList = () => {
 
 function getHeaderFromTable(index: number) {
   const headers = Object.keys(contentBlocksStore.getList);
-  return headers[index].replace('_', " ");
+  return headers[index];
 }
 updateContentBlocksList()
 </script>
