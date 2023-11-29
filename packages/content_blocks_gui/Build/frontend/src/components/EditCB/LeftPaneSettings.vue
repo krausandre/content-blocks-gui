@@ -1,33 +1,37 @@
 <template>
-  <draggable
-      class="dragArea list-group"
-      :list="availableFieldTypes.inputFields"
-      :group="{ name: 'people', pull: 'clone', put: false }"
-      :clone="cloneFieldType"
-      item-key="identifier"
-  >
-    <template #item="{ element: item }">
-      <component :is="item.componentName" :label="item.label" :icon-identifier="item.iconIdentifier"/>
-    </template>
-  </draggable>
+  <form>
+    <div class="mb-3">
+      <label for="identifier" class="form-label">Identifier</label>
+      <input class="form-control" id="identifier" aria-describedby="identifier"
+             :value="contentBlockStore.package"
+      >
+    </div>
+    <div class="mb-3">
+      <label for="vendor" class="form-label">Vendor</label>
+      <input class="form-control" id="vendor" aria-describedby="vendor"
+             :value="contentBlockStore.vendor"
+      >
+    </div>
+    <div class="mb-3">
+      <label for="group" class="form-label">Group</label>
+      Group
+      <input class="form-control" id="group" aria-describedby="group">
+    </div>
+    <div class="mb-3">
+      <label for="typename" class="form-label">Type Name</label>
+      <input class="form-control" id="typename" aria-describedby="typename">
+    </div>
+    <div class="mb-3">
+      <label for="table" class="form-label">Table</label>
+      <input class="form-control" id="table" aria-describedby="table">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 </template>
 
 <script setup>
-import availableFieldTypes from '@/components/fieldTypes/availableFieldTypes.js';
-import draggable from "vuedraggable";
-
-let idGlobal = 0;
-
-const cloneFieldType = (item) => {
-  console.log(item);
-  return {
-    identifier: item.identifier + "_" + idGlobal++,
-    componentName: item.componentName,
-    label: item.label,
-    iconIdentifier: item.iconIdentifier,
-    properties: item.properties
-  };
-}
+import {useContentBlockStore} from "@/store/contentBlockStore";
+const contentBlockStore = useContentBlockStore();
 </script>
 
 <style scoped>

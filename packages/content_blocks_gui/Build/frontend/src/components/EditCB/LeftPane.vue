@@ -4,7 +4,7 @@
       <LeftPaneSettings/>
     </Tab>
     <Tab title="Components">
-      <LeftPaneSettings/>
+      <LeftPaneComponents/>
     </Tab>
     <Tab title="Basics">
       @todo basics
@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import LeftPaneComponents from "@/components/EditCB/LeftPaneComponents.vue";
 import LeftPaneSettings from "@/components/EditCB/LeftPaneSettings.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import Tabs from '@/components/Tabs.vue'
