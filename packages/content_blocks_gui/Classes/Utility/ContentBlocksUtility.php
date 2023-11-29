@@ -25,16 +25,15 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingBasicIndentifierAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorSaveContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
+use ContentBlocks\ContentBlocksGui\Service\ContentTypeService;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
 use TYPO3\CMS\ContentBlocks\Basics\LoadedBasic;
-use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
-use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
@@ -61,91 +60,23 @@ class ContentBlocksUtility
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
+        protected readonly ContentTypeService $contentTypeService
     ) {
     }
 
-    public function saveContentBlock(object|array|null $getParsedBody): DataAnswer
+    public function saveContentType(object|array|null $getParsedBody): AnswerInterface
     {
-        $vendor = $getParsedBody['vendor'];
-        $name = $getParsedBody['name'];
-        $extension = $getParsedBody['extension'];
-        $fields = json_decode($getParsedBody['fields'], true);
-        $basics = $getParsedBody['basics'] ?? [];
-        $group = $getParsedBody['group'] ?? 'common';
-        $prefixFields = $getParsedBody['prefixFields'] ?? true;
-        $prefixType = $getParsedBody['prefixType'] ?? 'full';
-        $table = $getParsedBody['table'] ?? 'tt_content';
-        $typeField = $getParsedBody['typeField'] ?? 'CType';
-
-        if($this->hasContentBlock($vendor . '/' . $name)) {
-            $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-                $vendor,
-                $name,
-                $fields,
-                $basics,
-                $group,
-                $prefixFields,
-                $prefixType,
-                $table,
-                $typeField
-            );
-            $basePath = $this->createContentType->getBasePath($this->packageResolver->getAvailablePackages(), $extension, ContentType::CONTENT_ELEMENT);
-            file_put_contents(
-                $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
-                Yaml::dump($yamlConfiguration, 10, 2),
-            );
-        } else {
-            $this->createContentBlockConfiguration(
-                $vendor,
-                $name,
-                $fields,
-                $basics,
-                $group,
-                $prefixFields,
-                $prefixType,
-                $table,
-                $typeField,
-                $extension,
-            );
+        try {
+            $data = $this->contentTypeService->getContentTypeData($getParsedBody);
+            return match ($getParsedBody['contentType']) {
+                'content-element' => $this->contentTypeService->createContentElement($data),
+                'page-type' => $this->contentTypeService->createPageType($data),
+                'record-type' => $this->contentTypeService->createRecordType($data)
+            };
+        } catch(\RuntimeException $e) {
+            $this->logger->error($e->getMessage());
+            return new ErrorSaveContentTypeAnswer($e->getMessage());
         }
-        return new DataAnswer(
-            'list',
-            [ 'name' => $vendor . '/' . $name ]
-        );
-    }
-
-    protected function createContentBlockConfiguration(
-        $vendor,
-        $name,
-        $fields,
-        $basics,
-        $group,
-        $prefixFields,
-        $prefixType,
-        $table,
-        $typeField,
-        $extension,
-    ): void {
-        $availablePackages = $this->packageResolver->getAvailablePackages();
-        $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-            $vendor,
-            $name,
-            $fields,
-            $basics,
-            $group,
-            $prefixFields,
-            $prefixType,
-            $table,
-            $typeField
-        );
-
-        $contentBlockConfiguration = new ContentBlockConfiguration(
-            yamlConfig: $yamlConfiguration,
-            basePath: $this->createContentType->getBasePath($availablePackages, $extension, ContentType::CONTENT_ELEMENT),
-            contentType: ContentType::CONTENT_ELEMENT
-        );
-
-        $this->contentBlockBuilder->create($contentBlockConfiguration);
     }
 
     public function deleteContentBlock(null|array|object $parsedBody): AnswerInterface
@@ -153,8 +84,7 @@ class ContentBlocksUtility
         if (array_key_exists('name', $parsedBody)) {
             try {
                 $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath(
-                    // @todo rename to getContentBlockExtPath, when this breaks.
-                    $this->contentBlockRegistry->getContentBlockPath($parsedBody['name'])
+                    $this->contentBlockRegistry->getContentBlockExtPath($parsedBody['name'])
                 );
                 return new DataAnswer(
                     'list',
@@ -277,7 +207,7 @@ class ContentBlocksUtility
     public function getContentBlockByName(null|array|object $parsedBody): AnswerInterface
     {
         if (array_key_exists('name', $parsedBody)) {
-            if ($this->hasContentBlock($parsedBody['name'])) {
+            if ($this->contentBlockRegistry->hasContentBlock($parsedBody['name'])) {
                 $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($parsedBody['name']);
                 $contentBlockAsArray = $loadedContentBlock->toArray();
                 $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
@@ -351,11 +281,6 @@ class ContentBlocksUtility
             return new ErrorBasicNotFoundAnswer($parsedBody['identifier']);
         }
         return new ErrorMissingBasicIndentifierAnswer();
-    }
-
-    public function hasContentBlock(string $name): bool
-    {
-        return $this->contentBlockRegistry->hasContentBlock($name);
     }
 
     protected function getLanguageService(): LanguageService
