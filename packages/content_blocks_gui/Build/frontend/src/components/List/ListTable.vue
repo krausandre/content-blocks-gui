@@ -21,10 +21,12 @@
           v-for="item in props.items"
           :key="item.name"
       >
-        <td><Icon :identifier="getTypeOfRecord()" size="medium"/></td>
-        <td> {{ item.name }}</td>
-        <td> {{ item.label }}</td>
-        <td> {{ item.extension }}</td>
+        <td>
+          <Icon :identifier="getTypeOfRecord()" size="medium"/>
+        </td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.label }}</td>
+        <td>{{ item.extension }}</td>
         <td>
           <button
               type="button"
@@ -98,30 +100,6 @@ const edit = (name: string) => {
             globalPropertiesStore.setIsLoading(false)
           }
       );
-
-  // const data = new FormData()
-  // data.set('name', name)
-  //
-  // fetch(
-  //     TYPO3.settings.ajaxUrls.content_blocks_gui_get_cb,
-  //     {
-  //       method: 'POST',
-  //       body: data,
-  //     }
-  // )
-  //     .then(
-  //         (response) => response.json()
-  //     )
-  //     .then(
-  //         (data) => {
-  //           console.log('Success:', data);
-  //         }
-  //     )
-  //     .catch(
-  //         (error) => {
-  //           console.error('Error:', error);
-  //         }
-  //     );
 }
 
 </script>
