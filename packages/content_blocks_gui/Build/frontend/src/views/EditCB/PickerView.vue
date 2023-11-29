@@ -1,36 +1,18 @@
-<script setup>
-import availableFieldTypes from '@/components/fieldTypes/availableFieldTypes.js';
-import Tabs from '@/components/Tabs.vue'
-import Tab from '@/components/Tab.vue'
-import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
-import draggable from "vuedraggable";
-import TextFieldType from "@/components/fieldTypes/TextFieldType.vue";
-
-let idGlobal = 0;
-
-const cloneFieldType = (item) => {
-  console.log(item);
-  return {
-    identifier: item.identifier + "_" + idGlobal++,
-    componentName: item.componentName,
-    label: item.label,
-    iconIdentifier: item.iconIdentifier,
-    properties: item.properties
-  };
-}
-</script>
-
 <template>
   <Tabs>
     <Tab active="true" title="Settings">
       <form>
         <div class="mb-3">
           <label for="identifier" class="form-label">Identifier</label>
-          <input class="form-control" id="identifier" aria-describedby="identifier">
+          <input class="form-control" id="identifier" aria-describedby="identifier"
+                 :value="contentBlockStore.package"
+          >
         </div>
         <div class="mb-3">
           <label for="vendor" class="form-label">Vendor</label>
-          <input class="form-control" id="vendor" aria-describedby="vendor">
+          <input class="form-control" id="vendor" aria-describedby="vendor"
+                 :value="contentBlockStore.vendor"
+          >
         </div>
         <div class="mb-3">
           <label for="group" class="form-label">Group</label>
@@ -68,6 +50,31 @@ const cloneFieldType = (item) => {
   </Tabs>
 
 </template>
+
+<script setup>
+import availableFieldTypes from '@/components/fieldTypes/availableFieldTypes.js';
+import {useContentBlockStore} from "@/store/contentBlockStore";
+import Tabs from '@/components/Tabs.vue'
+import Tab from '@/components/Tab.vue'
+import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
+import draggable from "vuedraggable";
+import TextFieldType from "@/components/fieldTypes/TextFieldType.vue";
+
+let idGlobal = 0;
+
+const contentBlockStore = useContentBlockStore();
+
+const cloneFieldType = (item) => {
+  console.log(item);
+  return {
+    identifier: item.identifier + "_" + idGlobal++,
+    componentName: item.componentName,
+    label: item.label,
+    iconIdentifier: item.iconIdentifier,
+    properties: item.properties
+  };
+}
+</script>
 
 <style scoped>
 </style>
