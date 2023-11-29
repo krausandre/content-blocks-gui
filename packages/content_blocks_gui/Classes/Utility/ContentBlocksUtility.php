@@ -71,7 +71,8 @@ class ContentBlocksUtility
             return match ($getParsedBody['contentType']) {
                 'content-element' => $this->contentTypeService->createContentElement($data),
                 'page-type' => $this->contentTypeService->createPageType($data),
-                'record-type' => $this->contentTypeService->createRecordType($data)
+                'record-type' => $this->contentTypeService->createRecordType($data),
+                'basic' => $this->contentTypeService->createBasic($data)
             };
         } catch(\RuntimeException $e) {
             $this->logger->error($e->getMessage());
