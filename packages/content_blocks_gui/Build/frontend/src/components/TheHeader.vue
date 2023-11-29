@@ -14,11 +14,31 @@
       <button
           type="button"
           class="btn btn-primary"
-          @click="globalPropertiesStore.setCurrentViewToEditView()"
+          @click="contentBlockStore.resetContentBlock('tt_content'); globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
       >
         <Icon identifier="actions-extension-add"/>
         Add content block
+      </button>
+
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="contentBlockStore.resetContentBlock(''); globalPropertiesStore.setCurrentViewToEditView()"
+          v-if="globalPropertiesStore.getIsCbListView"
+      >
+        <Icon identifier="actions-extension-add"/>
+        Add record type
+      </button>
+
+      <button
+          type="button"
+          class="btn btn-primary"
+          @click="contentBlockStore.resetContentBlock('pages'); globalPropertiesStore.setCurrentViewToEditView()"
+          v-if="globalPropertiesStore.getIsCbListView"
+      >
+        <Icon identifier="actions-extension-add"/>
+        Add page type
       </button>
 
       <button
@@ -33,26 +53,7 @@
 
       <button
           type="button"
-          class="btn btn-primary"
-          @click="globalPropertiesStore.setCurrentViewToEditView()"
-          v-if="globalPropertiesStore.getIsCbListView"
-      >
-        <Icon identifier="actions-extension-add"/>
-        Add record type
-      </button>
-
-      <button
-          type="button"
-          class="btn btn-primary"
-          @click="globalPropertiesStore.setCurrentViewToEditView()"
-          v-if="globalPropertiesStore.getIsCbListView"
-      >
-        <Icon identifier="actions-extension-add"/>
-        Add page type
-      </button>
-      <button
-          type="button"
-          class="btn btn-primary"
+          class="btn btn-sm btn-default"
           @click="getIcons"
       ><Icon identifier="actions-extension-add" /> GetIconsAsList
       </button>
@@ -62,10 +63,12 @@
 
 <script setup>
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
+import {useContentBlockStore} from "@/store/contentBlockStore";
 import Icon from "@/components/icons/Icon.vue";
 import axios from "axios";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
+const contentBlockStore = useContentBlockStore();
 
 const getIcons = () => {
   axios.get(TYPO3.settings.ajaxUrls.list_icons).then((response) => {

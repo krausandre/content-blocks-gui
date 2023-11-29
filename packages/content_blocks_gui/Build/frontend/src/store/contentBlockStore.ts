@@ -15,6 +15,10 @@ export const useContentBlockStore = defineStore(
       getAsJson: state => JSON.stringify(state.contentBlock)
     },
     actions: {
+      resetContentBlock(table: string) {
+        this.$reset()
+        this.contentBlock.yaml.table = table;
+      },
       setContentBlock(newContentBlock: ContentBlock) {
         this.contentBlock = newContentBlock;
       },
