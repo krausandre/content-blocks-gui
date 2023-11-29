@@ -3,7 +3,7 @@
     <div class="">
       <draggable
         class="dragArea list-group"
-        :list="list2"
+        :list="fieldsList"
         group="people"
         @change="log"
         item-key="identifier"
@@ -19,7 +19,7 @@
       </draggable>
     </div>
 
-    <rawDisplayer class="col-3" :value="list2" title="List 2" />
+    <rawDisplayer class="col-3" :value="fieldsList" title="List 2" />
   </div>
 </template>
 
@@ -36,22 +36,14 @@ export default {
   },
   data() {
     return {
-      list1: [
-        { name: "Fil", id: 1 },
-        { name: "Andre", id: 2 },
-        { name: "Manu", id: 3 },
-        { name: "Philipp", id: 4 },
-        { name: "Jonas", id: 5 }
-      ],
-      list2: [
+      fieldsList: [
 
       ]
     };
   },
   methods: {
     log: function(evt) {
-      console.log(this.list1);
-      console.log(this.list2);
+      console.log("FieldsList: ", this.fieldsList);
     }
   }
 };

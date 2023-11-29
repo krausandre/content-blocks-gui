@@ -33,6 +33,9 @@
           <label for="valuePicker" class="form-label">Value picker</label>
           <input type="text" class="form-control" id="valuePicker" aria-describedby="valuePicker">
         </div>
+        <pre>
+          {{ contentBlockStore.getFields }}
+        </pre>
       </div>
     </Tab>
     <Tab title="Validation" />
@@ -42,4 +45,7 @@
 <script setup lang="ts">
 import Tab from "@/components/Tab.vue";
 import Tabs from "@/components/Tabs.vue";
+
+import { useContentBlockStore} from "@/store/contentBlockStore";
+const contentBlockStore = useContentBlockStore();
 </script>
