@@ -1,5 +1,3 @@
-
-
 <template>
   <draggable
       class="dragArea list-group"
@@ -14,14 +12,13 @@
   </draggable>
 </template>
 
-<script setup>
+<script setup lang='ts'>
 import availableFieldTypes from '@/components/fieldTypes/availableFieldTypes.js';
 import draggable from "vuedraggable";
 
 let idGlobal = 0;
 
-const cloneFieldType = (item) => {
-  console.log(item);
+const cloneFieldType = (item: any) => {
   return {
     identifier: item.identifier + "_" + idGlobal++,
     componentName: item.componentName,
