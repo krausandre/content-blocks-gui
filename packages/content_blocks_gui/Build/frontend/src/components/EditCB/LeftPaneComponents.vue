@@ -4,6 +4,7 @@
       :list="availableFieldTypes.inputFields"
       :group="{ name: 'people', pull: 'clone', put: false }"
       :clone="cloneFieldType"
+      :sort="false"
       item-key="identifier"
   >
     <template #item="{ element: item }">

@@ -47,6 +47,18 @@
   max-width: max-content;
 }
 
+.drag-drop-pane {
+  border: 1px dotted #000;
+  height: 100%;
+}
+
+.drag-drop-pane .dragArea {
+  align-items: center;
+  height: 100%;
+}
+
+
+
 @media (hover: hover) {
 
 }
