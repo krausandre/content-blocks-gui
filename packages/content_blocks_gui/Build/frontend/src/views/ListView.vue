@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 import {useContentBlocksListStore} from '../store/contentBlocksListStore'
-import ListTable from './ListCB/ListTable.vue'
+import ListTable from '@/components/List/ListTable.vue'
 import axios from "axios";
 
 const contentBlocksStore = useContentBlocksListStore();

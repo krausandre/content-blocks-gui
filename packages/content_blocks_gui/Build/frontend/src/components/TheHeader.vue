@@ -7,7 +7,7 @@
           v-if="globalPropertiesStore.getIsEditView"
           type="button"
       >
-        <IconComponent identifier="actions-arrow-left"/>
+        <Icon identifier="actions-arrow-left"/>
         Back to overview
       </button>
 
@@ -17,7 +17,7 @@
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
       >
-        <IconComponent identifier="actions-extension-add"/>
+        <Icon identifier="actions-extension-add"/>
         Add content block
       </button>
 
@@ -27,7 +27,7 @@
           @click="controller.saveCb()"
           v-if="globalPropertiesStore.getIsEditView"
       >
-        <IconComponent identifier="actions-save"/>
+        <Icon identifier="actions-save"/>
         Save
       </button>
 
@@ -37,7 +37,7 @@
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
       >
-        <IconComponent identifier="actions-extension-add"/>
+        <Icon identifier="actions-extension-add"/>
         Add record type
       </button>
 
@@ -47,14 +47,14 @@
           @click="globalPropertiesStore.setCurrentViewToEditView()"
           v-if="globalPropertiesStore.getIsCbListView"
       >
-        <IconComponent identifier="actions-extension-add"/>
+        <Icon identifier="actions-extension-add"/>
         Add page type
       </button>
       <button
           type="button"
           class="btn btn-primary"
           @click="getIcons"
-      ><IconComponent identifier="actions-extension-add" /> GetIconsAsList
+      ><Icon identifier="actions-extension-add" /> GetIconsAsList
       </button>
     </div>
   </nav>
@@ -62,7 +62,7 @@
 
 <script setup>
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import IconComponent from "@/components/icons/IconComponent.vue";
+import Icon from "@/components/icons/Icon.vue";
 import axios from "axios";
 
 const globalPropertiesStore = useGlobalPropertiesStore();

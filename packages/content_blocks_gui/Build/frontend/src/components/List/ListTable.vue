@@ -31,7 +31,7 @@
               class="btn btn-default"
               @click="edit(item.name)"
           >
-            <IconComponent identifier="actions-open"/>
+            <Icon identifier="actions-open"/>
             Edit
           </button>
         </td>
@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import IconComponent from "@/components/icons/IconComponent.vue";
+import Icon from "@/components/icons/Icon.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import axios from "axios";
 

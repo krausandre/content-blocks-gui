@@ -2,19 +2,20 @@
   <div class="alert alert-warning"
        v-if="useGlobalPropertiesStore().isLoading"
   >
+    @todo
     Bin Laden...
   </div>
 
   <div class="container">
     <div class="row">
       <div class="col-4">
-        <PickerView/>
+        <LeftPane/>
       </div>
       <div class="col-4">
-        <DragDropView/>
+        <DragDropPane/>
       </div>
       <div class="col-4">
-        <PropertiesView/>
+        <PropertiesPane/>
       </div>
     </div>
   </div>
@@ -22,7 +23,7 @@
 
 <script setup lang="ts">
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import PickerView from "@/views/EditCB/PickerView.vue";
-import DragDropView from "@/views/EditCB/DragDropView.vue";
-import PropertiesView from "@/views/EditCB/PropertiesView.vue";
+import LeftPane from "@/components/EditCB/LeftPane.vue";
+import DragDropPane from "@/components/EditCB/DragDropPane.vue";
+import PropertiesPane from "@/components/EditCB/PropertiesPane.vue";
 </script>

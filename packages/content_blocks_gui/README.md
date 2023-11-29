@@ -11,7 +11,7 @@ You want to support us with this extension? Great! We are happy to get your help
 via slack.typo3.org in the channel #cig-structuredcontent. We will add you to our team and you can
 start contributing to this extension.
 
-See also [our inittiative page](https://typo3.org/community/teams/typo3-development/initiatives/structured-content/) for more information.
+See also [our initiative page](https://typo3.org/community/teams/typo3-development/initiatives/structured-content/) for more information.
 
 
 ## Requirements
@@ -23,7 +23,7 @@ See also [our inittiative page](https://typo3.org/community/teams/typo3-developm
 1. Clone the repository: `git clone git@github.com:krausandre/content-blocks-gui.git .`
 2. Setup will run automatically on `ddev start`
 
-**Username and pasword for TYPO3 Backend on local developement:**
+**Username and pasword for TYPO3 Backend in DDEV:**
 
 * username: contentblocks
 * password: TYPO3-Contentblocks-GUI-12
