@@ -57,7 +57,9 @@
   height: 100%;
 }
 
-
+.dragArea .fieldtype:hover {
+  cursor: pointer;
+}
 
 @media (hover: hover) {
 
