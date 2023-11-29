@@ -5,15 +5,9 @@
       <thead>
       <tr>
         <th></th>
-        <th>
-          Name
-        </th>
-        <th>
-          Label
-        </th>
-        <th>
-          Extension
-        </th>
+        <th>Name</th>
+        <th>Label</th>
+        <th>Extension</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -36,6 +30,13 @@
             <Icon identifier="actions-open"/>
             Edit
           </button>
+          <button
+              type="button"
+              class="btn btn-default"
+              @click="download(item.name)"
+          >
+            <Icon identifier="actions-download"/>
+            Download</button>
         </td>
       </tr>
     </table>
@@ -98,6 +99,51 @@ const edit = (name: string) => {
           (error) => {
             console.error('Error:', error);
             globalPropertiesStore.setIsLoading(false)
+          }
+      );
+}
+
+const download = (name: string) => {
+  axios
+      .postForm(
+          TYPO3.settings.ajaxUrls.content_blocks_gui_download_cb,
+          {
+            name: name
+          },
+          {
+            responseType: 'blob',
+          }
+      )
+      .then(response => {
+        // Notification von TYPO3 anzeigen -> Download läuft
+        const contentDisposition = response.headers['content-disposition'];
+        let filename = name + '.zip';
+        if (contentDisposition) {
+          const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+          if (filenameMatch && filenameMatch.length > 1) {
+            filename = filenameMatch[1];
+          }
+        }
+
+        // Entferne mögliche Anführungszeichen am Ende des Dateinamens
+        filename = filename.replace(/"+$/, '');
+
+        // Erstelle eine URL für den Blob und triggere den Download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', filename); // Setze den ursprünglichen Dateinamen
+
+        document.body.appendChild(link);
+        link.click();
+
+        window.URL.revokeObjectURL(url); // Bereinigung
+        // Notification von TYPO3 anzeigen -> Download fertig
+      })
+      .catch(
+          (error) => {
+            console.error('Error:', error);
+            // Notification Error von TYPO3 anzeigen
           }
       );
 }
