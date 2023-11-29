@@ -6,7 +6,7 @@
              :value="contentBlockStore.getContentBlock.name"
       >
     </div>
-    <div class="mb-3" v-if="contentBlockStore.contentBlock.isContenttype()">
+    <div class="mb-3" v-if="ContentBlock.isContenttype(contentBlockStore.contentBlock) /* @todo */">
       <label for="group" class="form-label">Group</label>
       <select class="form-control" id="group" aria-describedby="group">
         <option v-for="(item, key) in groupListStore.list"
@@ -36,6 +36,7 @@
 </template>
 
 <script setup>
+import {ContentBlock} from "@/models/ContentBlock";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useExtensionListStore} from "@/store/extensionListStore";
 import {useGroupListStore} from "@/store/groupListStore";

@@ -19,11 +19,13 @@ export class ContentBlock {
   extPath: string = '';
   languageFile: {} = {};
 
-  isContenttype(): boolean {
-    return this.yaml.table === 'tt_content';
+  // @todo
+  static isContenttype(contentBlock: ContentBlock): boolean {
+    return contentBlock.yaml.table === 'tt_content';
   }
 
-  isPagetype(): boolean {
-    return this.yaml.table === 'pages';
+  // @todo
+  static isPagetype(contentBlock: ContentBlock): boolean {
+    return contentBlock.yaml.table === 'pages';
   }
 }
