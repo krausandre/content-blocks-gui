@@ -32,11 +32,18 @@
           </button>
           <button
               type="button"
-              class="btn btn-default"
+              class="btn btn-info ms-2"
               @click="download(item.name)"
           >
             <Icon identifier="actions-download"/>
             Download</button>
+          <button
+              type="button"
+              class="btn btn-danger ms-2"
+              @click="console.log('not yet implemented')"
+          >
+            <Icon identifier="actions-delete"/>
+            Delete</button>
         </td>
       </tr>
     </table>
