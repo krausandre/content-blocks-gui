@@ -65,6 +65,7 @@
 </template>
 
 <script setup>
+import controller from "@/Controller";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import Icon from "@/components/icons/Icon.vue";

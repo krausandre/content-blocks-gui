@@ -1,4 +1,8 @@
 <template>
+  <pre>
+{{contentBlockStore.getFields}}
+{{fieldsList}}
+  </pre>
   <div class="drag-drop-pane">
     <draggable
       class="dragArea list-group"
@@ -35,9 +39,7 @@ export default {
   },
   data() {
     return {
-      fieldsList: [
-
-      ],
+      fieldsList: useContentBlockStore().getFields,
       contentBlockStore: useContentBlockStore()
     };
   },

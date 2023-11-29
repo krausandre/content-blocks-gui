@@ -1,10 +1,12 @@
-export interface ContentBlockField {
+export class ContentBlockField {
+  identifier: string = '';
+  useExistingField: boolean = false;
 }
 
-export interface Yaml {
-  table: string;
-  typeField: string;
-  fields: ContentBlockField[];
+export class Yaml {
+  table: string = '';
+  typeField: string = '';
+  fields: ContentBlockField[] = [];
 }
 
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
@@ -12,7 +14,7 @@ export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProv
 export class ContentBlock {
   // @todo mode: 'new' | 'edit' = 'edit';
   name: string = '';
-  yaml: Yaml = {} as Yaml;
+  yaml: Yaml = new Yaml();
   icon: string = '';
   iconProvider: IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
   hostExtension: string = '';
@@ -27,5 +29,10 @@ export class ContentBlock {
   // @todo
   static isPagetype(contentBlock: ContentBlock): boolean {
     return contentBlock.yaml.table === 'pages';
+  }
+
+  // @todo
+  static asJson(contentBlock: ContentBlock): string {
+    return JSON.stringify(contentBlock);
   }
 }

@@ -1,12 +1,12 @@
 import {useContentBlockStore} from "./store/contentBlockStore";
+import {ContentBlock} from "@/models/ContentBlock";
 
 export class Controller {
   saveCb() {
-    console.log('saveCb');
-
-    const data = useContentBlockStore().getAsJson;
+    console.log('saving', useContentBlockStore().contentBlock)
+    const data = ContentBlock.asJson(useContentBlockStore().contentBlock)
     fetch(
-      TYPO3.settings.ajaxUrls.content_blocks_gui_save_cb,
+      TYPO3.settings.ajaxUrls.content_blocks_gui_save_content_type,
       {
         method: 'POST',
         body: JSON.stringify(data),
