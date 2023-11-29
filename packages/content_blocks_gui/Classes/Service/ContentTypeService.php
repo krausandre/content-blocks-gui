@@ -141,6 +141,34 @@ class ContentTypeService
         );
     }
 
+    public function createBasic(array $data): AnswerInterface
+    {
+        $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
+
+        $yamlConfiguration = $this->createContentBlockBasicConfiguration(
+            $data['contentBlock']['vendor'],
+            $data['contentBlock']['name'],
+            $data['contentBlock']['fields']
+        );
+
+        $this->createOrBuildContentType(
+            $data['mode'],
+            $data['extension'],
+            $data['contentBlock']['vendor'],
+            $data['contentBlock']['name'],
+            $yamlConfiguration,
+            ContentType::RECORD_TYPE
+        );
+
+        return new DataAnswer(
+            'contentType',
+            [
+                'type' => 'basic',
+                'identifier' => $contentTypeName
+            ]
+        );
+    }
+
     /**
      * @throws \RuntimeException
      */
