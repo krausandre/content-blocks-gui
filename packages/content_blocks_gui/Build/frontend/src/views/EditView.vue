@@ -6,12 +6,12 @@
     Bin Laden...
   </div>
 
-  <div class="container">
+  <div class="editview">
     <div class="row">
-      <div class="col-4">
+      <div class="col-3">
         <LeftPane/>
       </div>
-      <div class="col-4">
+      <div class="col-5">
         <DragDropPane/>
       </div>
       <div class="col-4">
