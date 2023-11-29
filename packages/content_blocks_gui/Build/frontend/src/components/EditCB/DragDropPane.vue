@@ -10,6 +10,7 @@
       >
         <template #item="{ element: item }">
           <component
+              :isInDragArea="true"
               :is="item.componentName"
               :identifier="item.identifier"
               :label="item.label + ' (' + item.identifier + ')'"

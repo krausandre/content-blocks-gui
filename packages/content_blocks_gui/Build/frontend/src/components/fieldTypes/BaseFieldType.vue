@@ -1,6 +1,11 @@
 <template>
   <div class="fieldtype textfieldtype border-1 border px-2 py-1 border-dark me-2 mb-1">
-    <div class="d-flex flex-row " @click="console.log('test')">
+    <div
+        class="d-flex flex-row "
+        @click="handleComponentClick"
+        @dragenter="handleDragEnter"
+        @dragleave="handleDragLeave"
+    >
       <Icon :identifier="props.iconIdentifier" />
       <span class="ms-2">{{ props.label }}</span>
     </div>
@@ -22,7 +27,32 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  isInDragArea: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const handleComponentClick = () => {
+  if(!props.isInDragArea) {
+    return;
+  }
+  console.log("Handle component click: " + props.identifier);
+}
+
+const handleDragEnter = () => {
+  if(!props.isInDragArea) {
+    return;
+  }
+  console.log("Handle drag enter: " + props.identifier);
+}
+
+const handleDragLeave = () => {
+  if(!props.isInDragArea) {
+    return;
+  }
+  console.log("Handle drag leave: " + props.identifier);
+}
 </script>
 
 <style>
