@@ -18,22 +18,53 @@ class AjaxRequestTest {
       .post(
         // save content block with content type "Content Element"
         {
-          vendor: "test-99",
-          name: "test-99",
           extension: "samples",
           contentType: "content-element",
-          fields: JSON.stringify([
-            {
-              identifier: 'header',
-              useExistingField: true,
-            },
-            {
-              identifier: 'bodytext',
-              type: 'Text',
-            }
-         ])
+          mode: "edit",
+          contentBlock: {
+            vendor: "test-99",
+            name: "test-99",
+            fields: JSON.stringify([
+              {
+                identifier: 'header',
+                useExistingField: true,
+              },
+              {
+                identifier: 'bodytext',
+                type: 'Text',
+              }
+            ]),
+            basics: JSON.stringify([
+              'TYPO3/Appearance',
+              'TYPO3/Links',
+            ]),
+          },
         }
-
+        /*
+        // save content block with content type "Page Type"
+        {
+          extension: "samples",
+          contentType: "page-type",
+          mode: "create",
+          contentBlock: {
+            vendor: "test-99",
+            name: "test-99",
+            type: 3242492,
+          }
+        }
+        */
+        /*
+        // save content block with content type "Record Type"
+        {
+          extension: "samples",
+          contentType: "record-type",
+          mode: "create",
+          contentBlock: {
+            vendor: "test-99",
+            name: "test-99",
+          }
+        }
+        */
         // delete content block
         /*
         {

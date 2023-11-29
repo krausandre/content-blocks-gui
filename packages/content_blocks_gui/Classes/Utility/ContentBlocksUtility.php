@@ -25,16 +25,15 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingBasicIndentifierAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorSaveContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
+use ContentBlocks\ContentBlocksGui\Service\ContentTypeService;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
 use TYPO3\CMS\ContentBlocks\Basics\LoadedBasic;
-use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
-use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
@@ -61,80 +60,23 @@ class ContentBlocksUtility
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
+        protected readonly ContentTypeService $contentTypeService
     ) {
     }
 
     public function saveContentType(object|array|null $getParsedBody): AnswerInterface
     {
-        // TODO: validate $getParsedBody
-        $contentTypeData = $this->getContentTypeData($getParsedBody);
-
-        return match ($getParsedBody['contentType']) {
-            'content-element' => $this->createContentElement($contentTypeData),
-            'page-type' => $this->createPageType($contentTypeData),
-            'record-type' => $this->createRecordType($contentTypeData)
-        };
-    }
-
-    protected function createContentElement($contentTypeData): AnswerInterface
-    {
-        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
-        if($this->hasContentBlock($contentTypeName)) {
-            $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-                $contentTypeData['vendor'],
-                $contentTypeData['name'],
-                $contentTypeData['fields'],
-                $contentTypeData['basics'],
-                $contentTypeData['group'],
-                $contentTypeData['prefixFields'],
-                $contentTypeData['prefixType'],
-                $contentTypeData['table'],
-                $contentTypeData['typeField']
-            );
-            $basePath = $this->createContentType->getBasePath(
-                $this->packageResolver->getAvailablePackages(),
-                $contentTypeData['extension'],
-                ContentType::CONTENT_ELEMENT
-            );
-            file_put_contents(
-                $basePath . '/' . $contentTypeName . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
-                Yaml::dump($yamlConfiguration, 10, 2),
-            );
-        } else {
-            $this->createContentBlockConfiguration(
-                $contentTypeData
-            );
+        try {
+            $data = $this->contentTypeService->getContentTypeData($getParsedBody);
+            return match ($getParsedBody['contentType']) {
+                'content-element' => $this->contentTypeService->createContentElement($data),
+                'page-type' => $this->contentTypeService->createPageType($data),
+                'record-type' => $this->contentTypeService->createRecordType($data)
+            };
+        } catch(\RuntimeException $e) {
+            $this->logger->error($e->getMessage());
+            return new ErrorSaveContentTypeAnswer($e->getMessage());
         }
-        return new DataAnswer(
-            'contentType',
-            [
-                'type' => 'content-element',
-                'name' => $contentTypeName
-            ]
-        );
-    }
-
-    protected function createContentBlockConfiguration($contentTypeData): void {
-        $availablePackages = $this->packageResolver->getAvailablePackages();
-        $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-            $contentTypeData['vendor'],
-            $contentTypeData['name'],
-            $contentTypeData['fields'],
-            $contentTypeData['basics'],
-            $contentTypeData['group'],
-            $contentTypeData['prefixFields'],
-            $contentTypeData['prefixType'],
-            $contentTypeData['table'],
-            $contentTypeData['typeField']
-        );
-
-        $contentBlockConfiguration = new ContentBlockConfiguration(
-            yamlConfig: $yamlConfiguration,
-            basePath: $this->createContentType->getBasePath($availablePackages, $contentTypeData['extension'], ContentType::CONTENT_ELEMENT),
-            contentType: ContentType::CONTENT_ELEMENT
-        );
-
-        $this->contentBlockBuilder->create($contentBlockConfiguration);
     }
 
     public function deleteContentBlock(null|array|object $parsedBody): AnswerInterface
@@ -265,7 +207,7 @@ class ContentBlocksUtility
     public function getContentBlockByName(null|array|object $parsedBody): AnswerInterface
     {
         if (array_key_exists('name', $parsedBody)) {
-            if ($this->hasContentBlock($parsedBody['name'])) {
+            if ($this->contentBlockRegistry->hasContentBlock($parsedBody['name'])) {
                 $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($parsedBody['name']);
                 $contentBlockAsArray = $loadedContentBlock->toArray();
                 $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
@@ -341,63 +283,8 @@ class ContentBlocksUtility
         return new ErrorMissingBasicIndentifierAnswer();
     }
 
-    public function hasContentBlock(string $name): bool
-    {
-        return $this->contentBlockRegistry->hasContentBlock($name);
-    }
-
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    protected function getContentTypeData(array $getParsedBody): array
-    {
-        $contentType = $getParsedBody['contentType'];
-        $contentTypeData['vendor'] = $getParsedBody['vendor'];
-        $contentTypeData['name'] = $getParsedBody['name'];
-        $contentTypeData['extension'] = $getParsedBody['extension'];
-
-        if($contentType === 'content-element') {
-            $contentTypeData['fields'] = json_decode($getParsedBody['fields'], true);
-            $contentTypeData['basics'] = $getParsedBody['basics'] ?? [];
-            $contentTypeData['group'] = $getParsedBody['group'] ?? 'common';
-            $contentTypeData['prefixFields'] = $getParsedBody['prefixFields'] ?? true;
-            $contentTypeData['prefixType']= $getParsedBody['prefixType'] ?? 'full';
-            $contentTypeData['table'] = $getParsedBody['table'] ?? 'tt_content';
-            $contentTypeData['typeField'] = $getParsedBody['typeField'] ?? 'CType';
-        } else if($contentType === 'page-type') {
-            $contentTypeData['pageType'] = $getParsedBody['pageType'];
-        } else if($contentType === 'record-type') {
-            $contentTypeData['pageType'] = $getParsedBody['pageType'];
-        }
-
-        return $contentTypeData;
-    }
-
-    protected function createPageType(array $contentTypeData): AnswerInterface
-    {
-        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
-
-        return new DataAnswer(
-            'contentType',
-            [
-                'type' => 'page-type',
-                'name' => $contentTypeName
-            ]
-        );
-    }
-
-    protected function createRecordType(array $contentTypeData): AnswerInterface
-    {
-        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
-
-        return new DataAnswer(
-            'contentType',
-            [
-                'type' => 'record-type',
-                'name' => $contentTypeName
-            ]
-        );
     }
 }
