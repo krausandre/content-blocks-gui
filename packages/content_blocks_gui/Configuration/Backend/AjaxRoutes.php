@@ -20,9 +20,9 @@ return [
         'path' => '/contentblocks/gui/cb/translate',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::translateCbAction',
     ],
-    'content_blocks_gui_save_cb' => [
-        'path' => '/contentblocks/gui/cb/save',
-        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::saveCbAction',
+    'content_blocks_gui_save_content_type' => [
+        'path' => '/contentblocks/gui/contenttype/save',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::saveContentTypeAction',
     ],
     'content_blocks_gui_download_cb' => [
         'path' => '/contentblocks/gui/cb/download',

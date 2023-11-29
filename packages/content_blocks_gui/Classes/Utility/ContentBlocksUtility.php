@@ -64,84 +64,73 @@ class ContentBlocksUtility
     ) {
     }
 
-    public function saveContentBlock(object|array|null $getParsedBody): DataAnswer
+    public function saveContentType(object|array|null $getParsedBody): AnswerInterface
     {
-        $vendor = $getParsedBody['vendor'];
-        $name = $getParsedBody['name'];
-        $extension = $getParsedBody['extension'];
-        $fields = json_decode($getParsedBody['fields'], true);
-        $basics = $getParsedBody['basics'] ?? [];
-        $group = $getParsedBody['group'] ?? 'common';
-        $prefixFields = $getParsedBody['prefixFields'] ?? true;
-        $prefixType = $getParsedBody['prefixType'] ?? 'full';
-        $table = $getParsedBody['table'] ?? 'tt_content';
-        $typeField = $getParsedBody['typeField'] ?? 'CType';
+        // TODO: validate $getParsedBody
+        $contentTypeData = $this->getContentTypeData($getParsedBody);
 
-        if($this->hasContentBlock($vendor . '/' . $name)) {
+        return match ($getParsedBody['contentType']) {
+            'content-element' => $this->createContentElement($contentTypeData),
+            'page-type' => $this->createPageType($contentTypeData),
+            'record-type' => $this->createRecordType($contentTypeData)
+        };
+    }
+
+    protected function createContentElement($contentTypeData): AnswerInterface
+    {
+        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
+        if($this->hasContentBlock($contentTypeName)) {
             $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-                $vendor,
-                $name,
-                $fields,
-                $basics,
-                $group,
-                $prefixFields,
-                $prefixType,
-                $table,
-                $typeField
+                $contentTypeData['vendor'],
+                $contentTypeData['name'],
+                $contentTypeData['fields'],
+                $contentTypeData['basics'],
+                $contentTypeData['group'],
+                $contentTypeData['prefixFields'],
+                $contentTypeData['prefixType'],
+                $contentTypeData['table'],
+                $contentTypeData['typeField']
             );
-            $basePath = $this->createContentType->getBasePath($this->packageResolver->getAvailablePackages(), $extension, ContentType::CONTENT_ELEMENT);
+            $basePath = $this->createContentType->getBasePath(
+                $this->packageResolver->getAvailablePackages(),
+                $contentTypeData['extension'],
+                ContentType::CONTENT_ELEMENT
+            );
             file_put_contents(
-                $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
+                $basePath . '/' . $contentTypeName . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
                 Yaml::dump($yamlConfiguration, 10, 2),
             );
         } else {
             $this->createContentBlockConfiguration(
-                $vendor,
-                $name,
-                $fields,
-                $basics,
-                $group,
-                $prefixFields,
-                $prefixType,
-                $table,
-                $typeField,
-                $extension,
+                $contentTypeData
             );
         }
         return new DataAnswer(
-            'list',
-            [ 'name' => $vendor . '/' . $name ]
+            'contentType',
+            [
+                'type' => 'content-element',
+                'name' => $contentTypeName
+            ]
         );
     }
 
-    protected function createContentBlockConfiguration(
-        $vendor,
-        $name,
-        $fields,
-        $basics,
-        $group,
-        $prefixFields,
-        $prefixType,
-        $table,
-        $typeField,
-        $extension,
-    ): void {
+    protected function createContentBlockConfiguration($contentTypeData): void {
         $availablePackages = $this->packageResolver->getAvailablePackages();
         $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-            $vendor,
-            $name,
-            $fields,
-            $basics,
-            $group,
-            $prefixFields,
-            $prefixType,
-            $table,
-            $typeField
+            $contentTypeData['vendor'],
+            $contentTypeData['name'],
+            $contentTypeData['fields'],
+            $contentTypeData['basics'],
+            $contentTypeData['group'],
+            $contentTypeData['prefixFields'],
+            $contentTypeData['prefixType'],
+            $contentTypeData['table'],
+            $contentTypeData['typeField']
         );
 
         $contentBlockConfiguration = new ContentBlockConfiguration(
             yamlConfig: $yamlConfiguration,
-            basePath: $this->createContentType->getBasePath($availablePackages, $extension, ContentType::CONTENT_ELEMENT),
+            basePath: $this->createContentType->getBasePath($availablePackages, $contentTypeData['extension'], ContentType::CONTENT_ELEMENT),
             contentType: ContentType::CONTENT_ELEMENT
         );
 
@@ -360,5 +349,55 @@ class ContentBlocksUtility
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    protected function getContentTypeData(array $getParsedBody): array
+    {
+        $contentType = $getParsedBody['contentType'];
+        $contentTypeData['vendor'] = $getParsedBody['vendor'];
+        $contentTypeData['name'] = $getParsedBody['name'];
+        $contentTypeData['extension'] = $getParsedBody['extension'];
+
+        if($contentType === 'content-element') {
+            $contentTypeData['fields'] = json_decode($getParsedBody['fields'], true);
+            $contentTypeData['basics'] = $getParsedBody['basics'] ?? [];
+            $contentTypeData['group'] = $getParsedBody['group'] ?? 'common';
+            $contentTypeData['prefixFields'] = $getParsedBody['prefixFields'] ?? true;
+            $contentTypeData['prefixType']= $getParsedBody['prefixType'] ?? 'full';
+            $contentTypeData['table'] = $getParsedBody['table'] ?? 'tt_content';
+            $contentTypeData['typeField'] = $getParsedBody['typeField'] ?? 'CType';
+        } else if($contentType === 'page-type') {
+            $contentTypeData['pageType'] = $getParsedBody['pageType'];
+        } else if($contentType === 'record-type') {
+            $contentTypeData['pageType'] = $getParsedBody['pageType'];
+        }
+
+        return $contentTypeData;
+    }
+
+    protected function createPageType(array $contentTypeData): AnswerInterface
+    {
+        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
+
+        return new DataAnswer(
+            'contentType',
+            [
+                'type' => 'page-type',
+                'name' => $contentTypeName
+            ]
+        );
+    }
+
+    protected function createRecordType(array $contentTypeData): AnswerInterface
+    {
+        $contentTypeName = $contentTypeData['vendor'] . '/' . $contentTypeData['name'];
+
+        return new DataAnswer(
+            'contentType',
+            [
+                'type' => 'record-type',
+                'name' => $contentTypeName
+            ]
+        );
     }
 }

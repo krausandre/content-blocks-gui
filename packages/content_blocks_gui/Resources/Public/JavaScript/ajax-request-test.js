@@ -14,10 +14,9 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_delete_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_content_type'])
       .post(
         // save content block with content type "Content Element"
-
         {
           vendor: "test-99",
           name: "test-99",

@@ -62,9 +62,9 @@ final class ContentBlocksGuiAjaxController extends ActionController
         $parsedBody = $request->getParsedBody();
         return new JsonResponse(['success' => true]);
     }
-    public function saveCbAction(ServerRequestInterface $request): ResponseInterface
+    public function saveContentTypeAction(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->contentBlocksUtility->saveContentBlock(
+        return $this->contentBlocksUtility->saveContentType(
             $request->getParsedBody()
         )->getResponse();
     }
