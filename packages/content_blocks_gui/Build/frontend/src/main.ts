@@ -23,6 +23,17 @@ const pinia = createPinia();
 const app = createApp(App)
 
 app.use(pinia);
+app.component('CategoryFieldType', CategoryFieldType)
+app.component('CheckboxFieldType', CheckboxFieldType)
+app.component('CollectionFieldType', CollectionFieldType)
+app.component('ColorFieldType', ColorFieldType)
+app.component('DateTimeFieldType', DateTimeFieldType)
+app.component('EMailFieldType', EMailFieldType)
+app.component('FileFieldType', FileFieldType)
+app.component('FolderFieldType', FolderFieldType)
+app.component('ImageFieldType', ImageFieldType)
+app.component('LineBreakFieldType', LineBreakFieldType)
+app.component('NumberFieldType', NumberFieldType)
 app.component('TextFieldType', TextFieldType)
 app.component('TextAreaFieldType', TextAreaFieldType)
 

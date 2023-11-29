@@ -8,11 +8,13 @@ const availableFieldTypes =
                 iconIdentifier: 'form-text',
                 properties:
                 {
-                    max: 255,
-                    min: 0,
-                    placeholder: '',
+                    default: '',
                     required: false,
+                    minLength: 0,
+                    maxLength: 255,
                     size: 255,
+                    placeholder: '',
+                    valuePicker: [],
                 },
             },
             {
@@ -22,12 +24,24 @@ const availableFieldTypes =
                 iconIdentifier: 'form-textarea',
                 properties:
                 {
-                    cols: 50,
-                    max: 255,
-                    min: 0,
+                    default: '',
                     placeholder: '',
-                    required: false,
                     rows: 5,
+                    required: false,
+                    enableRichtext: false,
+                    richtextConfiguration: 255
+                },
+            },
+            {
+                label: "Checkbox",
+                componentName: 'CheckboxFieldType',
+                identifier: 'checkbox',
+                iconIdentifier: 'form-checkbox',
+                properties:
+                {
+                    default: false,
+                    required: false,
+                    items: [],
                 },
             }
         ],

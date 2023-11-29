@@ -2,6 +2,12 @@
   <Tabs>
     <Tab active="true" title="Global">
       <div class="d-flex flex-column">
+          <div class="mb-3">
+              <span>current selected element: {{ globalPropertiesStore.getCurrentSelectedFieldIdentifier }}</span>
+              <pre>
+                {{ contentBlockStore.getFields }}
+              </pre>
+          </div>
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="required" aria-describedby="required">
           <label for="required" class="form-check-label">Required</label>
@@ -33,9 +39,6 @@
           <label for="valuePicker" class="form-label">Value picker</label>
           <input type="text" class="form-control" id="valuePicker" aria-describedby="valuePicker">
         </div>
-        <pre>
-          {{ contentBlockStore.getFields }}
-        </pre>
       </div>
     </Tab>
     <Tab title="Validation" />
@@ -47,5 +50,9 @@ import Tab from "@/components/Tab.vue";
 import Tabs from "@/components/Tabs.vue";
 
 import { useContentBlockStore} from "@/store/contentBlockStore";
+import { useGlobalPropertiesStore } from "@/store/globalPropertiesStore";
+
 const contentBlockStore = useContentBlockStore();
+const globalPropertiesStore = useGlobalPropertiesStore();
+
 </script>

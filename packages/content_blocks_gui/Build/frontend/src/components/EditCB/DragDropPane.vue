@@ -4,7 +4,7 @@
       class="dragArea list-group"
       :list="fieldsList"
       group="people"
-      @change="log"
+      @change="change"
       item-key="identifier"
     >
       <template #item="{ element: item }">
@@ -22,6 +22,9 @@
 <script>
 import draggable from "vuedraggable";
 import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
+
+import {useContentBlockStore} from "@/store/contentBlockStore";
+
 export default {
   name: "clone",
   display: "Clone",
@@ -34,11 +37,13 @@ export default {
     return {
       fieldsList: [
 
-      ]
+      ],
+      contentBlockStore: useContentBlockStore()
     };
   },
   methods: {
-    log: function(evt) {
+    change: function(evt) {
+      this.contentBlockStore.setFields(this.fieldsList);
       console.log("FieldsList: ", this.fieldsList);
     }
   }
