@@ -17,11 +17,21 @@
 import availableFieldTypes from '@/components/fieldTypes/availableFieldTypes.js';
 import draggable from "vuedraggable";
 
+import {useContentBlockStore} from "@/store/contentBlockStore";
+import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
+
+const contentBlockStore = useContentBlockStore();
+const globalPropertiesStore = useGlobalPropertiesStore();
+
 let idGlobal = 0;
 
 const cloneFieldType = (item: any) => {
+
+  const identifier = item.identifier + "_" + idGlobal++;
+  globalPropertiesStore.setCurrentSelectedFieldIdentifier(identifier);
+  // Store plain object into fields store
   return {
-    identifier: item.identifier + "_" + idGlobal++,
+    identifier: identifier,
     componentName: item.componentName,
     label: item.label,
     iconIdentifier: item.iconIdentifier,
