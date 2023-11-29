@@ -88,12 +88,8 @@ const edit = (name: string) => {
       )
       .then(
           (response) => {
-            const nameParts = response.data.body.contentBlock.name.split('/')
-
-            contentBlockStore.setVendor(nameParts[0])
-            contentBlockStore.setPackage(nameParts[1])
-
             globalPropertiesStore.setIsLoading(false)
+            contentBlockStore.setContentBlock(response.data.body.contentBlock)
           }
       )
       .catch(

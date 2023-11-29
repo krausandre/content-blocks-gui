@@ -1,15 +1,9 @@
 <template>
   <form>
     <div class="mb-3">
-      <label for="identifier" class="form-label">Identifier</label>
-      <input class="form-control" id="identifier" aria-describedby="identifier"
-             :value="contentBlockStore.package"
-      >
-    </div>
-    <div class="mb-3">
-      <label for="vendor" class="form-label">Vendor</label>
-      <input class="form-control" id="vendor" aria-describedby="vendor"
-             :value="contentBlockStore.vendor"
+      <label for="name" class="form-label">Name</label>
+      <input class="form-control" id="vendor" aria-describedby="name"
+             :value="contentBlockStore.getContentBlock.name"
       >
     </div>
     <div class="mb-3">
