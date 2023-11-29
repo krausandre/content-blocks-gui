@@ -3,7 +3,7 @@
     <div class="btn-group px-0 mb-2" role="group" aria-label="Main navigation">
       <button
           class="btn btn-secondary"
-          @click="globalPropertiesStore.setCurrentViewToCbListView"
+          @click="handleBackToOverview"
           v-if="globalPropertiesStore.getIsEditView"
           type="button"
       >
@@ -74,6 +74,11 @@ const getIcons = () => {
   .catch((error) => {
     console.log(error)
   });
+}
+
+const handleBackToOverview = () => {
+  globalPropertiesStore.setCurrentViewToCbListView();
+  globalPropertiesStore.setCurrentSelectedFieldIdentifier('');
 }
 </script>
 
