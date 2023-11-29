@@ -60,13 +60,6 @@
         <Icon identifier="actions-save"/>
         Save
       </button>
-
-      <button
-          type="button"
-          class="btn btn-sm btn-default"
-          @click="getIcons"
-      ><Icon identifier="actions-extension-add" /> GetIconsAsList
-      </button>
     </div>
   </nav>
 </template>
