@@ -1,8 +1,8 @@
 import {defineStore} from "pinia";
 import axios from "axios";
 
-export const useExtensionListStore = defineStore('extensionList',{
-  state:() => ({
+export const useGroupListStore = defineStore('groupList', {
+  state: () => ({
     list: [] as string[]
   }),
   getters: {
@@ -17,9 +17,9 @@ export const useExtensionListStore = defineStore('extensionList',{
         return;
       }
 
-      axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_ext)
+      axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_groups)
         .then(
-          response => this.setList(response.data.body.list)
+          response => this.setList(response.data.body.groupList)
         )
         .catch(
           error => {

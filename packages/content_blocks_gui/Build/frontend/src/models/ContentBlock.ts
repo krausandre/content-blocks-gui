@@ -18,4 +18,12 @@ export class ContentBlock {
   hostExtension: string = '';
   extPath: string = '';
   languageFile: {} = {};
+
+  isContenttype(): boolean {
+    return this.yaml.table === 'tt_content';
+  }
+
+  isPagetype(): boolean {
+    return this.yaml.table === 'pages';
+  }
 }
