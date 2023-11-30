@@ -67,6 +67,7 @@ class AjaxRequestTest {
           }
         }
         */
+        /*
         // save content block with content type "Basic"
         {
           extension: "samples",
@@ -85,6 +86,32 @@ class AjaxRequestTest {
                 identifier: 'link_tab',
                 type: 'Tab',
                 label: 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:tabs.link'
+              }
+            ]),
+          }
+        }
+         */
+        {
+          extension: "samples_copy",
+          contentType: "content-element",
+          mode: "copy",
+          contentBlock: {
+            vendor: "copied-test-99",
+            name: "copied-test-99",
+            initialVendor: "test-99",
+            initialName: "test-99",
+            fields: JSON.stringify([
+              {
+                identifier: 'header',
+                useExistingField: true,
+              },
+              {
+                identifier: 'bodytext',
+                type: 'Text',
+              },
+              {
+                identifier: 'image',
+                type: 'File',
               }
             ]),
           }

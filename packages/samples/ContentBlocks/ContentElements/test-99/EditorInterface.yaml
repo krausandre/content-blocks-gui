@@ -1,0 +1,13 @@
+name: test-99/test-99
+group: common
+prefixFields: true
+prefixType: full
+basics:
+  - basic-99/basic-99
+fields:
+  -
+    identifier: header
+    useExistingField: true
+  -
+    identifier: bodytext
+    type: Text

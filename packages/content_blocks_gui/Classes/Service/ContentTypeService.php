@@ -8,10 +8,13 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
+use TYPO3\CMS\ContentBlocks\Loader\LoadedContentBlock;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ContentTypeService
 {
@@ -34,6 +37,11 @@ class ContentTypeService
             ]
         ];
 
+        if($getParsedBody['mode'] === 'copy') {
+            $data['contentBlock']['initialVendor'] = $getParsedBody['contentBlock']['initialVendor'];
+            $data['contentBlock']['initialName'] = $getParsedBody['contentBlock']['initialName'];
+        }
+
         if($data['contentType'] === 'content-element') {
             $data['contentBlock']['fields'] = json_decode($getParsedBody['contentBlock']['fields'], true);
             $data['contentBlock']['basics'] = isset($getParsedBody['contentBlock']['basics']) ? json_decode($getParsedBody['contentBlock']['basics'], true) : [];
@@ -55,7 +63,7 @@ class ContentTypeService
         return $data;
     }
 
-    public function createContentElement($data): AnswerInterface
+    public function handleContentElement($data): AnswerInterface
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
         $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
@@ -70,13 +78,15 @@ class ContentTypeService
             $data['contentBlock']['typeField']
         );
 
-        $this->createOrBuildContentType(
+        $this->handleContentType(
             $data['mode'],
             $data['extension'],
             $data['contentBlock']['vendor'],
             $data['contentBlock']['name'],
             $yamlConfiguration,
-            ContentType::CONTENT_ELEMENT
+            ContentType::CONTENT_ELEMENT,
+            $data['contentBlock']['initialVendor'] ?? '',
+            $data['contentBlock']['initialName'] ?? '',
         );
 
         return new DataAnswer(
@@ -87,7 +97,7 @@ class ContentTypeService
             ]
         );
     }
-    public function createPageType(array $data): AnswerInterface
+    public function handlePageType(array $data): AnswerInterface
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
 
@@ -97,13 +107,15 @@ class ContentTypeService
             $data['contentBlock']['type']
         );
 
-        $this->createOrBuildContentType(
+        $this->handleContentType(
             $data['mode'],
             $data['extension'],
             $data['contentBlock']['vendor'],
             $data['contentBlock']['name'],
             $yamlConfiguration,
-            ContentType::PAGE_TYPE
+            ContentType::PAGE_TYPE,
+            $data['contentBlock']['initialVendor'] ?? '',
+            $data['contentBlock']['initialName'] ?? '',
         );
 
         return new DataAnswer(
@@ -115,7 +127,7 @@ class ContentTypeService
         );
     }
 
-    public function createRecordType(array $data): AnswerInterface
+    public function handleRecordType(array $data): AnswerInterface
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
 
@@ -125,13 +137,15 @@ class ContentTypeService
             $data['contentBlock']['typeName']
         );
 
-        $this->createOrBuildContentType(
+        $this->handleContentType(
             $data['mode'],
             $data['extension'],
             $data['contentBlock']['vendor'],
             $data['contentBlock']['name'],
             $yamlConfiguration,
-            ContentType::RECORD_TYPE
+            ContentType::RECORD_TYPE,
+            $data['contentBlock']['initialVendor'] ?? '',
+            $data['contentBlock']['initialName'] ?? '',
         );
 
         return new DataAnswer(
@@ -143,7 +157,7 @@ class ContentTypeService
         );
     }
 
-    public function createBasic(array $data): AnswerInterface
+    public function handleBasic(array $data): AnswerInterface
     {
         $identifier = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
         $yamlConfiguration['identifier'] = $identifier;
@@ -174,18 +188,28 @@ class ContentTypeService
     /**
      * @throws \RuntimeException
      */
-    protected function createOrBuildContentType(
+    protected function handleContentType(
         string $mode,
         string $extension,
         string $vendor,
         string $name,
         array $yamlConfiguration,
-        ContentType $contentType
+        ContentType $contentType,
+        string $initialVendor = '',
+        string $initialName = '',
     ): void {
         if($this->contentBlockRegistry->hasContentBlock($vendor . '/' . $name) && $mode === 'create') {
             throw new \RuntimeException('A content block with the name "' . $vendor . '/' . $name . '" already exists.');
-        } else if($this->contentBlockRegistry->hasContentBlock($vendor . '/' . $name)) {
+        } else if($this->contentBlockRegistry->hasContentBlock($vendor . '/' . $name) && $mode === 'edit') {
             $this->editContentType($yamlConfiguration, $name, $extension, $contentType);
+        } else if($mode === 'copy') {
+            if($this->contentBlockRegistry->hasContentBlock($vendor . '/' . $name)) {
+                throw new \RuntimeException('A content block with the name "' . $vendor . '/' . $name . '" already exists.');
+            }
+            if(!$this->contentBlockRegistry->hasContentBlock($initialVendor . '/' . $initialVendor)) {
+                throw new \RuntimeException('The initial content block with the name "' . $initialVendor . '/' . $initialVendor . '" doesn\'t exists.');
+            }
+            $this->copyContentType($yamlConfiguration, $name, $initialVendor . '/' . $initialName, $extension, $contentType);
         } else {
             $this->buildContentType($yamlConfiguration, $extension, $contentType);
         }
@@ -216,5 +240,60 @@ class ContentTypeService
             $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
             Yaml::dump($yamlConfiguration, 10, 2),
         );
+    }
+
+    protected function copyContentType(
+        array $yamlConfiguration,
+        string $name,
+        string $initialName,
+        string $extension,
+        ContentType $contentType
+    ): void {
+
+        $contentBlockConfiguration = new ContentBlockConfiguration(
+            yamlConfig: $yamlConfiguration,
+            basePath: $this->createContentType->getBasePath(
+                $this->packageResolver->getAvailablePackages(),
+                $extension,
+                $contentType
+            ),
+            contentType: $contentType
+        );
+        $this->contentBlockBuilder->create($contentBlockConfiguration);
+
+        $initialContentBlock = $this->contentBlockRegistry->getContentBlock($initialName);
+
+        $createdContentBlock = new LoadedContentBlock(
+            name: $name,
+            yaml: $yamlConfiguration,
+            icon: $initialContentBlock->getIcon(),
+            iconProvider: $initialContentBlock->getIconProvider(),
+            hostExtension: $extension,
+            extPath: ContentBlockPathUtility::getContentBlockExtPath($extension, $contentBlockConfiguration->getName(), $contentType),
+            contentType: $contentType
+        );
+
+        // get files and folders from initial content block and add/overwrite them in new content block
+        $this->copyContentBlockFilesAndFolders(
+            GeneralUtility::getFileAbsFileName($initialContentBlock->getExtPath()),
+            GeneralUtility::getFileAbsFileName($createdContentBlock->getExtPath())
+        );
+    }
+
+    protected function copyContentBlockFilesAndFolders($source, $destination): void
+    {
+        if (is_dir($source)) {
+            @mkdir($destination);
+            $directory = dir($source);
+            while (false !== ($entry = $directory->read())) {
+                if ($entry == '.' || $entry == '..' || $entry === 'EditorInterface.yaml') {
+                    continue;
+                }
+                $this->copyContentBlockFilesAndFolders("$source/$entry", "$destination/$entry");
+            }
+            $directory->close();
+        } else {
+            copy($source, $destination);
+        }
     }
 }

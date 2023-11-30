@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02359eb80c1eb6ea2ba564093f3172c4",
+    "content-hash": "aca8483e3de7486896cc3385d9631e32",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -204,7 +204,7 @@
         },
         {
             "name": "contentblocks/content-blocks-gui",
-            "version": "dev-main",
+            "version": "dev-feature/update/manu",
             "dist": {
                 "type": "path",
                 "url": "packages/content_blocks_gui",
@@ -298,6 +298,38 @@
             "extra": {
                 "typo3/cms": {
                     "extension-key": "samples"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "TYPO3 Content Types Team",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Example content blocks for TYPO3 CMS Content Blocks.",
+            "homepage": "https://typo3.org",
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "contentblocks/samples-copy",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/samples_copy",
+                "reference": "95a9006a3702f9a194132048d261059b1f38de82"
+            },
+            "require": {
+                "contentblocks/content-blocks": "*"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "samples_copy"
                 }
             },
             "license": [
