@@ -1,8 +1,9 @@
 export class ContentBlockField {
   identifier: string = '';
   required?: boolean = false;
+
   // @todo:
-  [key:string]: any;
+  [key: string]: any;
 }
 
 type ContentBlockFieldType
@@ -32,7 +33,8 @@ export class Yaml {
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
 export class ContentBlock {
-  // @todo mode: 'new' | 'edit' = 'edit';
+  contentType: 'content-element' | 'page-type' | 'record-type' | 'basic' = 'content-element';
+  mode: 'create' | 'copy' | 'edit' = 'create';
   name: string = '';
   yaml: Yaml = new Yaml();
   icon: string = '';

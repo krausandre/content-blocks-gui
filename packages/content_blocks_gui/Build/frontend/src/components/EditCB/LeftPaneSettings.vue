@@ -20,7 +20,8 @@
       <label for="group" class="form-label">Extension</label>
       <select class="form-control" id="group" aria-describedby="group">
         <option v-for="item in extensionListStore.list"
-                value="{{ item.extension }}"
+                :value="item.extension"
+                :selected="item.extension === contentBlockStore.contentBlock.hostExtension"
         >
           {{ item.extension }} [{{ item.vendor }}/{{ item.package }}]
         </option>
