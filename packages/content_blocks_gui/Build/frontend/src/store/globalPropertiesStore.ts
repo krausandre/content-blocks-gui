@@ -4,14 +4,16 @@ export const useGlobalPropertiesStore = defineStore('globalProperties', {
     state: () => ({
         currentView: "c-b-list-view",
         isLoading: false,
-        currentSelectedFieldIdentifier: ""
+        currentSelectedFieldIdentifier: "",
+        currentContentType: ""
     }),
     getters: {
         getCurrentView: state => state.currentView,
         getIsCbListView: state => state.currentView === "c-b-list-view",
         getIsEditView: state => state.currentView === "edit-cb-view",
         getIsLoading: state => state.isLoading,
-        getCurrentSelectedFieldIdentifier: state => state.currentSelectedFieldIdentifier
+        getCurrentSelectedFieldIdentifier: state => state.currentSelectedFieldIdentifier,
+        getCurrentContentType: state => state.currentContentType
     },
     actions: {
         setIsLoading(newIsLoading: boolean) {
@@ -28,6 +30,9 @@ export const useGlobalPropertiesStore = defineStore('globalProperties', {
         },
         setCurrentSelectedFieldIdentifier(newIdentifier: string) {
             this.currentSelectedFieldIdentifier = newIdentifier;
+        },
+        setCurrentContentType(newContentType: string) {
+            this.currentContentType = newContentType;
         }
     },
 });
