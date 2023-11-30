@@ -61,6 +61,21 @@
   cursor: pointer;
 }
 
+.dragabble-nested {
+  flex-direction: column!important;
+}
+
+.dragArea.nested  {
+  align-items: center;
+  background-color: orange;
+  height: 100%;
+  min-height: 50px;
+}
+
+.leftpane-components .dragabble-nested .dragArea.nested {
+  display: none;
+}
+
 @media (hover: hover) {
 
 }

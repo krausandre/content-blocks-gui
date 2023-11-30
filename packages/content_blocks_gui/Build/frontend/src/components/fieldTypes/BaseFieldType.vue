@@ -1,13 +1,30 @@
 <template>
-  <div :class="`fieldtype px-2 py-1 me-2 mb-1 ${globalPropertiesStore.getCurrentSelectedFieldIdentifier === props.identifier ? 'is-selected' : ''}`">
+  <div :class="`fieldtype px-2 py-1 me-2 mb-1 ${globalPropertiesStore.getCurrentSelectedFieldIdentifier === props.identifier ? 'is-selected' : ''} `">
     <div
-        class="d-flex flex-row "
+        :class="`${props.isNested ? 'dragabble-nested' : ''}`"
         @click="handleComponentClick"
         @dragenter="handleDragEnter"
         @dragleave="handleDragLeave"
     >
-      <Icon :identifier="props.iconIdentifier" />
-      <span class="ms-2">{{ props.label }}</span>
+      <div class="d-flex flex-row ">
+        <Icon :identifier="props.iconIdentifier" />
+        <span class="ms-2">{{ props.label }}</span>
+      </div>
+        <draggable v-if="props.isNested"
+            class="dragArea nested list-group"
+            :list="nestedFields"
+            :group="{ name: 'people', put: true }"
+            item-key="identifier"
+            @change="change">
+            <template #item="{ element: item }">
+              <component
+                :isInDragArea="true"
+                :is="item.componentName"
+                :identifier="item.identifier"
+                :label="item.label + ' (' + item.identifier + ')'"
+                :icon-identifier="item.iconIdentifier"/>
+            </template>
+        </draggable>
     </div>
   </div>
 </template>
@@ -16,6 +33,10 @@
 import Icon from "@/components/icons/Icon.vue";
 import {ref} from "vue";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
+import draggable from "vuedraggable";
+import {useContentBlockStore} from "@/store/contentBlockStore";
+import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
+
 
 const globalPropertiesStore = useGlobalPropertiesStore();
 let isActive = ref(false);
@@ -34,6 +55,10 @@ const props = defineProps({
     required: true,
   },
   isInDragArea: {
+    type: Boolean,
+    default: false,
+  },
+  isNested: {
     type: Boolean,
     default: false,
   },
@@ -62,6 +87,14 @@ const handleDragLeave = () => {
   }
   console.log("Handle drag leave: " + props.identifier);
 }
+
+const change = function(evt) {
+  this.contentBlockStore.setFields(this.fieldsList);
+  console.log("FieldsList: ", this.fieldsList);
+}
+
+let nestedFields = ref([]);
+
 </script>
 
 <style>
