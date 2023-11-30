@@ -36,9 +36,10 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
-use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
+use TYPO3\CMS\ContentBlocks\Definition\Factory\UniqueIdentifierCreator;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
 use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
+use TYPO3\CMS\ContentBlocks\Loader\LoadedContentBlock;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
 use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
@@ -214,10 +215,9 @@ class ContentBlocksUtility
     public function getAvailableContentBlocks(): AnswerInterface
     {
         $resultList = [];
-        foreach ($this->tableDefinitionCollection as $tableDefinition) {
-            $contentType = $tableDefinition->getContentType();
-            $resultList[$contentType->name] ??= [];
-            $resultList[$contentType->name] += $this->getLoadedContentBlocksForTable($tableDefinition);
+        foreach ($this->contentBlockRegistry->getAll() as $contentBlock) {
+            $contentType = $contentBlock->getContentType();
+            $resultList[$contentType->name][$contentBlock->getName()] = $this->loadedContentBlockToArray($contentBlock);
         }
         $resultList['BASICS'] = $this->getLoadedBasicForList();
         if (empty($resultList)) {
@@ -229,27 +229,27 @@ class ContentBlocksUtility
         );
     }
 
-    protected function getLoadedContentBlocksForTable(TableDefinition $tableDefinition): array
+    protected function loadedContentBlockToArray(LoadedContentBlock $contentBlock): array
     {
-        $list = [];
-        $languageService = $this->getLanguageService();
-        foreach ($tableDefinition->getContentTypeDefinitionCollection() as $typeDefinition) {
-            $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($typeDefinition->getName());
-            $label = $languageService->sL($typeDefinition->getLanguagePathTitle());
-            $list[$loadedContentBlock->getName()] = [
-                'name' => $loadedContentBlock->getName(),
-                'label' => $label,
-                'extension' => $loadedContentBlock->getHostExtension(),
-                'editable' => $this->extensionUtility->isEditable($loadedContentBlock->getHostExtension()),
-                'deletable' => $this->extensionUtility->isEditable($loadedContentBlock->getHostExtension()),
-                'usages' => $this->usageFactory->countUsages(
-                    $loadedContentBlock->getContentType(),
-                    $loadedContentBlock->getYaml()['typeName'] ?? str_replace(['/', '-'], ['_', ''], $loadedContentBlock->getName()),
-                    $loadedContentBlock->getYaml()['table'] ?? ''
-                )
-            ];
-        }
-        return $list;
+        $typeName = $contentBlock->getYaml()['typeName'] ?? UniqueIdentifierCreator::createContentTypeIdentifier($contentBlock);
+        $table = $contentBlock->getContentType()->getTable() ?? $contentBlock->getYaml()['table'];
+        // @todo We might not want to add this feature. This could lead to performance problems.
+        $usages = $this->usageFactory->countUsages($contentBlock->getContentType(), $typeName, $table);
+
+        $tableDefinition = $this->tableDefinitionCollection->getTable($table);
+        $typeDefinition = $tableDefinition->getDefaultTypeDefinition();
+        $label = $this->getLanguageService()->sL($typeDefinition->getLanguagePathTitle());
+
+        $result = [
+            'name' => $contentBlock->getName(),
+            'label' => $label,
+            'extension' => $contentBlock->getHostExtension(),
+            'editable' => $this->extensionUtility->isEditable($contentBlock->getHostExtension()),
+            'deletable' => $this->extensionUtility->isEditable($contentBlock->getHostExtension()),
+            'usages' => $usages,
+        ];
+
+        return $result;
     }
 
     protected function getLoadedBasicForList(): array
