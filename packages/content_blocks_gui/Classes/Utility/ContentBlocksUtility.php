@@ -37,6 +37,7 @@ use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
+use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
 use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
@@ -66,7 +67,8 @@ class ContentBlocksUtility
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
-        protected readonly ContentTypeService $contentTypeService
+        protected readonly ContentTypeService $contentTypeService,
+        protected readonly ContentBlockLoader $contentBlockLoader,
     ) {
     }
 
@@ -118,9 +120,11 @@ class ContentBlocksUtility
                 $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath(
                     $this->contentBlockRegistry->getContentBlockExtPath($parsedBody['name'])
                 );
+                $notDeletedFilePaths = $this->deleteDirectoryRecursively($absoluteContentBlockPath);
+                $this->contentBlockLoader->loadUncached();
                 return new DataAnswer(
                     'list',
-                    $this->deleteDirectoryRecursively($absoluteContentBlockPath)
+                    $notDeletedFilePaths
                 );
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());

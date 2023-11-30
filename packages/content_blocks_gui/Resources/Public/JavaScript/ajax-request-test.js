@@ -14,7 +14,7 @@ class AjaxRequestTest {
     });
   }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_download_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_content_type'])
       .post(
         /*
         // save content block with content type "Content Element"
@@ -91,7 +91,7 @@ class AjaxRequestTest {
           }
         }
          */
-        /*
+
         // copy content block with content type "Content Element"
         {
           extension: "samples_copy",
@@ -118,11 +118,12 @@ class AjaxRequestTest {
             ]),
           }
         }
-         */
+         /*
         // delete/download content block
         {
           name: "test-123/test-12",
         }
+        */
       )
       .then(async function (response) {
         const resolved = await response.resolve();
