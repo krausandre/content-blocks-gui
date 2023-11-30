@@ -6,7 +6,7 @@
              :value="contentBlockStore.getContentBlock.name"
       >
     </div>
-    <div class="mb-3" v-if="ContentBlock.isContenttype(contentBlockStore.contentBlock) /* @todo */">
+    <div class="mb-3" v-if="ContentBlock.isContentElement(contentBlockStore.contentBlock) /* @todo */">
       <label for="group" class="form-label">Group</label>
       <select class="form-control" id="group" aria-describedby="group">
         <option v-for="(item, key) in groupListStore.list"

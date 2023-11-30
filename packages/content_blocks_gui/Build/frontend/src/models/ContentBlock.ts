@@ -42,7 +42,7 @@ export class ContentBlock {
   languageFile: {} = {};
 
   // @todo
-  static isContenttype(contentBlock: ContentBlock): boolean {
+  static isContentElement(contentBlock: ContentBlock): boolean {
     return contentBlock.yaml.table === 'tt_content';
   }
 
