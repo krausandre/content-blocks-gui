@@ -91,6 +91,8 @@ class AjaxRequestTest {
           }
         }
          */
+
+        // copy content block with content type "Content Element"
         {
           extension: "samples_copy",
           contentType: "content-element",
@@ -116,12 +118,12 @@ class AjaxRequestTest {
             ]),
           }
         }
-        // delete content block
-        /*
+         /*
+        // delete/download content block
         {
           name: "test-123/test-12",
         }
-         */
+        */
       )
       .then(async function (response) {
         const resolved = await response.resolve();

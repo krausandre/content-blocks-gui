@@ -25,7 +25,6 @@ use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Page\PageRenderer;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 #[Controller]
@@ -70,27 +69,9 @@ final class ContentBlocksGuiAjaxController extends ActionController
     }
     public function downloadCbAction(ServerRequestInterface $request): ResponseInterface
     {
-        $parsedBody = $request->getParsedBody();
-        if(!isset($parsedBody['name'])) {
-            return new JsonResponse(['success' => false, 'message' => 'No Content Block name given.']);
-        }
-        $fileName = $this->contentBlocksUtility->createZipFileFromContentBlockPath($parsedBody['name']);
-        $response = $this->responseFactory
-            ->createResponse()
-            ->withAddedHeader('Content-Type', 'application/zip')
-            ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
-            ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
-            ->withBody($this->streamFactory->createStreamFromFile($fileName));
-
-        unlink($fileName);
-
-        return $response;
+        return $this->contentBlocksUtility->downloadContentBlock($request->getParsedBody());
     }
-    public function copyCbAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
-    }
+
     public function listExtAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->extensionUtility->getAvailableExtensions()->getResponse();

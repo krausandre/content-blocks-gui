@@ -21,6 +21,7 @@ use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorBasicNotFoundAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorContentBlockNotFoundAnswer;
+use ContentBlocks\ContentBlocksGui\Answer\ErrorDownloadContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingBasicIndentifierAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorMissingContentBlockNameAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
@@ -28,29 +29,35 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorSaveContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use ContentBlocks\ContentBlocksGui\Service\ContentTypeService;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
-use TYPO3\CMS\ContentBlocks\Basics\LoadedBasic;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinition;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
+use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
 use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ResponseFactory;
+use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ContentBlocksUtility
 {
     public function __construct(
         protected readonly LoggerInterface $logger,
+        protected readonly ResponseFactory $responseFactory,
+        protected readonly StreamFactory $streamFactory,
         protected readonly TableDefinitionCollection $tableDefinitionCollection,
         protected readonly ContentBlockRegistry $contentBlockRegistry,
         protected readonly ContentBlockPathUtility $contentBlockPathUtility,
@@ -60,7 +67,8 @@ class ContentBlocksUtility
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
-        protected readonly ContentTypeService $contentTypeService
+        protected readonly ContentTypeService $contentTypeService,
+        protected readonly ContentBlockLoader $contentBlockLoader,
     ) {
     }
 
@@ -80,6 +88,31 @@ class ContentBlocksUtility
         }
     }
 
+    public function downloadContentBlock(object|array|null $getParsedBody): ResponseInterface
+    {
+        try {
+            if(!isset($getParsedBody['name'])) {
+                $errorAnswer = new ErrorContentBlockNotFoundAnswer($getParsedBody['name']);
+                return $errorAnswer->getResponse();
+            }
+            $fileName = $this->createZipFileFromContentBlockPath($getParsedBody['name']);
+            $response = $this->responseFactory
+                ->createResponse()
+                ->withAddedHeader('Content-Type', 'application/zip')
+                ->withAddedHeader('Content-Length', (string)(filesize($fileName) ?: ''))
+                ->withAddedHeader('Content-Disposition', 'attachment; filename="' . PathUtility::basename($fileName) . '"')
+                ->withBody($this->streamFactory->createStreamFromFile($fileName));
+
+            unlink($fileName);
+
+            return $response;
+        } catch (\Exception $e) {
+            $this->logger->error($e->getMessage());
+            $errorAnswer = new ErrorDownloadContentTypeAnswer($e->getMessage());
+            return $errorAnswer->getResponse();
+        }
+    }
+
     public function deleteContentBlock(null|array|object $parsedBody): AnswerInterface
     {
         if (array_key_exists('name', $parsedBody)) {
@@ -87,9 +120,11 @@ class ContentBlocksUtility
                 $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath(
                     $this->contentBlockRegistry->getContentBlockExtPath($parsedBody['name'])
                 );
+                $notDeletedFilePaths = $this->deleteDirectoryRecursively($absoluteContentBlockPath);
+                $this->contentBlockLoader->loadUncached();
                 return new DataAnswer(
                     'list',
-                    $this->deleteDirectoryRecursively($absoluteContentBlockPath)
+                    $notDeletedFilePaths
                 );
             } catch (Exception $e) {
                 $this->logger->error($e->getMessage());
@@ -131,17 +166,18 @@ class ContentBlocksUtility
         return $notDeletedFilePaths;
     }
 
+    /**
+     * @throws Exception
+     */
     public function createZipFileFromContentBlockPath(string $name): string
     {
         $contentBlock = $this->contentBlockRegistry->getContentBlock($name);
-        $contentBlockPath = $contentBlock->getExtPath();
-        $contentBlockPackage = '/' . $contentBlock->getPackage();
-        $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlockPath);
+        $absoluteContentBlockPath = ExtensionManagementUtility::resolvePackagePath($contentBlock->getExtPath());
         $temporaryPath = Environment::getVarPath() . '/transient/';
         if (!@is_dir($temporaryPath)) {
             GeneralUtility::mkdir($temporaryPath);
         }
-        $fileName = $temporaryPath . $contentBlock->getPackage() . '_' . date('YmdHi', $GLOBALS['EXEC_TIME']) . '.zip';
+        $fileName = $temporaryPath . $contentBlock->getPackage() . '_' . date('YmdHi', time()) . '.zip';
 
         $zip = new \ZipArchive();
         $zip->open($fileName, \ZipArchive::CREATE | \ZipArchive::OVERWRITE);
@@ -162,9 +198,9 @@ class ContentBlocksUtility
             // Distinguish between files and directories, as creation of the archive
             // fails on Windows when trying to add a directory with "addFile".
             if (is_dir($fullPath)) {
-                $zip->addEmptyDir($contentBlockPackage . $file);
+                $zip->addEmptyDir('/' . $contentBlock->getPackage() . $file);
             } else {
-                $zip->addFile($fullPath, $contentBlockPackage . $file);
+                $zip->addFile($fullPath, '/' . $contentBlock->getPackage() . $file);
             }
         }
         $zip->close();
@@ -256,7 +292,6 @@ class ContentBlocksUtility
     {
         $resultList = [];
         $this->basicsLoader->load();
-        /** @var LoadedBasic */
         foreach ($this->basicsRegistry->getAllBasics() as $basic) {
             $resultList[$basic->getIdentifier()] = $basic->toArray();
         }

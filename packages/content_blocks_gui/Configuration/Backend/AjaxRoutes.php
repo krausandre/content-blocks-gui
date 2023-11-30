@@ -28,10 +28,6 @@ return [
         'path' => '/contentblocks/gui/cb/download',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::downloadCbAction',
     ],
-    'content_blocks_gui_copy_cb' => [
-        'path' => '/contentblocks/gui/cb/copy',
-        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::copyCbAction',
-    ],
     'content_blocks_gui_list_ext' => [
         'path' => '/contentblocks/gui/ext/list',
         'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::listExtAction',

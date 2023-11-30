@@ -8,13 +8,13 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
+use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
 use TYPO3\CMS\ContentBlocks\Loader\LoadedContentBlock;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 class ContentTypeService
 {
@@ -23,6 +23,7 @@ class ContentTypeService
         protected readonly PackageResolver $packageResolver,
         protected readonly CreateContentType $createContentType,
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
+        protected readonly ContentBlockLoader $contentBlockLoader,
     ) {
     }
     public function getContentTypeData(array $getParsedBody): array
@@ -249,7 +250,6 @@ class ContentTypeService
         string $extension,
         ContentType $contentType
     ): void {
-
         $contentBlockConfiguration = new ContentBlockConfiguration(
             yamlConfig: $yamlConfiguration,
             basePath: $this->createContentType->getBasePath(
@@ -278,6 +278,8 @@ class ContentTypeService
             GeneralUtility::getFileAbsFileName($initialContentBlock->getExtPath()),
             GeneralUtility::getFileAbsFileName($createdContentBlock->getExtPath())
         );
+
+        $this->contentBlockLoader->loadUncached();
     }
 
     protected function copyContentBlockFilesAndFolders($source, $destination): void
