@@ -13,6 +13,7 @@ import LineBreakFieldType from "@/components/fieldTypes/LineBreakFieldType.vue";
 import NumberFieldType from "@/components/fieldTypes/NumberFieldType.vue";
 import TextFieldType from '@/components/fieldTypes/TextFieldType.vue'
 import TextAreaFieldType from "@/components/fieldTypes/TextAreaFieldType.vue";
+import ExistingFieldType from "@/components/fieldTypes/ExistingFieldType.vue";
 
 import { createApp } from 'vue';
 import App from './App.vue'
@@ -28,6 +29,7 @@ app.component('CollectionFieldType', CollectionFieldType)
 app.component('ColorFieldType', ColorFieldType)
 app.component('DateTimeFieldType', DateTimeFieldType)
 app.component('EMailFieldType', EMailFieldType)
+app.component('ExistingFieldType', ExistingFieldType)
 app.component('FileFieldType', FileFieldType)
 app.component('FolderFieldType', FolderFieldType)
 app.component('ImageFieldType', ImageFieldType)

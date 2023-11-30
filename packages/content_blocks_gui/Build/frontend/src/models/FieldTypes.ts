@@ -1,11 +1,10 @@
 import type {ContentBlockField} from "@/models/ContentBlock";
-import {ContentBlockFieldNew} from "@/models/ContentBlock";
 
-const fieldTypes: {
-  [type: string]: {
-    componentName: string, iconIdentifier: string, typeLabel: string
-  }
-} = {
+type FieldTypeGuiDefinition = {
+  componentName: string, iconIdentifier: string, typeLabel: string
+}
+
+const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
   text: {
     componentName: 'TextFieldType',
     iconIdentifier: 'form-text',
@@ -23,20 +22,41 @@ const fieldTypes: {
   },
 }
 
+const existingFieldGuiGenerics: FieldTypeGuiDefinition = {
+  componentName: 'ExistingFieldType',
+  iconIdentifier: 'actions-link',
+  typeLabel: 'Existing Field',
+}
+
 export class FieldTypes {
   static componentName(field: ContentBlockField): string {
-    return fieldTypes[field.type].componentName ?? 'unknown';
+    if(field.useExistingField ?? false) {
+      return existingFieldGuiGenerics.componentName;
+    }
+
+    return guiGenerics[field.type].componentName
+      ?? '';
   }
 
   static iconIdentifier(field: ContentBlockField): string {
-    return fieldTypes[field.type].iconIdentifier ?? 'unknown';
+    if(field.useExistingField ?? false) {
+      return existingFieldGuiGenerics.iconIdentifier;
+    }
+
+    return guiGenerics[field.type].iconIdentifier
+      ?? '';
   }
 
   static typeLabel(field: ContentBlockField): string {
-    return fieldTypes[field.type].typeLabel ?? 'unknown';
+    if(field.useExistingField ?? false) {
+      return existingFieldGuiGenerics.typeLabel;
+    }
+
+    return guiGenerics[field.type].typeLabel
+      ?? '';
   }
 
-  static draggableVanillaFieldTypes(): ContentBlockFieldNew[] {
+  static draggableVanillaFieldTypes(): ContentBlockField[] {
     return [
       {
         type: 'text',
@@ -65,6 +85,10 @@ export class FieldTypes {
         default: false,
         required: false,
         items: [],
+      },
+      {
+        identifier: 'existing',
+        useExistingField: true,
       }
     ]
   }
