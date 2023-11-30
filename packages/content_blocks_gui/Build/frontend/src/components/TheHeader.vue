@@ -74,7 +74,6 @@
           class="btn btn-primary"
           @click="console.log(contentBlocksListStore.getList)"
       >
-        <Icon identifier="actions-save"/>
         Get Blocks List
       </button>
     </div>
@@ -86,23 +85,16 @@ import controller from "@/Controller";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
+import {useIconListStore} from "@/store/iconListStore";
 import Icon from "@/components/icons/Icon.vue";
 import axios from "axios";
 import {shootConfirmModal, shootDangerModal, shootPrimaryModal, shootWarningModal } from "../helper/typo3ModalHelper.js"
 import {shootInfoNotification} from "@/helper/typo3NotificationHelper.js";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
+const iconListStore = useIconListStore();
 const contentBlockStore = useContentBlockStore();
 const contentBlocksListStore = useContentBlocksListStore();
-
-const getIcons = () => {
-  axios.get(TYPO3.settings.ajaxUrls.list_icons).then((response) => {
-    console.log(response.data)
-  })
-  .catch((error) => {
-    console.log(error)
-  });
-}
 
 const handleBackToOverview = () => {
   globalPropertiesStore.setCurrentViewToCbListView();

@@ -16,7 +16,7 @@
           :key="item.name"
       >
         <td>
-          <Icon :identifier="getTypeOfRecord()" size="medium"/>
+          <Icon :identifier="iconListStore.getIconByIdentifier(item.name)" size="medium"/>
         </td>
         <td>{{ item.name }}</td>
         <td>{{ item.label }}</td>
@@ -57,6 +57,7 @@ import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import Icon from "@/components/icons/Icon.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
+import {useIconListStore} from "@/store/iconListStore";
 import axios from "axios";
 
 import {shootSuccessNotification, shootInfoNotification, shootErrorNotification, shootNoticeNotification, shootWarningNotification} from "../../helper/typo3NotificationHelper.js"
@@ -73,6 +74,7 @@ interface Item {
 const globalPropertiesStore = useGlobalPropertiesStore();
 const contentBlocksListStore = useContentBlocksListStore();
 const contentBlockStore = useContentBlockStore();
+const iconListStore = useIconListStore();
 
 const props = defineProps({
   title: String,
