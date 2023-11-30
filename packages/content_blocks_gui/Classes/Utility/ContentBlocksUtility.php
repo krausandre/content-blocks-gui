@@ -28,6 +28,7 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorNoBasicsAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorSaveContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
+use ContentBlocks\ContentBlocksGui\Factory\UsageFactory;
 use ContentBlocks\ContentBlocksGui\Service\ContentTypeService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -69,6 +70,7 @@ class ContentBlocksUtility
         protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
         protected readonly ContentTypeService $contentTypeService,
         protected readonly ContentBlockLoader $contentBlockLoader,
+        protected readonly UsageFactory $usageFactory,
     ) {
     }
 
@@ -239,6 +241,11 @@ class ContentBlocksUtility
                 'extension' => $loadedContentBlock->getHostExtension(),
                 'editable' => true,
                 'deletable' => true,
+                'usages' => $this->usageFactory->countUsages(
+                    $loadedContentBlock->getContentType(),
+                    $loadedContentBlock->getYaml()['typeName'] ?? str_replace(['/', '-'], ['_', ''], $loadedContentBlock->getName()),
+                    $loadedContentBlock->getYaml()['table'] ?? ''
+                )
             ];
         }
         return $list;
@@ -248,7 +255,6 @@ class ContentBlocksUtility
     {
         $list = [];
         $this->basicsLoader->load();
-        /** @var LoadedBasic */
         foreach ($this->basicsRegistry->getAllBasics() as $basic) {
             $list[$basic->getIdentifier()] = [
                 'name' => $basic->getIdentifier(),
