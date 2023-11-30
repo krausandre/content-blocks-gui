@@ -180,7 +180,7 @@ class ContentBlocksUtility
             $resultList[$contentType->name] ??= [];
             $resultList[$contentType->name] += $this->getLoadedContentBlocksForTable($tableDefinition);
         }
-        $resultList['Basics'] = $this->getLoadedBasicForList();
+        $resultList['BASICS'] = $this->getLoadedBasicForList();
         if (empty($resultList)) {
             return new ErrorNoContentBlocksAvailableAnswer();
         }
