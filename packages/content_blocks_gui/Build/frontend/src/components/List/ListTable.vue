@@ -40,7 +40,7 @@
           <button
               type="button"
               class="btn btn-danger ms-2"
-              @click="console.log('not yet implemented')"
+              @click="shootErrorNotification('This doesn\'t work yet', 'This feature is not implemented yet. Please be patient with us.')"
           >
             <Icon identifier="actions-delete"/>
             Delete</button>
@@ -56,7 +56,7 @@ import Icon from "@/components/icons/Icon.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import axios from "axios";
 
-import {shootSuccessNotification, shootInfoNotification} from "../../helper/typo3NotificationHelper.js"
+import {shootSuccessNotification, shootInfoNotification, shootErrorNotification, shootNoticeNotification, shootWarningNotification} from "../../helper/typo3NotificationHelper.js"
 
 interface Item {
   name: string;
