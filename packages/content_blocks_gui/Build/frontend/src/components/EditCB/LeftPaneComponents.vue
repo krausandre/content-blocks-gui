@@ -1,6 +1,6 @@
 <template>
   <draggable
-    class="dragArea list-group"
+    class="dragArea list-group leftpane-components"
     :list="FieldTypes.draggableVanillaFieldTypes()"
     :group="{ name: 'people', pull: 'clone', put: false }"
     :clone="cloneFieldType"

@@ -20,9 +20,9 @@ const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
     iconIdentifier: 'form-checkbox',
     typeLabel: 'Checkbox',
   },
-  collection: {
+  Collection: {
     componentName: 'CollectionFieldType',
-    iconIdentifier: 'collection',
+    iconIdentifier: 'actions-refresh',
     typeLabel: 'Collection'
   }
 }
@@ -90,6 +90,12 @@ export class FieldTypes {
         default: false,
         required: false,
         items: [],
+      },
+      {
+        type: "Collection",
+        identifier: 'collection',
+        required: false,
+        fields: [],
       },
       {
         identifier: 'existing',

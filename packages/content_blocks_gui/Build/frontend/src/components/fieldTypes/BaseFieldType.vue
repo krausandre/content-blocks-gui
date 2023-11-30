@@ -14,15 +14,14 @@
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'people', put: true }"
-            item-key="identifier"
-            @change="change">
+            item-key="identifier">
             <template #item="{ element: item }">
               <component
                 :isInDragArea="true"
-                :is="item.componentName"
+                :is="FieldTypes.componentName(item)"
                 :identifier="item.identifier"
-                :label="item.label + ' (' + item.identifier + ')'"
-                :icon-identifier="item.iconIdentifier"/>
+                :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
+                :icon-identifier="FieldTypes.iconIdentifier(item)"/>
             </template>
         </draggable>
     </div>
@@ -36,6 +35,7 @@ import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import draggable from "vuedraggable";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
+import {FieldTypes} from "@/models/FieldTypes";
 
 
 const globalPropertiesStore = useGlobalPropertiesStore();
@@ -88,9 +88,11 @@ const handleDragLeave = () => {
   console.log("Handle drag leave: " + props.identifier);
 }
 
-const change = function(evt) {
-  this.contentBlockStore.setFields(this.fieldsList);
-  console.log("FieldsList: ", this.fieldsList);
+const contentBlockStore = useContentBlockStore();
+
+const change = function(evt: any) {
+    // contentBlockStore.setFields(nestedFields.value);
+    // console.log("FieldsList: ", this.fieldsList);
 }
 
 let nestedFields = ref([]);
