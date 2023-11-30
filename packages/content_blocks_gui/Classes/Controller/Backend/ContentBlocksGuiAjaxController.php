@@ -86,11 +86,7 @@ final class ContentBlocksGuiAjaxController extends ActionController
 
         return $response;
     }
-    public function copyCbAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $parsedBody = $request->getParsedBody();
-        return new JsonResponse(['success' => true]);
-    }
+
     public function listExtAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->extensionUtility->getAvailableExtensions()->getResponse();
