@@ -6,6 +6,7 @@
     "contentblocks/content-blocks-gui": "@dev",
     "contentblocks/examples": "@dev",
     "contentblocks/samples": "^1.0",
+    "contentblocks/samples-copy": "^1.0",
     "helhum/typo3-console": "*",
     "typo3/cms-about": "*",
     "typo3/cms-adminpanel": "*",
