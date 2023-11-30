@@ -260,7 +260,7 @@ class ContentBlocksUtility
             $list[$basic->getIdentifier()] = [
                 'name' => $basic->getIdentifier(),
                 'label' => $basic->getIdentifier(),
-                'extension' => 'not set yet',
+                'extension' => $basic->getHostExtension(),
                 'editable' => true,
                 'deletable' => true,
             ];
