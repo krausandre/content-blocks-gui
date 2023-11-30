@@ -6,13 +6,13 @@ class AjaxRequestTest {
     let sendAjaxRequest = this.sendAjaxRequest;
     this.addEventListener(sendAjaxRequest);
   }
-  addEventListener(sendAjaxRequest) {
-
-    document.getElementById('ajaxTestBtn').addEventListener("click", function(ev) {
-        ev.preventDefault();
-        sendAjaxRequest();
-    });
-  }
+  // addEventListener(sendAjaxRequest) {
+// 
+  //   document.getElementById('ajaxTestBtn').addEventListener("click", function(ev) {
+  //       ev.preventDefault();
+  //       sendAjaxRequest();
+  //   });
+  // }
   sendAjaxRequest() {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_content_type'])
       .post(
