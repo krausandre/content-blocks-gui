@@ -39,7 +39,8 @@
               @click="download(item.name)"
           >
             <Icon identifier="actions-download"/>
-            Download</button>
+            Download
+          </button>
           <button
               type="button"
               class="btn btn-danger ms-2"
@@ -47,7 +48,8 @@
               v-if="item.deletable && item.usages < 1"
           >
             <Icon identifier="actions-delete"/>
-            Delete</button>
+            Delete
+          </button>
         </td>
       </tr>
     </table>
@@ -62,7 +64,11 @@ import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
 import {useIconListStore} from "@/store/iconListStore";
 import axios from "axios";
 
-import {shootSuccessNotification, shootInfoNotification, shootErrorNotification, shootNoticeNotification, shootWarningNotification} from "../../helper/typo3NotificationHelper.js"
+import {
+  shootErrorNotification,
+  shootInfoNotification,
+  shootSuccessNotification
+} from "../../helper/typo3NotificationHelper.js"
 import {shootDangerModal} from "@/helper/typo3ModalHelper";
 
 interface Item {
@@ -105,27 +111,23 @@ const edit = (name: string) => {
   globalPropertiesStore.setCurrentViewToEditView()
   globalPropertiesStore.setIsLoading(true)
 
-  axios
-      .postForm(
-          TYPO3.settings.ajaxUrls.content_blocks_gui_get_cb,
-          {
-            name: name
-          }
-      )
-      .then(
-          (response) => {
-            globalPropertiesStore.setIsLoading(false)
-            contentBlockStore.setContentBlock(response.data.body.contentBlock)
-          }
-      )
-      .catch(
-          (error) => {
-            console.error('Error:', error);
-            globalPropertiesStore.setIsLoading(false)
-          }
-      );
+  axios.postForm(
+      TYPO3.settings.ajaxUrls.content_blocks_gui_get_cb,
+      {
+        name: name
+      }
+  ).then(
+      response => {
+        globalPropertiesStore.setIsLoading(false)
+        contentBlockStore.setContentBlock(response.data.body.contentBlock)
+      }
+  ).catch(
+      error => {
+        console.error('Error:', error);
+        globalPropertiesStore.setIsLoading(false)
+      }
+  );
 }
-// tslint:disable-next-line:no-unused-expression
 
 const download = (name: string) => {
   axios
@@ -180,9 +182,9 @@ const showDeleteConfirmation = (name: string) => {
   }
 
   shootDangerModal(
-    "Delete content block",
-    "Do you really want to delete this content block?",
-    deleteContentBlock
+      "Delete content block",
+      "Do you really want to delete this content block?",
+      deleteContentBlock
   )
 }
 

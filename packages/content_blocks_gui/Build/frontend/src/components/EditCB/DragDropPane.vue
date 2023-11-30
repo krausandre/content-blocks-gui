@@ -13,7 +13,8 @@
             :is="FieldTypes.componentName(item)"
             :identifier="item.identifier"
             :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
-            :icon-identifier="FieldTypes.iconIdentifier(item)"/>
+            :icon-identifier="FieldTypes.iconIdentifier(item)"
+        />
       </template>
     </draggable>
   </div>
