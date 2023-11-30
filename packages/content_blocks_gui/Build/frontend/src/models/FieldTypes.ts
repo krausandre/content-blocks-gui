@@ -46,7 +46,7 @@ export class FieldTypes {
     }
 
     return guiGenerics[field.type].componentName
-      ?? '';
+      ?? 'BaseFieldType';
   }
 
   static iconIdentifier(field: ContentBlockField): string {
@@ -55,7 +55,7 @@ export class FieldTypes {
     }
 
     return guiGenerics[field.type].iconIdentifier
-      ?? '';
+      ?? 'actions-question-circle';
   }
 
   static typeLabel(field: ContentBlockField): string {
@@ -64,7 +64,7 @@ export class FieldTypes {
     }
 
     return guiGenerics[field.type].typeLabel
-      ?? '';
+      ?? `Not implemented (${field.type})`;
   }
 
   static draggableVanillaFieldTypes(): ContentBlockField[] {
