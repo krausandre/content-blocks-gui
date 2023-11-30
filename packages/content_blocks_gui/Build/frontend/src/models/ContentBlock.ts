@@ -1,14 +1,17 @@
 export class ContentBlockField {
   identifier: string = '';
   required?: boolean = false;
+
   // @todo:
-  [key:string]: any;
+  [key: string]: any;
 }
 
 type ContentBlockFieldType
   = 'Text' | 'Textarea' | 'Checkbox' | 'Link' | 'Collection'
 
 export class ContentBlockFieldNew extends ContentBlockField {
+  contentType: 'content-element' | 'page-type' | 'record-type' | 'basic' = 'content-element';
+  mode: 'create' | 'copy' | 'edit' = 'create';
   type: ContentBlockFieldType = 'Text';
   autocomplete?: boolean;
   allowedTypes?: string[];
