@@ -10,8 +10,6 @@ type ContentBlockFieldType
   = 'Text' | 'Textarea' | 'Checkbox' | 'Link' | 'Collection'
 
 export class ContentBlockFieldNew extends ContentBlockField {
-  contentType: 'content-element' | 'page-type' | 'record-type' | 'basic' = 'content-element';
-  mode: 'create' | 'copy' | 'edit' = 'create';
   type: ContentBlockFieldType = 'Text';
   autocomplete?: boolean;
   allowedTypes?: string[];
@@ -35,7 +33,8 @@ export class Yaml {
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
 export class ContentBlock {
-  // @todo mode: 'new' | 'edit' = 'edit';
+  contentType: 'content-element' | 'page-type' | 'record-type' | 'basic' = 'content-element';
+  mode: 'create' | 'copy' | 'edit' = 'create';
   name: string = '';
   yaml: Yaml = new Yaml();
   icon: string = '';
