@@ -26,6 +26,7 @@
               type="button"
               class="btn btn-default"
               @click="edit(item.name)"
+              v-if="item.editable"
           >
             <Icon identifier="actions-open"/>
             Edit
@@ -40,7 +41,8 @@
           <button
               type="button"
               class="btn btn-danger ms-2"
-              @click="shootDangerModal('Delete content block', 'Do you really want to delete this content block?')"
+              @click="showDeleteConfirmation(item.name)"
+              v-if="item.deletable"
           >
             <Icon identifier="actions-delete"/>
             Delete</button>
@@ -63,6 +65,8 @@ interface Item {
   name: string;
   label: string;
   extension: string;
+  deletable: boolean;
+  editable: boolean;
 }
 
 const globalPropertiesStore = useGlobalPropertiesStore();
@@ -112,6 +116,7 @@ const edit = (name: string) => {
           }
       );
 }
+// tslint:disable-next-line:no-unused-expression
 
 const download = (name: string) => {
   axios
@@ -156,6 +161,40 @@ const download = (name: string) => {
           (error) => {
             console.error('Error:', error);
             // Notification Error von TYPO3 anzeigen
+          }
+      );
+}
+
+const showDeleteConfirmation = (name: string) => {
+  const deleteContentBlock = () => {
+    deleteContentBlockByName(name);
+  }
+
+  shootDangerModal(
+    "Delete content block",
+    "Do you really want to delete this content block?",
+    deleteContentBlock
+  )
+}
+
+const deleteContentBlockByName = (name: string) => {
+  // Axios call for deletion:
+  axios
+      .postForm(
+          TYPO3.settings.ajaxUrls.content_blocks_gui_delete_cb,
+          {
+            name: name
+          }
+      )
+      .then(
+          (response) => {
+            shootSuccessNotification("Content block deleted", "The content block was deleted.");
+          }
+      )
+      .catch(
+          (error) => {
+            // Notification Error von TYPO3 anzeigen
+            shootErrorNotification("Error", "The content block could not be deleted.");
           }
       );
 }

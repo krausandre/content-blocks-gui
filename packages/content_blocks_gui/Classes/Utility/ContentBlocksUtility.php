@@ -216,6 +216,7 @@ class ContentBlocksUtility
             $resultList[$contentType->name] ??= [];
             $resultList[$contentType->name] += $this->getLoadedContentBlocksForTable($tableDefinition);
         }
+        $resultList['BASICS'] = $this->getLoadedBasicForList();
         if (empty($resultList)) {
             return new ErrorNoContentBlocksAvailableAnswer();
         }
@@ -236,6 +237,25 @@ class ContentBlocksUtility
                 'name' => $loadedContentBlock->getName(),
                 'label' => $label,
                 'extension' => $loadedContentBlock->getHostExtension(),
+                'editable' => true,
+                'deletable' => true,
+            ];
+        }
+        return $list;
+    }
+
+    protected function getLoadedBasicForList(): array
+    {
+        $list = [];
+        $this->basicsLoader->load();
+        /** @var LoadedBasic */
+        foreach ($this->basicsRegistry->getAllBasics() as $basic) {
+            $list[$basic->getIdentifier()] = [
+                'name' => $basic->getIdentifier(),
+                'label' => $basic->getIdentifier(),
+                'extension' => 'not set yet',
+                'editable' => true,
+                'deletable' => true,
             ];
         }
         return $list;

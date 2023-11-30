@@ -35,7 +35,6 @@ export const shootWarningModal = (title, message) => {
 export const shootDangerModal = (
     title,
     message,
-    cancelFunction = () => top.TYPO3.Modal.dismiss(),
     okayFunction = () => top.TYPO3.Modal.dismiss()
 ) => {
     Modal.confirm(
@@ -46,14 +45,15 @@ export const shootDangerModal = (
             {
                 text: "Cancel",
                 trigger: function() {
-                    cancelFunction();
+                  top.TYPO3.Modal.dismiss();
                 }
             },
             {
                 text: 'Okay',
                 btnClass:"btn-danger",
                 trigger: function() {
-                    okayFunction();
+                  okayFunction();
+                  top.TYPO3.Modal.dismiss();
                 }
             }
         ],
