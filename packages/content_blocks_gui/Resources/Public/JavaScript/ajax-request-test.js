@@ -6,13 +6,12 @@ class AjaxRequestTest {
     let sendAjaxRequest = this.sendAjaxRequest;
     this.addEventListener(sendAjaxRequest);
   }
-  // addEventListener(sendAjaxRequest) {
-// 
-  //   document.getElementById('ajaxTestBtn').addEventListener("click", function(ev) {
-  //       ev.preventDefault();
-  //       sendAjaxRequest();
-  //   });
-  // }
+   addEventListener(sendAjaxRequest) {
+     document.getElementById('ajaxTestBtn').addEventListener("click", function(ev) {
+         ev.preventDefault();
+         sendAjaxRequest();
+     });
+   }
   sendAjaxRequest() {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_list_cb'])
       .post(
@@ -119,8 +118,8 @@ class AjaxRequestTest {
           }
         }
          */
-         /*
-        // delete/download content block
+        /*
+        // get/delete/download content block
         {
           name: "test-123/test-12",
         }

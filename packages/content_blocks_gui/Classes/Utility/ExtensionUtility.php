@@ -32,6 +32,14 @@ class ExtensionUtility
     public function getAvailableExtensions(): AnswerInterface
     {
         // TODO: test in legacy mode
+        return new DataAnswer(
+            'list',
+            $this->findAvailableExtensions()
+        );
+    }
+
+    public function findAvailableExtensions(): array
+    {
         $availablePackages = $this->packageResolver->getAvailablePackages();
         $availableExtensions = [];
         foreach ($availablePackages as $packageKey => $package) {
@@ -50,16 +58,18 @@ class ExtensionUtility
             if(!$requiredContentBlocksPackage) {
                 continue;
             }
-            $availableExtensions[] = [
+            $availableExtensions[$packageKey] = [
                 'vendor' => explode('/', $availablePackages[$packageKey]->getValueFromComposerManifest('name'))[0],
                 'package' => explode('/', $availablePackages[$packageKey]->getValueFromComposerManifest('name'))[1],
                 'extension' => $packageKey,
                 'icon' => PathUtility::getAbsoluteWebPath(ExtensionManagementUtility::getExtensionIcon($availablePackages[$packageKey]->getPackagePath(), true))
             ];
         }
-        return new DataAnswer(
-            'list',
-            $availableExtensions
-        );
+        return $availableExtensions;
+    }
+
+    public function isEditable(string $extension): bool
+    {
+        return array_key_exists($extension, $this->findAvailableExtensions());
     }
 }

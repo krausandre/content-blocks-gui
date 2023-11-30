@@ -71,6 +71,7 @@ class ContentBlocksUtility
         protected readonly ContentTypeService $contentTypeService,
         protected readonly ContentBlockLoader $contentBlockLoader,
         protected readonly UsageFactory $usageFactory,
+        protected readonly ExtensionUtility $extensionUtility
     ) {
     }
 
@@ -239,8 +240,8 @@ class ContentBlocksUtility
                 'name' => $loadedContentBlock->getName(),
                 'label' => $label,
                 'extension' => $loadedContentBlock->getHostExtension(),
-                'editable' => true,
-                'deletable' => true,
+                'editable' => $this->extensionUtility->isEditable($loadedContentBlock->getHostExtension()),
+                'deletable' => $this->extensionUtility->isEditable($loadedContentBlock->getHostExtension()),
                 'usages' => $this->usageFactory->countUsages(
                     $loadedContentBlock->getContentType(),
                     $loadedContentBlock->getYaml()['typeName'] ?? str_replace(['/', '-'], ['_', ''], $loadedContentBlock->getName()),
@@ -273,7 +274,6 @@ class ContentBlocksUtility
             if ($this->contentBlockRegistry->hasContentBlock($parsedBody['name'])) {
                 $loadedContentBlock = $this->contentBlockRegistry->getContentBlock($parsedBody['name']);
                 $contentBlockAsArray = $loadedContentBlock->toArray();
-                $contentBlockAsArray['languageFile'] = $this->languageFileRegistry->getLanguageFile($parsedBody['name']);
                 return new DataAnswer(
                     'contentBlock',
                     $contentBlockAsArray
