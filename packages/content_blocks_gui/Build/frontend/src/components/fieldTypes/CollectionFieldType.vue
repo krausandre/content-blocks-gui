@@ -2,6 +2,7 @@
   <BaseFieldType
       icon-identifier="content-timeline"
       label="Collection"
+      :isNested="true"
   />
 </template>
 

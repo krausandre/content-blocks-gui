@@ -20,6 +20,11 @@ const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
     iconIdentifier: 'form-checkbox',
     typeLabel: 'Checkbox',
   },
+  collection: {
+    componentName: 'CollectionFieldType',
+    iconIdentifier: 'collection',
+    typeLabel: 'Collection'
+  }
 }
 
 const existingFieldGuiGenerics: FieldTypeGuiDefinition = {
