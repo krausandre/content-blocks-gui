@@ -1,6 +1,7 @@
 export class ContentBlockField {
   identifier: string = '';
   useExistingField: boolean = false;
+  properties: any = {};
 }
 
 export class Yaml {
