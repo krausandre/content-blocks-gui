@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "TYPO3 Content Blocks - ContentElement Schema",
+  "description": "Schema for creating Content Blocks yaml files from type ContentElement",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of the content block. It must follow the construct vendor/package like in composer.json. It must be unique in the system (also over diffrent content types).",
+      "type": "string",
+      "minLength": 3,
+      "pattern": "^[a-z0-9-]+\/[a-z0-9-]+$"
+    },
+    "group": {
+      "description": "Destination group in newContentElementWizard. If not set, the content block will be added to the \"common\" group.",
+      "type": "string"
+    },
+    "typeName": {
+      "description": "The identifier of the new Content Element. It is automatically generated from the name, if not defined manually. An exanple value could be \"my_content_element\" or a number for page types."
+    },
+    "prefixFields": {
+      "description": "Default: true. By default, all fields are prefixed with the name of the content block to prevent collisions. In order to better reuse fields between content blocks, it can be useful to deactivate this option.",
+      "type": "boolean"
+    },
+    "prefixType": {
+      "description": "Default: full. Determines how to prefix the field if prefixFields is enabled. Can be either full (default) or vendor.",
+      "type": "string"
+    },
+    "priority": {
+      "description": "Default: 0. The priority can be used to prioritize certain content blocks in the loading order. The default loading order is alphabetically. Higher priorities will be loaded before lower ones. This affects e.g. the order in the \"New Content Element Wizard\".",
+      "type": "integer"
+    },
+    "basics": {
+      "type": "array",
+      "description": "You can add a list of basic to your content block, which are added after your fields. Classically this is used for tabs like \"Appearance\", \"Language\" or \"Access\".",
+      "items": {
+        "type": "string",
+        "uniqueItems": true,
+        "pattern": "^[a-zA-Z0-9-]+\/[a-zA-Z0-9-]+$"
+      }
+    },
+    "fields": {
+      "description": "The main entry point for the field definitions. Fields defined in this array are displayed in the backend exactly in the same order. You can create new custom fields or reuse existing ones, which are defined via TCA. Learn here what is needed to define a field.",
+      "type": "array"
+
+    }
+  }
+}
