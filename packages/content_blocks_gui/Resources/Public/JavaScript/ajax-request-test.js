@@ -7,10 +7,13 @@ class AjaxRequestTest {
     this.addEventListener(sendAjaxRequest);
   }
    addEventListener(sendAjaxRequest) {
-     document.getElementById('ajaxTestBtn').addEventListener("click", function(ev) {
-         ev.preventDefault();
-         sendAjaxRequest();
-     });
+      let btn = document.getElementById('ajaxTestBtn');
+      if(btn !== null) {
+        btn.addEventListener("click", function(ev) {
+          ev.preventDefault();
+          sendAjaxRequest();
+        });
+      }
    }
   sendAjaxRequest() {
     return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_list_cb'])
