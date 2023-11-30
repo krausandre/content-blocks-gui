@@ -237,7 +237,11 @@ class ContentBlocksUtility
         $usages = $this->usageFactory->countUsages($contentBlock->getContentType(), $typeName, $table);
 
         $tableDefinition = $this->tableDefinitionCollection->getTable($table);
-        $typeDefinition = $tableDefinition->getDefaultTypeDefinition();
+        if ($tableDefinition->hasTypeField()) {
+            $typeDefinition = $tableDefinition->getContentTypeDefinitionCollection()->getType($typeName);
+        } else {
+            $typeDefinition = $tableDefinition->getDefaultTypeDefinition();
+        }
         $label = $this->getLanguageService()->sL($typeDefinition->getLanguagePathTitle());
 
         $result = [
