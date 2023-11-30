@@ -40,7 +40,7 @@
           <button
               type="button"
               class="btn btn-danger ms-2"
-              @click="shootErrorNotification('This doesn\'t work yet', 'This feature is not implemented yet. Please be patient with us.')"
+              @click="shootDangerModal('Delete content block', 'Do you really want to delete this content block?')"
           >
             <Icon identifier="actions-delete"/>
             Delete</button>
@@ -57,6 +57,7 @@ import {useContentBlockStore} from "@/store/contentBlockStore";
 import axios from "axios";
 
 import {shootSuccessNotification, shootInfoNotification, shootErrorNotification, shootNoticeNotification, shootWarningNotification} from "../../helper/typo3NotificationHelper.js"
+import {shootDangerModal} from "@/helper/typo3ModalHelper";
 
 interface Item {
   name: string;

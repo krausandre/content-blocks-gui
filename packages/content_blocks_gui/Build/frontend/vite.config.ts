@@ -14,7 +14,7 @@ export default defineConfig({
     emptyOutDir: true,
     manifest: true,
     rollupOptions: {
-      external: ['@typo3/backend/notification.js'],
+      external: ['@typo3/backend/notification.js', '@typo3/backend/modal.js'],
       output: {
         entryFileNames: "index.js",
         assetFileNames: (assetInfo) => {
