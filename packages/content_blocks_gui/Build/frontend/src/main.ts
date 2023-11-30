@@ -11,8 +11,7 @@ import FolderFieldType from "@/components/fieldTypes/FolderFieldType.vue";
 import ImageFieldType from "@/components/fieldTypes/ImageFieldType.vue";
 import LineBreakFieldType from "@/components/fieldTypes/LineBreakFieldType.vue";
 import NumberFieldType from "@/components/fieldTypes/NumberFieldType.vue";
-
-import TextFieldType from './components/fieldTypes/TextFieldType.vue'
+import TextFieldType from '@/components/fieldTypes/TextFieldType.vue'
 import TextAreaFieldType from "@/components/fieldTypes/TextAreaFieldType.vue";
 
 import { createApp } from 'vue';

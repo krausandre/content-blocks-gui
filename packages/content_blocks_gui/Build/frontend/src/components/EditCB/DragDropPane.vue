@@ -1,26 +1,26 @@
 <template>
-  <pre>
-{{contentBlockStore.getFields}}
-{{fieldsList}}
-  </pre>
   <div class="drag-drop-pane">
     <draggable
-      class="dragArea list-group"
-      :list="fieldsList"
-      group="people"
-      @change="change"
-      item-key="identifier"
+        class="dragArea list-group"
+        :list="fieldsList"
+        group="people"
+        @change="change"
+        item-key="identifier"
     >
       <template #item="{ element: item }">
         <component
             :isInDragArea="true"
-            :is="item.componentName"
+            :is="FieldTypes.componentName(item)"
             :identifier="item.identifier"
-            :label="item.label + ' (' + item.identifier + ')'"
-            :icon-identifier="item.iconIdentifier"/>
+            :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
+            :icon-identifier="FieldTypes.iconIdentifier(item)"/>
       </template>
     </draggable>
   </div>
+  <pre>
+{{ contentBlockStore.getFields }}
+{{ fieldsList }}
+  </pre>
 </template>
 
 <script>
@@ -28,9 +28,15 @@ import draggable from "vuedraggable";
 import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 
 import {useContentBlockStore} from "@/store/contentBlockStore";
+import {FieldTypes} from "@/models/FieldTypes";
 
 export default {
   name: "clone",
+  computed: {
+    FieldTypes() {
+      return FieldTypes
+    }
+  },
   display: "Clone",
   order: 2,
   components: {
@@ -44,7 +50,7 @@ export default {
     };
   },
   methods: {
-    change: function(evt) {
+    change: function (evt) {
       this.contentBlockStore.setFields(this.fieldsList);
       console.log("FieldsList: ", this.fieldsList);
     }

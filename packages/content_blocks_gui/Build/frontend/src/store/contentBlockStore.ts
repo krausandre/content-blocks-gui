@@ -31,7 +31,7 @@ export const useContentBlockStore = defineStore(
         if (field === undefined) {
           return '';
         }
-        return field.properties.hasOwnProperty(propertyName)? field.properties[propertyName] : '';
+        return field.hasOwnProperty(propertyName)? field[propertyName] : '';
       },
       setFieldValue(fieldIdentifier: string, propertyName: string, value: string): void {
         const field: ContentBlockField | undefined = this.contentBlock.yaml.fields.find(
@@ -40,11 +40,11 @@ export const useContentBlockStore = defineStore(
         if (field === undefined) {
           return;
         }
-        if (!field.properties.hasOwnProperty(propertyName)) {
+        if (!field.hasOwnProperty(propertyName)) {
           return;
         }
         console.log(`setting ${fieldIdentifier} / ${propertyName} = ${value}`)
-        field.properties[propertyName] = value;
+        field[propertyName] = value;
       }
     },
   }

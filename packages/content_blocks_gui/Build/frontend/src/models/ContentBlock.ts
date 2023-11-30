@@ -1,7 +1,26 @@
 export class ContentBlockField {
   identifier: string = '';
-  useExistingField: boolean = false;
-  properties: any = {};
+  required?: boolean = false;
+  // @todo:
+  [key:string]: any;
+}
+
+type ContentBlockFieldType
+  = 'text' | 'textarea' | 'checkbox';
+
+export class ContentBlockFieldNew extends ContentBlockField {
+  type: ContentBlockFieldType = 'text';
+  autocomplete?: boolean;
+  allowedTypes?: string[];
+  allowed?: string;
+  max?: number;
+  minitems?: number;
+  maxitems?: number;
+  enableRichtext?: boolean;
+}
+
+export class ContentBlockFieldExisting extends ContentBlockField {
+  useExistingField: boolean = true;
 }
 
 export class Yaml {
