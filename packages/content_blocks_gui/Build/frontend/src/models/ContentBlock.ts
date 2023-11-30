@@ -6,10 +6,10 @@ export class ContentBlockField {
 }
 
 type ContentBlockFieldType
-  = 'text' | 'textarea' | 'checkbox';
+  = 'Text' | 'Textarea' | 'Checkbox' | 'Link' | 'Collection'
 
 export class ContentBlockFieldNew extends ContentBlockField {
-  type: ContentBlockFieldType = 'text';
+  type: ContentBlockFieldType = 'Text';
   autocomplete?: boolean;
   allowedTypes?: string[];
   allowed?: string;

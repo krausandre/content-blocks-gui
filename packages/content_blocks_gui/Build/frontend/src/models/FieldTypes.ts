@@ -1,24 +1,30 @@
 import type {ContentBlockField} from "@/models/ContentBlock";
+import {ContentBlockFieldExisting, ContentBlockFieldNew} from "@/models/ContentBlock";
 
 type FieldTypeGuiDefinition = {
   componentName: string, iconIdentifier: string, typeLabel: string
 }
 
 const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
-  text: {
+  Text: {
     componentName: 'TextFieldType',
     iconIdentifier: 'form-text',
     typeLabel: 'Text',
   },
-  textarea: {
+  Textarea: {
     componentName: 'TextAreaFieldType',
     iconIdentifier: 'form-textarea',
     typeLabel: 'Textarea',
   },
-  checkbox: {
+  Checkbox: {
     componentName: 'CheckboxFieldType',
     iconIdentifier: 'form-checkbox',
     typeLabel: 'Checkbox',
+  },
+  Link: {
+    componentName: 'LinkFieldType',
+    iconIdentifier: 'form-link',
+    typeLabel: 'Link',
   },
   Collection: {
     componentName: 'CollectionFieldType',
@@ -63,8 +69,18 @@ export class FieldTypes {
 
   static draggableVanillaFieldTypes(): ContentBlockField[] {
     return [
-      {
-        type: 'text',
+      <ContentBlockFieldExisting>{
+        identifier: 'existing',
+        useExistingField: true,
+      },
+      <ContentBlockFieldNew>{
+        type: 'Collection',
+        identifier: 'collection',
+        required: false,
+        fields: [],
+      },
+      <ContentBlockFieldNew>{
+        type: 'Text',
         identifier: 'text',
         default: '',
         required: false,
@@ -74,8 +90,8 @@ export class FieldTypes {
         placeholder: '',
         valuePicker: [],
       },
-      {
-        type: "textarea",
+      <ContentBlockFieldNew>{
+        type: 'Textarea',
         identifier: 'textarea',
         default: '',
         placeholder: '',
@@ -84,23 +100,19 @@ export class FieldTypes {
         enableRichtext: false,
         richtextConfiguration: 255
       },
-      {
-        type: "checkbox",
+      <ContentBlockFieldNew>{
+        type: 'Checkbox',
         identifier: 'checkbox',
         default: false,
         required: false,
         items: [],
       },
-      {
-        type: "Collection",
-        identifier: 'collection',
+      <ContentBlockFieldNew>{
+        type: 'Link',
+        identifier: 'link',
+        default: false,
         required: false,
-        fields: [],
       },
-      {
-        identifier: 'existing',
-        useExistingField: true,
-      }
     ]
   }
 }
