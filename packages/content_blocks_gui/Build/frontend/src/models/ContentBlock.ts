@@ -33,8 +33,6 @@ export class Yaml {
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
 export class ContentBlock {
-  contentType: 'content-element' | 'page-type' | 'record-type' | 'basic' = 'content-element';
-  mode: 'create' | 'copy' | 'edit' = 'create';
   name: string = '';
   yaml: Yaml = new Yaml();
   icon: string = '';
