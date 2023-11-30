@@ -18,6 +18,7 @@ export class ContentBlockFieldNew extends ContentBlockField {
   minitems?: number;
   maxitems?: number;
   enableRichtext?: boolean;
+  fields?: ContentBlockField[] = []; // Collection only
 }
 
 export class ContentBlockFieldExisting extends ContentBlockField {
@@ -28,18 +29,34 @@ export class Yaml {
   table: string = '';
   typeField: string = '';
   fields: ContentBlockField[] = [];
+  basics?: string[] = [];
 }
 
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
 export class ContentBlock {
   name: string = '';
+  // @todo is about to come in _get_cb:
+  vendor?: string = '';
   yaml: Yaml = new Yaml();
   icon: string = '';
   iconProvider: IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
   hostExtension: string = '';
-  extPath: string = '';
-  languageFile: {} = {};
+  //extPath: string = '';
+  //languageFile: {} = {};
+
+  static contentType(contentBlock: ContentBlock): string {
+    if (contentBlock.yaml.table === 'tt_content') {
+      return 'content-element';
+    }
+    if (contentBlock.yaml.table === 'pages') {
+      return 'page-type';
+    }
+    if (contentBlock.yaml.table) {
+      return 'record-type';
+    }
+    return 'basic';
+  }
 
   // @todo
   static isContentElement(contentBlock: ContentBlock): boolean {
