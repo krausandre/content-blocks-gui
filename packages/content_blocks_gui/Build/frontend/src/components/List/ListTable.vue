@@ -56,6 +56,8 @@ import Icon from "@/components/icons/Icon.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import axios from "axios";
 
+import {shootSuccessNotification, shootInfoNotification} from "../../helper/typo3NotificationHelper.js"
+
 interface Item {
   name: string;
   label: string;
@@ -123,6 +125,7 @@ const download = (name: string) => {
       )
       .then(response => {
         // Notification von TYPO3 anzeigen -> Download läuft
+        shootInfoNotification("Download started", "The download has started. This might take a while.");
         const contentDisposition = response.headers['content-disposition'];
         let filename = name + '.zip';
         if (contentDisposition) {
@@ -146,6 +149,7 @@ const download = (name: string) => {
 
         window.URL.revokeObjectURL(url); // Bereinigung
         // Notification von TYPO3 anzeigen -> Download fertig
+        shootSuccessNotification("Download finished", "The download has finished.");
       })
       .catch(
           (error) => {
