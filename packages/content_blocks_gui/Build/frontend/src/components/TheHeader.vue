@@ -45,7 +45,7 @@
         <button
             type="button"
             class="btn btn-primary"
-            @click="handle"
+            @click="handleAddPageType"
             v-if="globalPropertiesStore.getIsCbListView"
         >
           <Icon identifier="actions-extension-add"/>
@@ -55,7 +55,7 @@
         <button
             type="button"
             class="btn btn-primary"
-            @click="contentBlockStore.resetContentBlock('@todo basic'); globalPropertiesStore.setCurrentViewToEditView(); globalPropertiesStore.setCurrentContentType('basic');"
+            @click="handleAddBasic"
             v-if="globalPropertiesStore.getIsCbListView"
         >
           <Icon identifier="actions-extension-add"/>

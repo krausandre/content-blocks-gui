@@ -8,6 +8,7 @@
         <th>Name</th>
         <th>Label</th>
         <th>Extension</th>
+        <th>Usages</th>
         <th>Actions</th>
       </tr>
       </thead>
@@ -21,6 +22,7 @@
         <td>{{ item.name }}</td>
         <td>{{ item.label }}</td>
         <td>{{ item.extension }}</td>
+        <td>{{ item.usages }}</td>
         <td>
           <button
               type="button"
@@ -42,7 +44,7 @@
               type="button"
               class="btn btn-danger ms-2"
               @click="showDeleteConfirmation(item.name)"
-              v-if="item.deletable"
+              v-if="item.deletable && item.usages < 1"
           >
             <Icon identifier="actions-delete"/>
             Delete</button>
@@ -67,6 +69,7 @@ interface Item {
   name: string;
   label: string;
   extension: string;
+  usages: number;
   deletable: boolean;
   editable: boolean;
 }
