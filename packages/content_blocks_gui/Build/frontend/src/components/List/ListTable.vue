@@ -56,6 +56,7 @@
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import Icon from "@/components/icons/Icon.vue";
 import {useContentBlockStore} from "@/store/contentBlockStore";
+import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
 import axios from "axios";
 
 import {shootSuccessNotification, shootInfoNotification, shootErrorNotification, shootNoticeNotification, shootWarningNotification} from "../../helper/typo3NotificationHelper.js"
@@ -70,6 +71,7 @@ interface Item {
 }
 
 const globalPropertiesStore = useGlobalPropertiesStore();
+const contentBlocksListStore = useContentBlocksListStore();
 const contentBlockStore = useContentBlockStore();
 
 const props = defineProps({
@@ -85,6 +87,8 @@ function getTypeOfRecord() {
       return 'content-beside-text-img-below-right';
     case 'PAGE_TYPE':
       return 'mimetypes-text-typoscript';
+    case 'BASICS':
+      return 'actions-document-open';
   }
 }
 
@@ -189,12 +193,14 @@ const deleteContentBlockByName = (name: string) => {
       .then(
           (response) => {
             shootSuccessNotification("Content block deleted", "The content block was deleted.");
+            contentBlocksListStore.fetch();
           }
       )
       .catch(
           (error) => {
             // Notification Error von TYPO3 anzeigen
             shootErrorNotification("Error", "The content block could not be deleted.");
+            contentBlocksListStore.fetch();
           }
       );
 }
