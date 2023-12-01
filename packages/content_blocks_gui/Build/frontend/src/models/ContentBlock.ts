@@ -60,7 +60,7 @@ export class ContentBlock {
 
   // @todo
   static isContentElement(contentBlock: ContentBlock): boolean {
-    return contentBlock.yaml.table === 'tt_content';
+    return contentBlock.yaml?.table === 'tt_content';
   }
   static setTypeContentElement(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = 'tt_content';
@@ -69,7 +69,7 @@ export class ContentBlock {
 
   // @todo
   static isPagetype(contentBlock: ContentBlock): boolean {
-    return (contentBlock.yaml.table ?? '') === 'pages';
+    return (contentBlock.yaml?.table ?? '') === 'pages';
   }
   static setTypePagetype(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = 'pages';
@@ -77,7 +77,7 @@ export class ContentBlock {
 
   static isTypeRecordType(contentBlock: ContentBlock): boolean {
     // @todo
-    return !['pages', 'tt_content'].includes(contentBlock.yaml.table);
+    return !['pages', 'tt_content'].includes(contentBlock.yaml?.table);
   }
   static setTypeRecordType(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = '';
