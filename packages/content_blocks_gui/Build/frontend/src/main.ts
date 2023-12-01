@@ -1,5 +1,8 @@
 import './assets/main.css'
 
+import EditView from "@/views/EditView.vue";
+import ListView from "@/views/ListView.vue";
+
 import CategoryFieldType from "@/components/fieldTypes/CategoryFieldType.vue";
 import CheckboxFieldType from "@/components/fieldTypes/CheckboxFieldType.vue";
 import CollectionFieldType from "@/components/fieldTypes/CollectionFieldType.vue";
@@ -23,6 +26,10 @@ const pinia = createPinia();
 const app = createApp(App)
 
 app.use(pinia);
+
+app.component('ListView', ListView)
+app.component('EditView', EditView)
+
 app.component('CategoryFieldType', CategoryFieldType)
 app.component('CheckboxFieldType', CheckboxFieldType)
 app.component('CollectionFieldType', CollectionFieldType)

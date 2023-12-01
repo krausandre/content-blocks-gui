@@ -30,3 +30,8 @@ export class Controller {
 
 const controller = new Controller();
 export default controller;
+
+export enum AppMainView {
+  EDIT_VIEW = 'EditView',
+  LIST_VIEW = 'ListView',
+}
