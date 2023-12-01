@@ -28,11 +28,11 @@ const globalPropertiesStore = useGlobalPropertiesStore();
 let idGlobal = 0;
 
 const cloneFieldType = (item: any) => {
-  const identifier = item.identifier + "_" + idGlobal++;
-  globalPropertiesStore.setCurrentSelectedFieldIdentifier(identifier);
   // deep copy ;)
   const newItem = JSON.parse(JSON.stringify(item));
+  const identifier = (item.type ?? 'existing').toLowerCase() + "_" + idGlobal++;
   newItem.identifier = identifier;
+  globalPropertiesStore.setCurrentSelectedFieldIdentifier(identifier);
   return newItem;
 }
 </script>

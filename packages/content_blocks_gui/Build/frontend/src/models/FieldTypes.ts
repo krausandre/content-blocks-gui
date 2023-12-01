@@ -35,7 +35,7 @@ const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
 
 const existingFieldGuiGenerics: FieldTypeGuiDefinition = {
   componentName: 'ExistingFieldType',
-  iconIdentifier: 'actions-link',
+  iconIdentifier: 'mimetypes-x-content-link',
   typeLabel: 'Existing Field',
 }
 
@@ -70,48 +70,28 @@ export class FieldTypes {
   static draggableVanillaFieldTypes(): ContentBlockField[] {
     return [
       <ContentBlockFieldExisting>{
-        identifier: 'existing',
+        identifier: '',
         useExistingField: true,
       },
       <ContentBlockFieldNew>{
         type: 'Collection',
-        identifier: 'collection',
-        required: false,
-        fields: [],
+        identifier: '',
       },
       <ContentBlockFieldNew>{
         type: 'Text',
-        identifier: 'text',
-        default: '',
-        required: false,
-        minLength: 0,
-        maxLength: 255,
-        size: 255,
-        placeholder: '',
-        valuePicker: [],
+        identifier: '',
       },
       <ContentBlockFieldNew>{
         type: 'Textarea',
-        identifier: 'textarea',
-        default: '',
-        placeholder: '',
-        rows: 5,
-        required: false,
-        enableRichtext: false,
-        richtextConfiguration: 255
+        identifier: '',
       },
       <ContentBlockFieldNew>{
         type: 'Checkbox',
-        identifier: 'checkbox',
-        default: false,
-        required: false,
-        items: [],
+        identifier: '',
       },
       <ContentBlockFieldNew>{
         type: 'Link',
         identifier: 'link',
-        default: false,
-        required: false,
       },
     ]
   }
