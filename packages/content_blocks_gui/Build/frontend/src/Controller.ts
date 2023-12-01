@@ -3,6 +3,7 @@ import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {ContentBlock} from "@/models/ContentBlock";
 import axios from "axios";
 
+
 export class Controller {
   saveCb() {
     const cb = useContentBlockStore().contentBlock;

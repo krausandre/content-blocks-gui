@@ -13,8 +13,6 @@
 <script setup lang="ts">
 import {useContentBlocksListStore} from '@/store/contentBlocksListStore'
 import ListTable from '@/components/List/ListTable.vue'
-import Icon from '@/components/icons/Icon.vue'
-import axios from "axios";
 import {useIconListStore} from "@/store/iconListStore";
 
 const contentBlocksStore = useContentBlocksListStore();
@@ -24,6 +22,7 @@ function getHeaderFromTable(index: number) {
   const headers = Object.keys(contentBlocksStore.getList);
   return headers[index];
 }
+
 contentBlocksStore.fetch();
 iconListStore.fetch();
 </script>
