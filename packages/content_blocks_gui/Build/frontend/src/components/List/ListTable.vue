@@ -26,7 +26,7 @@
         <td>
           <button
               type="button"
-              class="btn btn-default"
+              class="btn btn-default me-2"
               @click="edit(item.name)"
               v-if="item.editable"
           >
@@ -35,7 +35,7 @@
           </button>
           <button
               type="button"
-              class="btn btn-info ms-2"
+              class="btn btn-info me-2"
               @click="download(item.name)"
           >
             <Icon identifier="actions-download"/>
@@ -43,7 +43,7 @@
           </button>
           <button
               type="button"
-              class="btn btn-danger ms-2"
+              class="btn btn-danger me-2"
               @click="showDeleteConfirmation(item.name)"
               v-if="item.deletable && item.usages < 1"
           >
