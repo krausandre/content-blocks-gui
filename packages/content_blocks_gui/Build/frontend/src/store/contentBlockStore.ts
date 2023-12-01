@@ -8,7 +8,7 @@ export const useContentBlockStore = defineStore(
     state: () => (
       {
         contentBlock: new ContentBlock(),
-        mode: AppEditMode.CREATE,
+        mode: AppEditMode.CREATE as AppEditMode,
       }
     ),
     getters: {
@@ -18,7 +18,7 @@ export const useContentBlockStore = defineStore(
     actions: {
       resetContentBlock() {
         this.$reset()
-        this.mode = AppEditMode.CREATE
+        this.setMode(AppEditMode.CREATE)
       },
       setContentBlock(newContentBlock: ContentBlock) {
         this.contentBlock = newContentBlock;

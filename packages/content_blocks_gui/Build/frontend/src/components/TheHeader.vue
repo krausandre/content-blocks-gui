@@ -64,7 +64,8 @@
       </div>
     </nav>
     <div v-if="globalPropertiesStore.getIsEditView" class="alert alert-primary" role="alert">
-      You are editing a {{ ContentBlock.typeString(contentBlockStore.contentBlock) }}
+      You are {{ contentBlockStore.mode === AppEditMode.EDIT ? 'editing' : 'creating' }}
+      a {{ ContentBlock.typeString(contentBlockStore.contentBlock) }}
     </div>
     <div>
       <button
@@ -79,7 +80,7 @@
 </template>
 
 <script setup>
-import controller from "@/Controller";
+import controller, {AppEditMode} from "@/Controller";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
