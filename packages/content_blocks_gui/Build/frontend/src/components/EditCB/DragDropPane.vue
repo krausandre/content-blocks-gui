@@ -25,38 +25,15 @@
   </pre>
 </template>
 
-<script>
+<script setup>
 import draggable from "vuedraggable";
-import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {FieldTypes} from "@/models/FieldTypes";
 
-export default {
-  name: "clone",
-  computed: {
-    FieldTypes() {
-      return FieldTypes
-    }
-  },
-  display: "Clone",
-  order: 2,
-  components: {
-    BaseFieldType,
-    draggable
-  },
-  data() {
-    return {
-      fieldsList: useContentBlockStore().getFields,
-      contentBlockStore: useContentBlockStore()
-    };
-  },
-  methods: {
-    change: function (evt) {
-      this.contentBlockStore.setFields(this.fieldsList);
-      console.log("FieldsList: ", this.fieldsList);
-    }
-  }
-};
+const fieldsList = useContentBlockStore().getFields;
+const contentBlockStore = useContentBlockStore();
+
+const change = (evt) => contentBlockStore.setFields(fieldsList);
 </script>
 <style scoped></style>

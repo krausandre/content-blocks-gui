@@ -20,12 +20,9 @@
 
 <script setup lang='ts'>
 import draggable from "vuedraggable";
-
-import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {FieldTypes} from "@/models/FieldTypes";
 
-const contentBlockStore = useContentBlockStore();
 const globalPropertiesStore = useGlobalPropertiesStore();
 
 let idGlobal = 0;
