@@ -14,8 +14,10 @@ export class Controller {
     // @todo – this makes sure we drop type information and hydrate fine but looks funny of course
     const cb = JSON.parse(JSON.stringify(toRaw<ContentBlock>(contentBlockStore.contentBlock)))
 
-    // @todo
-    cb.yaml.vendor = 'xxx';
+    // @todo not a good place here
+    const [vendor, packageName] = cb.yaml.name.split('/')
+    cb.yaml.vendor = vendor;
+    cb.yaml.name = packageName;
 
     const data = {
       contentType: ContentBlock.contentType(cb),

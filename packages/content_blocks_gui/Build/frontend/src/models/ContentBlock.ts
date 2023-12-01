@@ -26,6 +26,10 @@ export class ContentBlockFieldExisting extends ContentBlockField {
 }
 
 export class Yaml {
+  // @todo https://github.com/krausandre/content-blocks-gui/issues/2
+  vendor?: string;
+  name?: string;
+
   table: string = '';
   typeField: string = '';
   fields: ContentBlockField[] = [];
