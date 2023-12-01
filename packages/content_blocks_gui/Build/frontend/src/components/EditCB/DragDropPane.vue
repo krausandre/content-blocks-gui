@@ -10,7 +10,7 @@
     >
       <template #item="{ element: item }">
         <component
-            :isInDragArea="true"
+            :is-in-drag-area="true"
             :is="FieldTypes.componentName(item)"
             :identifier="item.identifier"
             :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"

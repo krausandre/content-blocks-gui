@@ -3,6 +3,7 @@ import './assets/main.css'
 import EditView from "@/views/EditView.vue";
 import ListView from "@/views/ListView.vue";
 
+import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 import CategoryFieldType from "@/components/fieldTypes/CategoryFieldType.vue";
 import CheckboxFieldType from "@/components/fieldTypes/CheckboxFieldType.vue";
 import CollectionFieldType from "@/components/fieldTypes/CollectionFieldType.vue";
@@ -18,9 +19,9 @@ import TextFieldType from '@/components/fieldTypes/TextFieldType.vue'
 import TextAreaFieldType from "@/components/fieldTypes/TextAreaFieldType.vue";
 import ExistingFieldType from "@/components/fieldTypes/ExistingFieldType.vue";
 
-import { createApp } from 'vue';
+import {createApp} from 'vue';
 import App from '@/App.vue'
-import { createPinia } from 'pinia'
+import {createPinia} from 'pinia'
 
 const pinia = createPinia();
 const app = createApp(App)
@@ -30,6 +31,7 @@ app.use(pinia);
 app.component('ListView', ListView)
 app.component('EditView', EditView)
 
+app.component('BaseFieldType', BaseFieldType)
 app.component('CategoryFieldType', CategoryFieldType)
 app.component('CheckboxFieldType', CheckboxFieldType)
 app.component('CollectionFieldType', CollectionFieldType)

@@ -23,7 +23,7 @@ const guiGenerics: { [type: string]: FieldTypeGuiDefinition } = {
   },
   Link: {
     componentName: 'LinkFieldType',
-    iconIdentifier: 'form-link',
+    iconIdentifier: 'actions-link',
     typeLabel: 'Link',
   },
   Collection: {
@@ -41,29 +41,29 @@ const existingFieldGuiGenerics: FieldTypeGuiDefinition = {
 
 export class FieldTypes {
   static componentName(field: ContentBlockField): string {
-    if(field.useExistingField ?? false) {
+    if (field.useExistingField ?? false) {
       return existingFieldGuiGenerics.componentName;
     }
 
-    return guiGenerics[field.type].componentName
+    return guiGenerics[field.type]?.componentName
       ?? 'BaseFieldType';
   }
 
   static iconIdentifier(field: ContentBlockField): string {
-    if(field.useExistingField ?? false) {
+    if (field.useExistingField ?? false) {
       return existingFieldGuiGenerics.iconIdentifier;
     }
 
-    return guiGenerics[field.type].iconIdentifier
+    return guiGenerics[field.type]?.iconIdentifier
       ?? 'actions-question-circle';
   }
 
   static typeLabel(field: ContentBlockField): string {
-    if(field.useExistingField ?? false) {
+    if (field.useExistingField ?? false) {
       return existingFieldGuiGenerics.typeLabel;
     }
 
-    return guiGenerics[field.type].typeLabel
+    return guiGenerics[field.type]?.typeLabel
       ?? `Not implemented (${field.type})`;
   }
 

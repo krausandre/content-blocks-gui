@@ -18,7 +18,7 @@ export class ContentBlockFieldNew extends ContentBlockField {
   minitems?: number;
   maxitems?: number;
   enableRichtext?: boolean;
-  fields?: ContentBlockField[] = []; // Collection only
+  fields?: ContentBlockField[] = []; // Collection and Flexform only
 }
 
 export class ContentBlockFieldExisting extends ContentBlockField {
