@@ -1,1 +1,1 @@
-declare var TYPO3: any;
+declare const TYPO3: any;
