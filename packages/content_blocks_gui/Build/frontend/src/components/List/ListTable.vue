@@ -68,7 +68,7 @@ import {
   shootErrorNotification,
   shootInfoNotification,
   shootSuccessNotification
-} from "../../helper/typo3NotificationHelper.js"
+} from "@/helper/typo3NotificationHelper.js"
 import {shootDangerModal} from "@/helper/typo3ModalHelper";
 
 interface Item {

@@ -19,7 +19,7 @@ import TextAreaFieldType from "@/components/fieldTypes/TextAreaFieldType.vue";
 import ExistingFieldType from "@/components/fieldTypes/ExistingFieldType.vue";
 
 import { createApp } from 'vue';
-import App from './App.vue'
+import App from '@/App.vue'
 import { createPinia } from 'pinia'
 
 const pinia = createPinia();

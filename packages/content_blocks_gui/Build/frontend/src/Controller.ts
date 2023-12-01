@@ -1,4 +1,5 @@
-import {useContentBlockStore} from "./store/contentBlockStore";
+import {useContentBlockStore} from "@/store/contentBlockStore";
+import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {ContentBlock} from "@/models/ContentBlock";
 import axios from "axios";
 
