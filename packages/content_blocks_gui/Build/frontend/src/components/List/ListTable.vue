@@ -160,14 +160,22 @@ const edit = (name: string) => {
   ).then(
       response => {
         globalPropertiesStore.setIsLoading(false)
+
+        if (!response.data.success) {
+          throw new Error(response.data.message);
+        }
         contentBlockStore.setContentBlock(response.data.body.contentBlock)
         contentBlockStore.setMode(AppEditMode.EDIT)
         globalPropertiesStore.setCurrentViewToEditView()
       }
   ).catch(
       error => {
-        console.error('Error:', error);
         globalPropertiesStore.setIsLoading(false)
+        shootErrorNotification(
+            'Error',
+            error.message,
+        )
+        console.error('Error:', error);
       }
   );
 }
@@ -238,12 +246,15 @@ const deleteContentBlockByName = (name: string) => {
       }
   ).then(
       (response) => {
+        if (!response.data.success) {
+          throw new Error(response.data.message);
+        }
         shootSuccessNotification("Content block deleted", "The content block was deleted.");
         contentBlocksListStore.fetch();
       }
   ).catch(
-      (error) => {
-        // Notification Error von TYPO3 anzeigen
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      error => {
         shootErrorNotification("Error", "The content block could not be deleted.");
         contentBlocksListStore.fetch();
       }
