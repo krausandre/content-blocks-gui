@@ -1,11 +1,4 @@
 <template>
-  <div class="alert alert-warning"
-       v-if="useGlobalPropertiesStore().isLoading"
-  >
-    @todo
-    Bin Laden...
-  </div>
-
   <div class="editview">
     <div class="row">
       <div class="col-4">
