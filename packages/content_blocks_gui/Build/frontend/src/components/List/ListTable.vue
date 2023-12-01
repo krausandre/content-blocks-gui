@@ -9,12 +9,12 @@
     <table class="cb-list-table">
       <thead>
       <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Label</th>
-        <th>Extension</th>
-        <th>Usages</th>
-        <th>Actions</th>
+        <th scope="col" class="col-1"></th>
+        <th scope="col" class="col-2">Name</th>
+        <th scope="col" class="col-3">Label</th>
+        <th scope="col" class="col-2">Extension</th>
+        <th scope="col" class="col-1">Usages</th>
+        <th scope="col" class="col-3">Actions</th>
       </tr>
       </thead>
       <tr
