@@ -1,5 +1,6 @@
 <template>
   <div class="drag-drop-pane">
+    <!-- @todo group people? -->
     <draggable
         class="dragArea list-group"
         :list="fieldsList"

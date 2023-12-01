@@ -1,4 +1,5 @@
 <template>
+  <!-- @todo group people? -->
   <draggable
     class="dragArea list-group leftpane-components"
     :list="FieldTypes.draggableVanillaFieldTypes()"
