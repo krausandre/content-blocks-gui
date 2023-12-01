@@ -1,5 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/krausandre/content-blocks-gui/main/packages/content_blocks_gui/Build/JsonSchema/contentblocks-content-element.json",
   "title": "TYPO3 Content Blocks - ContentElement Schema",
   "description": "Schema for creating Content Blocks yaml files from type ContentElement",
   "type": "object",
