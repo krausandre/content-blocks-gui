@@ -7,7 +7,9 @@ export class ContentBlockField {
 }
 
 type ContentBlockFieldType
-  = 'Text' | 'Textarea' | 'Checkbox' | 'Link' | 'Collection'
+  = 'Category' | 'Checkbox' | 'Collection' | 'Color' | 'DateTime' | 'Email' | 'File' | 'FlexForm' | 'Folder'
+  | 'Linebreak' | 'Link' | 'Number' | 'Palette' | 'Password' | 'Radio' | 'Relation' | 'Select' | 'Slug'
+  | 'Tab' | 'Text' | 'Textarea'
 
 export class ContentBlockFieldNew extends ContentBlockField {
   type: ContentBlockFieldType = 'Text';
@@ -73,6 +75,7 @@ export class ContentBlock {
   static isContentElement(contentBlock: ContentBlock): boolean {
     return contentBlock.yaml?.table === 'tt_content';
   }
+
   static setTypeContentElement(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = 'tt_content';
     contentBlock.yaml.typeField = 'CType';
@@ -82,6 +85,7 @@ export class ContentBlock {
   static isPagetype(contentBlock: ContentBlock): boolean {
     return (contentBlock.yaml?.table ?? '') === 'pages';
   }
+
   static setTypePagetype(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = 'pages';
   }
@@ -90,6 +94,7 @@ export class ContentBlock {
     // @todo
     return !['pages', 'tt_content'].includes(contentBlock.yaml?.table);
   }
+
   static setTypeRecordType(contentBlock: ContentBlock): void {
     contentBlock.yaml.table = '';
   }
@@ -99,6 +104,7 @@ export class ContentBlock {
     contentBlock.yaml.table = '@todo basic';
     console.log('@todo: setTypeBasic()')
   }
+
   static isTypeBasic(contentBlock: ContentBlock): boolean {
     // @todo
     return false;

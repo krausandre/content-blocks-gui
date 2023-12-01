@@ -78,11 +78,7 @@ export class FieldTypes {
         identifier: '',
       },
       <ContentBlockFieldNew>{
-        type: 'Text',
-        identifier: '',
-      },
-      <ContentBlockFieldNew>{
-        type: 'Textarea',
+        type: 'Category',
         identifier: '',
       },
       <ContentBlockFieldNew>{
@@ -90,8 +86,76 @@ export class FieldTypes {
         identifier: '',
       },
       <ContentBlockFieldNew>{
+        type: 'Color',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'DateTime',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Email',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'File',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'FlexForm',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Folder',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Linebreak',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
         type: 'Link',
-        identifier: 'link',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Number',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Palette',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Password',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Radio',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Relation',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Select',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Slug',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Tab',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Text',
+        identifier: '',
+      },
+      <ContentBlockFieldNew>{
+        type: 'Textarea',
+        identifier: '',
       },
     ]
   }
