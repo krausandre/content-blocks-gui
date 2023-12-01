@@ -40,6 +40,14 @@
           </button>
           <button
               type="button"
+              class="btn btn-default me-2"
+              @click="copy(item.name)"
+          >
+            <Icon identifier="actions-duplicate"/>
+            Duplicate
+          </button>
+          <button
+              type="button"
               class="btn btn-info me-2"
               @click="download(item.name)"
           >
@@ -178,6 +186,9 @@ const edit = (name: string) => {
         console.error('Error:', error);
       }
   );
+}
+const copy = (name: string) => {
+  shootInfoNotification("Not yet, dude", "This feature is not yet implemented.");
 }
 
 const download = (name: string) => {
