@@ -29,7 +29,11 @@ export const useGroupListStore = defineStore('groupList', {
         )
         .catch(
           error => {
-            console.log(error)
+            shootErrorNotification(
+              'Error',
+              error.message,
+            )
+            console.error('Error:', error);
           }
         );
     }

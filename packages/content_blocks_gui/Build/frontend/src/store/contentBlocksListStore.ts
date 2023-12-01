@@ -31,7 +31,11 @@ export const useContentBlocksListStore = defineStore(
           }
         ).catch(
           error => {
-            console.log(error)
+            shootErrorNotification(
+              'Error',
+              error.message,
+            )
+            console.error('Error:', error);
           }
         );
       }

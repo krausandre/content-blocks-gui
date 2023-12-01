@@ -29,7 +29,11 @@ export const useExtensionListStore = defineStore('extensionList',{
         )
         .catch(
           error => {
-            console.log(error)
+            shootErrorNotification(
+              'Error',
+              error.message,
+            )
+            console.error('Error:', error);
           }
         );
     }

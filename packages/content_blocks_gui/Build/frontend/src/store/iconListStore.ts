@@ -14,21 +14,23 @@ export const useIconListStore = defineStore('iconList', {
       this.list = newItems;
     },
     fetch() {
-      axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_icons)
-      .then(
+      axios.get(
+        TYPO3.settings.ajaxUrls.content_blocks_gui_list_icons
+      ).then(
         response => {
           console.log(response.data.body)
           if (!response.data.success) {
-            if (!response.data.success) {
-              throw new Error(response.data.message);
-            }
+            throw new Error(response.data.message);
           }
           this.setList(response.data.body.iconList)
         }
-      )
-      .catch(
+      ).catch(
         error => {
-          console.log(error)
+          shootErrorNotification(
+            'Error',
+            error.message,
+          )
+          console.error('Error:', error);
         }
       );
     },
