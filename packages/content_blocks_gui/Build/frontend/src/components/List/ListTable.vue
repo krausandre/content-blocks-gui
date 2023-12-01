@@ -108,7 +108,6 @@ function tableHeader(title: any) {
 }
 
 const edit = (name: string) => {
-  globalPropertiesStore.setCurrentViewToEditView()
   globalPropertiesStore.setIsLoading(true)
 
   axios.postForm(
@@ -120,6 +119,7 @@ const edit = (name: string) => {
       response => {
         globalPropertiesStore.setIsLoading(false)
         contentBlockStore.setContentBlock(response.data.body.contentBlock)
+        globalPropertiesStore.setCurrentViewToEditView()
       }
   ).catch(
       error => {
