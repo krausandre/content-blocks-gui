@@ -39,8 +39,8 @@ class ContentTypeService
         ];
 
         if($getParsedBody['mode'] === 'copy') {
-            $data['contentBlock']['initialVendor'] = $getParsedBody['contentBlock']['initialVendor'];
-            $data['contentBlock']['initialName'] = $getParsedBody['contentBlock']['initialName'];
+            $data['contentBlock']['initialVendor'] = $getParsedBody['initialVendor'];
+            $data['contentBlock']['initialName'] = $getParsedBody['initialName'];
         }
 
         if($data['contentType'] === 'content-element') {

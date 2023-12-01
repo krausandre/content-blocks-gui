@@ -104,11 +104,11 @@ class AjaxRequestTest {
           extension: "samples_copy",
           contentType: "content-element",
           mode: "copy",
+          initialVendor: "test-99",
+          initialName: "test-99",
           contentBlock: {
             vendor: "copied-test-99",
             name: "copied-test-99",
-            initialVendor: "test-99",
-            initialName: "test-99",
             fields: JSON.stringify([
               {
                 identifier: 'header',
