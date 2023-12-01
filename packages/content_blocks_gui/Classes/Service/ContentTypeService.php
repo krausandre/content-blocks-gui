@@ -44,8 +44,8 @@ class ContentTypeService
         }
 
         if($data['contentType'] === 'content-element') {
-            $data['contentBlock']['fields'] = json_decode($getParsedBody['contentBlock']['fields'], true);
-            $data['contentBlock']['basics'] = isset($getParsedBody['contentBlock']['basics']) ? json_decode($getParsedBody['contentBlock']['basics'], true) : [];
+            $data['contentBlock']['fields'] = $getParsedBody['contentBlock']['fields'];
+            $data['contentBlock']['basics'] = $getParsedBody['contentBlock']['basics'] ?? [];
             $data['contentBlock']['group'] = $getParsedBody['contentBlock']['group'] ?? 'common';
             $data['contentBlock']['prefixFields'] = $getParsedBody['contentBlock']['prefixFields'] ?? true;
             $data['contentBlock']['prefixType'] = $getParsedBody['contentBlock']['prefixType'] ?? 'full';
@@ -58,7 +58,7 @@ class ContentTypeService
         } else if($data['contentType'] === 'record-type') {
             $data['contentBlock']['typeName'] = $getParsedBody['contentBlock']['typeName'] ?? '';
         } else if($data['contentType'] === 'basic') {
-            $data['contentBlock']['fields'] = json_decode($getParsedBody['contentBlock']['fields'], true);
+            $data['contentBlock']['fields'] = $getParsedBody['contentBlock']['fields'];
         }
 
         return $data;
