@@ -46,6 +46,14 @@ return [
     ],
     'content_blocks_gui_get_basics' => [
         'path' => '/contentblocks/gui/basics/get',
-        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::getBasicsAction',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::getBasicAction',
+    ],
+    'content_blocks_gui_get_translation' => [
+        'path' => '/contentblocks/gui/translation/get',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::getTranslationAction',
+    ],
+    'content_blocks_gui_save_translation' => [
+        'path' => '/contentblocks/gui/translation/save',
+        'target' => \ContentBlocks\ContentBlocksGui\Controller\Backend\ContentBlocksGuiAjaxController::class . '::saveTranslationAction',
     ],
 ];

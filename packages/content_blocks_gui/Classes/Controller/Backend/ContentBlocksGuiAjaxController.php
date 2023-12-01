@@ -92,9 +92,23 @@ final class ContentBlocksGuiAjaxController extends ActionController
         return $this->contentBlocksUtility->getBasicList()->getResponse();
     }
 
-    public function getBasicsAction(ServerRequestInterface $request): ResponseInterface
+    public function getBasicAction(ServerRequestInterface $request): ResponseInterface
     {
         return $this->contentBlocksUtility->getBasicByName(
+            $request->getParsedBody()
+        )->getResponse();
+    }
+
+    public function getTranslationAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->getTranslationsByContentBlockName(
+            $request->getParsedBody()
+        )->getResponse();
+    }
+
+    public function saveTranslationAction(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->contentBlocksUtility->saveTranslationFile(
             $request->getParsedBody()
         )->getResponse();
     }

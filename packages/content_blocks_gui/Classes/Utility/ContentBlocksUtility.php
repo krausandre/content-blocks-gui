@@ -29,6 +29,7 @@ use ContentBlocks\ContentBlocksGui\Answer\ErrorNoContentBlocksAvailableAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorSaveContentTypeAnswer;
 use ContentBlocks\ContentBlocksGui\Answer\ErrorUnknownContentBlockPathAnswer;
 use ContentBlocks\ContentBlocksGui\Factory\UsageFactory;
+use ContentBlocks\ContentBlocksGui\Answer\SuccessAnswer;
 use ContentBlocks\ContentBlocksGui\Service\ContentTypeService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -347,6 +348,82 @@ class ContentBlocksUtility
             return new ErrorBasicNotFoundAnswer($parsedBody['identifier']);
         }
         return new ErrorMissingBasicIndentifierAnswer();
+    }
+
+    public function getTranslationsByContentBlockName(null|array|object $parsedBody): AnswerInterface
+    {
+        if (array_key_exists('name', $parsedBody)) {
+            if ($this->contentBlockRegistry->hasContentBlock($parsedBody['name'])) {
+                return new DataAnswer(
+                    'translations',
+                    $this->languageFileRegistry->getLanguageFile($parsedBody['name'])
+                );
+            }
+            return new ErrorContentBlockNotFoundAnswer($parsedBody['name']);
+        }
+        return new ErrorMissingContentBlockNameAnswer();
+    }
+
+    public function saveTranslationFile(null|array|object $parsedBody): AnswerInterface
+    {
+        if (array_key_exists('name', $parsedBody) && array_key_exists('targetLanguage', $parsedBody) && array_key_exists('translations', $parsedBody)) {
+            if ($this->contentBlockRegistry->hasContentBlock($parsedBody['name'])) {
+                $translations = $parsedBody['translations'];
+                $contentBlock = $this->contentBlockRegistry->getContentBlock($parsedBody['name']);
+                $languagePath = $contentBlock->getExtPath() . '/' . ContentBlockPathUtility::getLanguageFilePath();
+                $absoluteLanguagePath = GeneralUtility::getFileAbsFileName($languagePath);
+                $destinationFile = $absoluteLanguagePath;
+                $targetLanguage = $parsedBody['targetLanguage'];
+                if ($targetLanguage !== 'default') {
+                    $destinationFile = str_replace('Labels.xlf', $parsedBody['targetLanguage'] . '.Labels.xlf', $absoluteLanguagePath);
+                }
+                if (file_exists($absoluteLanguagePath)) {
+                    $originalData = file_get_contents($absoluteLanguagePath);
+                    $originalXlif = new \SimpleXMLElement($originalData);
+                    $newTranslation = false;
+                    if (file_exists($destinationFile)) {
+                        $existingDestinationData = file_get_contents($destinationFile);
+                        $newTranslation = new \SimpleXMLElement($existingDestinationData);
+                    } else {
+                        $newTranslation = $originalXlif;
+                        $newTranslation->file->addAttribute('target-language', $targetLanguage);
+                    }
+                    $translationLog = [];
+                    for ($i = 0; $i < count($newTranslation->file->body->{"trans-unit"}); $i++) {
+                        $unitAttributes = $newTranslation->file->body->{"trans-unit"}[$i]->attributes()["id"];
+                        $translationLog[] = '' . $unitAttributes[0];
+                        if (array_key_exists('' . $unitAttributes[0], $translations[$targetLanguage])) {
+                            $newValue = $translations[$targetLanguage]['' . $unitAttributes[0]][0]['target'] ?? $translations[$targetLanguage]['' . $unitAttributes[0]][0]['source'];
+                            $newTranslation->file->body->{"trans-unit"}[$i]->addChild('target', $newValue);
+                        }
+                    }
+                    // add new values to translation file
+                    $nextItemIndex = count($newTranslation->file->body->{"trans-unit"});
+                    foreach ($translations[$targetLanguage] as $key => $translationItem) {
+                        if (array_key_exists($key, $translationLog)) {
+                            continue;
+                        }
+                        $newTranslation->file->body->addChild('trans-unit');
+                        $newTranslation->file->body->{"trans-unit"}[$nextItemIndex]->attributes()["id"] = $key;
+                        $newTranslation->file->body->{"trans-unit"}[$nextItemIndex]->attributes()["xml:space"] = "preserve";
+                        if (array_key_exists('source', $translationItem[0])) {
+                            $newTranslation->file->body->{"trans-unit"}[$translationItem]->addChild('target', $translationItem[0]['source']);
+                        }
+                        if (array_key_exists('target', $translationItem[0])) {
+                            $newTranslation->file->body->{"trans-unit"}[$translationItem]->addChild('target', $translationItem[0]['target']);
+                        }
+                        $nextItemIndex++;
+                    }
+
+
+                    $newTranslation->asXML($destinationFile);
+                    return new SuccessAnswer();
+                }
+            }
+            return new ErrorContentBlockNotFoundAnswer($parsedBody['name']);
+        } else {
+            return new ErrorMissingContentBlockNameAnswer();
+        }
     }
 
     protected function getLanguageService(): LanguageService

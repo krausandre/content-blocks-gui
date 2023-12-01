@@ -16,8 +16,12 @@ class AjaxRequestTest {
       }
    }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_list_cb'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_translation'])
       .post(
+        // {
+        //   name: "example/tabs",
+        // }
+
         /*
         // save content block with content type "Content Element"
         {
@@ -93,6 +97,7 @@ class AjaxRequestTest {
           }
         }
          */
+        /* {
         /*
         // copy content block with content type "Content Element"
         {
@@ -119,14 +124,65 @@ class AjaxRequestTest {
               }
             ]),
           }
-        }
-         */
+        } */
+        // delete content block
         /*
         // get/delete/download content block
         {
-          name: "test-123/test-12",
+          name: "example/tabs",
         }
-        */
+      */
+      // saveTranslate
+        {
+          name: "example/tabs",
+          targetLanguage: "de",
+          translations: {
+            de: {
+                title: [
+                    {
+                        source: "Tabs",
+                        target: "Tabs translated"
+                    }
+                ],
+                description: [
+                    {
+                        source: "Toggle between hiding and showing content with tabs",
+                        target: "translated Toggle between hiding and showing content with tabs"
+                    }
+                ],
+                'header.label': [
+                    {
+                        source: "Header",
+                        target: "translated Header"
+                    }
+                ],
+                'tabs_item.label': [
+                    {
+                        source: "Tabs items",
+                        target: "translated Tabs items"
+                    }
+                ],
+                'tabs_item.title.label': [
+                    {
+                        source: "Title",
+                        target: "translated Title"
+                    }
+                ],
+                'tabs_item.textarea.label': [
+                    {
+                        source: "Content",
+                        target: "translated Content"
+                    }
+                ],
+                'fil.kaputis.label': [
+                    {
+                        source: "irgendwas nicht verständliches auf griechisch",
+                        target: "Der Fil auf DE"
+                    }
+                ]
+            }
+          }
+        }
       )
       .then(async function (response) {
         const resolved = await response.resolve();
