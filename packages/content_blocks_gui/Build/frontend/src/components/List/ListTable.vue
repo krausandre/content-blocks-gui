@@ -1,6 +1,6 @@
 <template>
   <div class="list-table-container" :class="props.title">
-    <h2>{{ tableHeader(props.title) }}</h2>
+    <h2>{{ getTableTitle }}</h2>
     <table class="cb-list-table">
       <thead>
       <tr>
@@ -71,6 +71,7 @@ import {
 } from "@/helper/typo3NotificationHelper.js"
 import {shootDangerModal} from "@/helper/typo3ModalHelper";
 import {AppEditMode} from "@/Controller";
+import {computed} from "vue";
 
 interface Item {
   name: string;
@@ -89,6 +90,21 @@ const iconListStore = useIconListStore();
 const props = defineProps({
   title: String,
   items: Array<Item>
+})
+
+const getTableTitle = computed(() => {
+  switch (props.title) {
+    case 'RECORD_TYPE':
+      return 'Record Types';
+    case 'CONTENT_ELEMENT':
+      return 'Content Elements';
+    case 'PAGE_TYPE':
+      return 'Page Types';
+    case 'BASICS':
+      return 'Basics';
+    default:
+      return props.title;
+  }
 })
 
 function getTypeOfRecord() {
