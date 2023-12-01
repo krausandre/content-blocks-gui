@@ -7,8 +7,9 @@ import axios from "axios";
 export class Controller {
   saveCb() {
     const cb = useContentBlockStore().contentBlock;
+    const globalPropertiesStore = useGlobalPropertiesStore();
 
-    // @todo
+    globalPropertiesStore.setIsLoading(true);
     axios.postForm(
       TYPO3.settings.ajaxUrls.content_blocks_gui_save_content_type,
       {
@@ -20,10 +21,12 @@ export class Controller {
       }
     ).then(
       response => {
+        globalPropertiesStore.setIsLoading(false);
         console.log(response.data);
       }
     ).catch(
       error => {
+        globalPropertiesStore.setIsLoading(true);
         console.error('Error:', error);
       }
     );
