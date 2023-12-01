@@ -1,6 +1,5 @@
 <template>
   <div class="d-flex flex-column" >
-    <h1>Liste:</h1>
     <ListTable
       v-for="(table, name , index) in contentBlocksStore.getList"
       :title="getHeaderFromTable(index)"

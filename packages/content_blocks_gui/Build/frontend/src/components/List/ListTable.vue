@@ -1,6 +1,11 @@
 <template>
   <div class="list-table-container" :class="props.title">
     <h2>{{ getTableTitle }}</h2>
+    <input
+        type="text"
+        class="form-control mb-1"
+        placeholder="Search ..."
+        v-model="searchQuery" />
     <table class="cb-list-table">
       <thead>
       <tr>
@@ -13,10 +18,10 @@
       </tr>
       </thead>
       <tr
-          v-for="item in props.items"
+          v-for="item in filteredItems"
           :key="item.name"
       >
-        <td>
+      <td>
           <Icon :identifier="iconListStore.getIconByIdentifier(item.name)" size="medium"/>
         </td>
         <td>{{ item.name }}</td>
@@ -71,7 +76,28 @@ import {
 } from "@/helper/typo3NotificationHelper.js"
 import {shootDangerModal} from "@/helper/typo3ModalHelper";
 import {AppEditMode} from "@/Controller";
-import {computed} from "vue";
+import {computed, ref} from "vue";
+
+const searchQuery = ref('');
+
+// calculate the filtered items depending on the search input
+const filteredItems = computed(() => {
+  // check, if props.items exists and is an object
+  if (props.items && typeof props.items === 'object') {
+    // Converts the object into an array and filters it
+    const itemsArray = Object.values(props.items);
+
+    return itemsArray.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+        || item.label.toLowerCase().includes(searchQuery.value.toLowerCase())
+        || item.extension.toLowerCase().includes(searchQuery.value.toLowerCase())
+    );
+  }
+
+  return []; // Rückgabe eines leeren Arrays, falls props.items nicht existiert
+});
+
+
 
 interface Item {
   name: string;
