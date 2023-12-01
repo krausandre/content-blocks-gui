@@ -36,3 +36,9 @@ export enum AppMainView {
   EDIT_VIEW = 'EditView',
   LIST_VIEW = 'ListView',
 }
+
+export enum AppEditMode {
+  CREATE = 'create',
+  //COPY = 'copy',
+  EDIT = 'edit',
+}

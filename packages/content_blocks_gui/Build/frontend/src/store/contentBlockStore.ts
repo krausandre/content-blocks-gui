@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import {ContentBlock, ContentBlockField} from "@/models/ContentBlock";
+import {AppEditMode} from "@/Controller";
 
 export const useContentBlockStore = defineStore(
   'contentBlock',
@@ -7,6 +8,7 @@ export const useContentBlockStore = defineStore(
     state: () => (
       {
         contentBlock: new ContentBlock(),
+        mode: AppEditMode.CREATE,
       }
     ),
     getters: {
@@ -16,9 +18,13 @@ export const useContentBlockStore = defineStore(
     actions: {
       resetContentBlock() {
         this.$reset()
+        this.mode = AppEditMode.CREATE
       },
       setContentBlock(newContentBlock: ContentBlock) {
         this.contentBlock = newContentBlock;
+      },
+      setMode(mode: AppEditMode) {
+        this.mode = mode;
       },
       setFields(newFields: any[]) {
         this.contentBlock.yaml.fields = newFields;

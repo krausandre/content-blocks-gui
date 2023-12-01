@@ -70,6 +70,7 @@ import {
   shootSuccessNotification
 } from "@/helper/typo3NotificationHelper.js"
 import {shootDangerModal} from "@/helper/typo3ModalHelper";
+import {AppEditMode} from "@/Controller";
 
 interface Item {
   name: string;
@@ -109,7 +110,6 @@ function tableHeader(title: any) {
 
 const edit = (name: string) => {
   globalPropertiesStore.setIsLoading(true)
-
   axios.postForm(
       TYPO3.settings.ajaxUrls.content_blocks_gui_get_cb,
       {
@@ -119,6 +119,7 @@ const edit = (name: string) => {
       response => {
         globalPropertiesStore.setIsLoading(false)
         contentBlockStore.setContentBlock(response.data.body.contentBlock)
+        contentBlockStore.setMode(AppEditMode.EDIT)
         globalPropertiesStore.setCurrentViewToEditView()
       }
   ).catch(
@@ -130,17 +131,16 @@ const edit = (name: string) => {
 }
 
 const download = (name: string) => {
-  axios
-      .postForm(
-          TYPO3.settings.ajaxUrls.content_blocks_gui_download_cb,
-          {
-            name: name
-          },
-          {
-            responseType: 'blob',
-          }
-      )
-      .then(response => {
+  axios.postForm(
+      TYPO3.settings.ajaxUrls.content_blocks_gui_download_cb,
+      {
+        name: name
+      },
+      {
+        responseType: 'blob',
+      }
+  ).then(
+      response => {
         // Notification von TYPO3 anzeigen -> Download läuft
         shootInfoNotification("Download started", "The download has started. This might take a while.");
         const contentDisposition = response.headers['content-disposition'];
@@ -167,13 +167,13 @@ const download = (name: string) => {
         window.URL.revokeObjectURL(url); // Bereinigung
         // Notification von TYPO3 anzeigen -> Download fertig
         shootSuccessNotification("Download finished", "The download has finished.");
-      })
-      .catch(
-          (error) => {
-            console.error('Error:', error);
-            // Notification Error von TYPO3 anzeigen
-          }
-      );
+      }
+  ).catch(
+      error => {
+        console.error('Error:', error);
+        // Notification Error von TYPO3 anzeigen
+      }
+  );
 }
 
 const showDeleteConfirmation = (name: string) => {
@@ -189,27 +189,23 @@ const showDeleteConfirmation = (name: string) => {
 }
 
 const deleteContentBlockByName = (name: string) => {
-  // Axios call for deletion:
-  axios
-      .postForm(
-          TYPO3.settings.ajaxUrls.content_blocks_gui_delete_cb,
-          {
-            name: name
-          }
-      )
-      .then(
-          (response) => {
-            shootSuccessNotification("Content block deleted", "The content block was deleted.");
-            contentBlocksListStore.fetch();
-          }
-      )
-      .catch(
-          (error) => {
-            // Notification Error von TYPO3 anzeigen
-            shootErrorNotification("Error", "The content block could not be deleted.");
-            contentBlocksListStore.fetch();
-          }
-      );
+  axios.postForm(
+      TYPO3.settings.ajaxUrls.content_blocks_gui_delete_cb,
+      {
+        name: name
+      }
+  ).then(
+      (response) => {
+        shootSuccessNotification("Content block deleted", "The content block was deleted.");
+        contentBlocksListStore.fetch();
+      }
+  ).catch(
+      (error) => {
+        // Notification Error von TYPO3 anzeigen
+        shootErrorNotification("Error", "The content block could not be deleted.");
+        contentBlocksListStore.fetch();
+      }
+  );
 }
 
 </script>
