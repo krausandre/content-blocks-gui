@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import axios from "axios";
+import {shootErrorNotification} from "@/helper/typo3NotificationHelper.js";
 
 export const useContentBlocksListStore = defineStore(
   'contentBlocksList',
@@ -23,6 +24,9 @@ export const useContentBlocksListStore = defineStore(
 
         axios.get(TYPO3.settings.ajaxUrls.content_blocks_gui_list_cb).then(
           response => {
+            if (!response.data.success) {
+              throw new Error(response.data.message);
+            }
             this.setList(response.data.body.list)
           }
         ).catch(

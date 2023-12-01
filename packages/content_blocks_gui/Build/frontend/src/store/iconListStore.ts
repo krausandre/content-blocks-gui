@@ -1,5 +1,6 @@
 import {defineStore} from "pinia";
 import axios from "axios";
+import {shootErrorNotification} from "@/helper/typo3NotificationHelper.js";
 
 export const useIconListStore = defineStore('iconList', {
   state: () => ({
@@ -17,6 +18,11 @@ export const useIconListStore = defineStore('iconList', {
       .then(
         response => {
           console.log(response.data.body)
+          if (!response.data.success) {
+            if (!response.data.success) {
+              throw new Error(response.data.message);
+            }
+          }
           this.setList(response.data.body.iconList)
         }
       )
