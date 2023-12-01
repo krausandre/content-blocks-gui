@@ -11,6 +11,11 @@ type ContentBlockFieldType
 
 export class ContentBlockFieldNew extends ContentBlockField {
   type: ContentBlockFieldType = 'Text';
+  useExistingField?: boolean = false;
+  label?: string = '';
+  description?: string = '';
+  alternativeSql?: string = '';
+  prefixField?: boolean = false;
   autocomplete?: boolean;
   allowedTypes?: string[];
   allowed?: string;
@@ -32,6 +37,8 @@ export class Yaml {
 
   table: string = '';
   typeField: string = '';
+  prefixFields: boolean = false;
+  prefixType: 'full' | 'vendor' = 'full';
   fields: ContentBlockField[] = [];
   basics?: string[] = [];
 }
