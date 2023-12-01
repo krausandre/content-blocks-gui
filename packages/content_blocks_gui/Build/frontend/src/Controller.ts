@@ -1,32 +1,54 @@
+import axios from "axios";
+import {toRaw} from "vue";
+import {ContentBlock} from "@/models/ContentBlock";
+import {shootErrorNotification, shootSuccessNotification} from "@/helper/typo3NotificationHelper.js";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import {ContentBlock} from "@/models/ContentBlock";
-import axios from "axios";
 
 
 export class Controller {
   saveCb() {
-    const cb = useContentBlockStore().contentBlock;
+    const contentBlockStore = useContentBlockStore();
     const globalPropertiesStore = useGlobalPropertiesStore();
+
+    // @todo – this makes sure we drop type information and hydrate fine but looks funny of course
+    const cb = JSON.parse(JSON.stringify(toRaw<ContentBlock>(contentBlockStore.contentBlock)))
+
+    // @todo
+    cb.yaml.vendor = 'xxx';
+
+    const data = {
+      contentType: ContentBlock.contentType(cb),
+      contentBlock: cb.yaml,
+      extension: 'samples',
+      mode: contentBlockStore.getMode,
+    }
+
+    console.log('Saving', data)
 
     globalPropertiesStore.setIsLoading(true);
     axios.postForm(
       TYPO3.settings.ajaxUrls.content_blocks_gui_save_content_type,
-      {
-        contentType: ContentBlock.contentType(cb),
-        contentBlock: ContentBlock.asJson(cb),
-        extension: 'samples',
-        // @todo mode: 'create' | 'copy' | 'edit';
-        mode: 'edit',
-      }
+      data
     ).then(
       response => {
         globalPropertiesStore.setIsLoading(false);
         console.log(response.data);
+        if (!response.data.success) {
+          throw new Error(response.data.message);
+        }
+        shootSuccessNotification(
+          'Ok',
+          'saved',
+        )
       }
     ).catch(
       error => {
-        globalPropertiesStore.setIsLoading(true);
+        globalPropertiesStore.setIsLoading(false);
+        shootErrorNotification(
+          'Error',
+          error.message,
+        )
         console.error('Error:', error);
       }
     );
