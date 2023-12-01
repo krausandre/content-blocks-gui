@@ -5,7 +5,8 @@
         type="text"
         class="form-control mb-1"
         placeholder="Search ..."
-        v-model="searchQuery" />
+        v-model="searchQuery"
+    />
     <table class="cb-list-table">
       <thead>
       <tr>
@@ -21,7 +22,7 @@
           v-for="item in filteredItems"
           :key="item.name"
       >
-      <td>
+        <td>
           <Icon :identifier="iconListStore.getIconByIdentifier(item.name)" size="medium"/>
         </td>
         <td>{{ item.name }}</td>
@@ -106,7 +107,6 @@ const filteredItems = computed(() => {
 });
 
 
-
 interface Item {
   name: string;
   label: string;
@@ -188,7 +188,38 @@ const edit = (name: string) => {
   );
 }
 const copy = (name: string) => {
-  shootInfoNotification("Not yet, dude", "This feature is not yet implemented.");
+  globalPropertiesStore.setIsLoading(true)
+  axios.postForm(
+      TYPO3.settings.ajaxUrls.content_blocks_gui_get_cb,
+      {
+        name: name
+      }
+  ).then(
+      response => {
+        globalPropertiesStore.setIsLoading(false)
+
+        if (!response.data.success) {
+          throw new Error(response.data.message);
+        }
+        contentBlockStore.setContentBlock(response.data.body.contentBlock)
+        // @todo this setup should probably become a Controller action
+        const [vendor, packageName] = contentBlockStore.contentBlock.name.split('/')
+        contentBlockStore.contentBlock.initialVendor = vendor
+        contentBlockStore.contentBlock.initialName = packageName
+
+        contentBlockStore.setMode(AppEditMode.COPY)
+        globalPropertiesStore.setCurrentViewToEditView()
+      }
+  ).catch(
+      error => {
+        globalPropertiesStore.setIsLoading(false)
+        shootErrorNotification(
+            'Error',
+            error.message,
+        )
+        console.error('Error:', error);
+      }
+  );
 }
 
 const download = (name: string) => {

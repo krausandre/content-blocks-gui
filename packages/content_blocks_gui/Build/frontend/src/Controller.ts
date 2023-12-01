@@ -67,6 +67,6 @@ export enum AppMainView {
 
 export enum AppEditMode {
   CREATE = 'create',
-  //COPY = 'copy',
+  COPY = 'copy',
   EDIT = 'edit',
 }

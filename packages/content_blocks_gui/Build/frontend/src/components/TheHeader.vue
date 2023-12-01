@@ -67,6 +67,10 @@
       You are {{ contentBlockStore.mode === AppEditMode.EDIT ? 'editing' : 'creating' }}
       a {{ ContentBlock.typeString(contentBlockStore.contentBlock) }}
     </div>
+    <div v-if="contentBlockStore.contentBlock.initialVendor" class="alert alert-primary" role="alert">
+      (Copying from {{ contentBlockStore.contentBlock.initialVendor }}/{{ contentBlockStore.contentBlock.initialName }}
+      in extension {{ contentBlockStore.contentBlock.hostExtension }})
+    </div>
     <div>
       <button
           type="button"

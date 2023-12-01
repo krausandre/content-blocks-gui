@@ -48,13 +48,21 @@ export class Yaml {
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
 export class ContentBlock {
+  // duplicated from YAML for _save
   name: string = '';
-  // @todo is about to come in _get_cb:
   vendor?: string = '';
-  yaml: Yaml = new Yaml();
-  icon: string = '';
-  iconProvider: IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
+
+  // set for _copy
+  initialVendor?: string = '';
+  initialName?: string = '';
+
   hostExtension: string = '';
+
+  yaml: Yaml = new Yaml();
+
+  // transient properties, can be ignored
+  // icon: string = '';
+  // iconProvider: IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
   //extPath: string = '';
   //languageFile: {} = {};
 
