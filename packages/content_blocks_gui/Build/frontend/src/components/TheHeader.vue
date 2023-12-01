@@ -63,10 +63,8 @@
         </button>
       </div>
     </nav>
-    <div>
-      <div v-if="globalPropertiesStore.getIsEditView" class="alert alert-primary" role="alert">
-        You are editing a {{ globalPropertiesStore.getCurrentContentType }}
-      </div>
+    <div v-if="globalPropertiesStore.getIsEditView" class="alert alert-primary" role="alert">
+      You are editing a {{ ContentBlock.typeString(contentBlockStore.contentBlock) }}
     </div>
     <div>
       <button
@@ -85,53 +83,43 @@ import controller from "@/Controller";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {useContentBlocksListStore} from "@/store/contentBlocksListStore";
-import {useIconListStore} from "@/store/iconListStore";
 import Icon from "@/components/icons/Icon.vue";
-import axios from "axios";
-import {shootConfirmModal, shootDangerModal, shootPrimaryModal, shootWarningModal } from "../helper/typo3ModalHelper.js"
-import {shootInfoNotification} from "@/helper/typo3NotificationHelper.js";
+import {ContentBlock} from "@/models/ContentBlock";
 
 const globalPropertiesStore = useGlobalPropertiesStore();
-const iconListStore = useIconListStore();
 const contentBlockStore = useContentBlockStore();
 const contentBlocksListStore = useContentBlocksListStore();
 
 const handleBackToOverview = () => {
   globalPropertiesStore.setCurrentViewToCbListView();
   globalPropertiesStore.setCurrentSelectedFieldIdentifier('');
-  globalPropertiesStore.setCurrentContentType('');
 }
 
 const handleSaveContentBlock = () => {
-  shootInfoNotification("Saving content block", "This is not working at the moment. Please be patient with our wunderful developers", 10);
-  // controller.saveCb();
+  controller.saveCb();
 }
 
 const handleAddContentBlock = () => {
-  contentBlockStore.resetContentBlock('tt_content');
+  contentBlockStore.resetContentBlock();
   globalPropertiesStore.setCurrentViewToEditView();
-  globalPropertiesStore.setCurrentContentType('content-block');
+  ContentBlock.setTypeContentElement(contentBlockStore.contentBlock);
 }
 
 const handleAddRecordType = () => {
-  contentBlockStore.resetContentBlock('');
+  contentBlockStore.resetContentBlock();
   globalPropertiesStore.setCurrentViewToEditView();
-  globalPropertiesStore.setCurrentContentType('record-type');
+  ContentBlock.setTypeRecordType(contentBlockStore.contentBlock);
 }
 
 const handleAddPageType = () => {
-  contentBlockStore.resetContentBlock('pages');
+  contentBlockStore.resetContentBlock();
   globalPropertiesStore.setCurrentViewToEditView();
-  globalPropertiesStore.setCurrentContentType('page-type');
+  ContentBlock.setTypePagetype(contentBlockStore.contentBlock);
 }
 
 const handleAddBasic = () => {
-  contentBlockStore.resetContentBlock('@todo basic');
+  contentBlockStore.resetContentBlock();
   globalPropertiesStore.setCurrentViewToEditView();
-  globalPropertiesStore.setCurrentContentType('basic');
+  ContentBlock.setTypeBasic(contentBlockStore.contentBlock);
 }
 </script>
-
-<style scoped>
-
-</style>

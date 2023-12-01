@@ -62,14 +62,52 @@ export class ContentBlock {
   static isContentElement(contentBlock: ContentBlock): boolean {
     return contentBlock.yaml.table === 'tt_content';
   }
+  static setTypeContentElement(contentBlock: ContentBlock): void {
+    contentBlock.yaml.table = 'tt_content';
+    contentBlock.yaml.typeField = 'CType';
+  }
 
   // @todo
   static isPagetype(contentBlock: ContentBlock): boolean {
-    return contentBlock.yaml.table === 'pages';
+    return (contentBlock.yaml.table ?? '') === 'pages';
+  }
+  static setTypePagetype(contentBlock: ContentBlock): void {
+    contentBlock.yaml.table = 'pages';
+  }
+
+  static isTypeRecordType(contentBlock: ContentBlock): boolean {
+    // @todo
+    return !['pages', 'tt_content'].includes(contentBlock.yaml.table);
+  }
+  static setTypeRecordType(contentBlock: ContentBlock): void {
+    contentBlock.yaml.table = '';
+  }
+
+  static setTypeBasic(contentBlock: ContentBlock): void {
+    // @todo
+    contentBlock.yaml.table = '@todo basic';
+    console.log('@todo: setTypeBasic()')
+  }
+  static isTypeBasic(contentBlock: ContentBlock): boolean {
+    // @todo
+    return false;
   }
 
   // @todo
   static asJson(contentBlock: ContentBlock): string {
     return JSON.stringify(contentBlock);
+  }
+
+  static typeString(contentBlock: ContentBlock): string {
+    if (ContentBlock.isContentElement(contentBlock)) {
+      return 'Content Element';
+    }
+    if (ContentBlock.isPagetype(contentBlock)) {
+      return 'Page Type';
+    }
+    if (ContentBlock.isTypeRecordType(contentBlock)) {
+      return 'Record Type (or @todo Basic)';
+    }
+    return 'Basic';
   }
 }
