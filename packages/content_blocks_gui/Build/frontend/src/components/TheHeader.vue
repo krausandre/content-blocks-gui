@@ -96,6 +96,7 @@ const contentBlockStore = useContentBlockStore();
 const contentBlocksListStore = useContentBlocksListStore();
 
 const handleBackToOverview = () => {
+  contentBlockStore.resetContentBlock()
   globalPropertiesStore.setCurrentViewToCbListView();
   globalPropertiesStore.setCurrentSelectedFieldIdentifier('');
 }
