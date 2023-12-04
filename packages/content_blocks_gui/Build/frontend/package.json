@@ -15,8 +15,11 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
     "axios": "^1.6.2",
     "pinia": "^2.1.7",
+    "vee-validate": "^4.12.2",
     "vue": "^3.3.4",
     "vue-axios": "^3.5.2",
     "vuedraggable": "^4.1.0"

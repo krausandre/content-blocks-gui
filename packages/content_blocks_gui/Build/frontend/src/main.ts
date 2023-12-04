@@ -22,6 +22,58 @@ import ExistingFieldType from "@/components/fieldTypes/ExistingFieldType.vue";
 import {createApp} from 'vue';
 import App from '@/App.vue'
 import {createPinia} from 'pinia'
+import { defineRule, configure } from 'vee-validate';
+
+configure({
+    validateOnInput: true, // Validiert Felder bei jedem Tastenanschlag
+});
+
+
+defineRule('required', (value: string) => {
+    if (!value || !value.length) {
+        return 'This field is required';
+    }
+    return true;
+});
+
+defineRule('checkboxRequired', (value: string) => {
+    if (!value || !value.length) {
+        return 'This checkbox is required';
+    }
+    return true;
+});
+
+defineRule('email', (value: string) => {
+    // Field is empty, should pass
+    if (!value || !value.length) {
+        return true;
+    }
+    // Check if email
+    if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)) {
+        return 'This field must be a valid email';
+    }
+    return true;
+});
+
+defineRule('minLength', (value: string, [min]: any) => {
+    if (!value || !value.length) {
+        return true;
+    }
+    if (value.length < min) {
+        return `This field must be at least ${min} characters`;
+    }
+    return true;
+});
+
+defineRule('maxLength', (value: string, [max]: any) => {
+    if (!value || !value.length) {
+        return true;
+    }
+    if (value.length > max) {
+        return `This field must be at most ${max} characters`;
+    }
+    return true;
+});
 
 const pinia = createPinia();
 const app = createApp(App)
