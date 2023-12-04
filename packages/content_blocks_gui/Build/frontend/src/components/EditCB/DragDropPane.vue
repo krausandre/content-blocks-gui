@@ -19,7 +19,7 @@
     </draggable>
   </div>
   <pre>
-{{ contentBlockStore.getFields }}
+<!-- {{ contentBlockStore.getFields }} -->
 {{ fieldsList }}
   </pre>
 </template>
@@ -34,5 +34,6 @@ const fieldsList = useContentBlockStore().getFields;
 const contentBlockStore = useContentBlockStore();
 
 const change = (evt) => contentBlockStore.setFields(fieldsList);
+
 </script>
 <style scoped></style>

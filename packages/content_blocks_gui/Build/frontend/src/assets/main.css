@@ -76,6 +76,10 @@
   display: none;
 }
 
+.leftpane-components .icon-actions-delete {
+  display: none;
+}
+
 @media (hover: hover) {
 
 }

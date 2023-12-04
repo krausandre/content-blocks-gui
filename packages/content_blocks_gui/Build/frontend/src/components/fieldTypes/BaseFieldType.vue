@@ -9,6 +9,7 @@
       <div class="d-flex flex-row ">
         <Icon :identifier="props.iconIdentifier" />
         <span class="ms-2">{{ props.label }}</span>
+        <Icon identifier="actions-delete" @click.stop="removeField(props.identifier)"/>
       </div>
         <draggable v-if="props.isNested"
             class="dragArea nested list-group"
@@ -24,6 +25,7 @@
                 :icon-identifier="FieldTypes.iconIdentifier(item)"/>
             </template>
         </draggable>
+      
     </div>
   </div>
 </template>
@@ -89,6 +91,7 @@ const handleDragLeave = () => {
 }
 
 const contentBlockStore = useContentBlockStore();
+const fieldsList = useContentBlockStore().getFields;
 
 const change = function(evt: any) {
     // contentBlockStore.setFields(nestedFields.value);
@@ -96,6 +99,17 @@ const change = function(evt: any) {
 }
 
 let nestedFields = ref([]);
+
+const removeField = function(id) {
+  console.log("DELETE PRESSED: " + id);
+  let tempState = fieldsList;
+  tempState.forEach(function(elem, index) {
+      if (elem.identifier  === id) {
+        tempState.splice(index, 1)
+      }
+  });
+  console.log(tempState);
+}
 
 </script>
 
