@@ -19,7 +19,7 @@
     </draggable>
   </div>
   <pre>
-<!-- {{ contentBlockStore.getFields }} -->
+{{ contentBlockStore.getFields }}
 {{ fieldsList }}
   </pre>
 </template>

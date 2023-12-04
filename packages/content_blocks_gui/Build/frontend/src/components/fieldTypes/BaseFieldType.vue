@@ -15,7 +15,7 @@
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'fieldTypes', put: true }"
-            item-key="identifier">
+            @change="addNestedFields(props.identifier)">
             <template #item="{ element: item }">
               <component
                 :isInDragArea="true"
@@ -93,21 +93,28 @@ const handleDragLeave = () => {
 const contentBlockStore = useContentBlockStore();
 const fieldsList = useContentBlockStore().getFields;
 
-const change = function(evt: any) {
-    // contentBlockStore.setFields(nestedFields.value);
-    // console.log("FieldsList: ", this.fieldsList);
-}
-
 let nestedFields = ref([]);
 
 const removeField = function(id) {
   console.log("DELETE PRESSED: " + id);
   let tempState = fieldsList;
   tempState.forEach(function(elem, index) {
+      let elemItems = elem.items;
       if (elem.identifier  === id) {
         tempState.splice(index, 1)
       }
   });
+  contentBlockStore.setFields(fieldsList);
+}
+
+const addNestedFields = function(id, item) {
+  let tempState = fieldsList;
+  tempState.forEach(function(elem, index) {
+    if (elem.identifier  === id) {
+      elem.items = nestedFields.value;
+    }
+  });
+  console.log(nestedFields.value)
   contentBlockStore.setFields(fieldsList);
 }
 
