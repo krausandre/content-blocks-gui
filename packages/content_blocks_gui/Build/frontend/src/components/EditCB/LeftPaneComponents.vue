@@ -1,9 +1,8 @@
 <template>
-  <!-- @todo group people? -->
   <draggable
     class="dragArea list-group leftpane-components"
     :list="FieldTypes.draggableVanillaFieldTypes()"
-    :group="{ name: 'people', pull: 'clone', put: false }"
+    :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
     :clone="cloneFieldType"
     :sort="false"
     item-key="identifier"

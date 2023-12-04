@@ -13,7 +13,7 @@
         <draggable v-if="props.isNested"
             class="dragArea nested list-group"
             :list="nestedFields"
-            :group="{ name: 'people', put: true }"
+            :group="{ name: 'fieldTypes', put: true }"
             item-key="identifier">
             <template #item="{ element: item }">
               <component
