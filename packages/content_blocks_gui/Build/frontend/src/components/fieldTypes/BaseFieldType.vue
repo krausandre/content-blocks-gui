@@ -108,7 +108,7 @@ const removeField = function(id) {
         tempState.splice(index, 1)
       }
   });
-  console.log(tempState);
+  contentBlockStore.setFields(fieldsList);
 }
 
 </script>
