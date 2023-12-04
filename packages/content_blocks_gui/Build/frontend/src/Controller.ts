@@ -23,7 +23,9 @@ export class Controller {
       contentType: ContentBlock.contentType(cb),
       contentBlock: cb.yaml,
       extension: 'samples',
-      mode: contentBlockStore.getMode,
+      mode: contentBlockStore.mode,
+      initialVendor: contentBlockStore.contentBlock.initialVendor,
+      initialName: contentBlockStore.contentBlock.initialName,
     }
 
     console.log('Saving', data)
