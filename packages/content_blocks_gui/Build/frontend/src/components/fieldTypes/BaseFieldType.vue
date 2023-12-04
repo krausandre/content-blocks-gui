@@ -15,7 +15,8 @@
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'fieldTypes', put: true }"
-            @change="addNestedFields(props.identifier)">
+            @change="addNestedFields(props.identifier)"
+            @click.stop>
             <template #item="{ element: item }">
               <component
                 :isInDragArea="true"
