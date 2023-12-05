@@ -16,22 +16,20 @@ class AjaxRequestTest {
       }
    }
   sendAjaxRequest() {
-    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_translation'])
+    return new AjaxRequest(TYPO3.settings.ajaxUrls['content_blocks_gui_save_content_type'])
       .post(
         // {
         //   name: "example/tabs",
         // }
 
-        /*
-        // save content block with content type "Content Element"
+        // save content block with content type "Content Element" and mode "edit"
         {
           extension: "samples",
           contentType: "content-element",
           mode: "edit",
           contentBlock: {
-            vendor: "test-99",
-            name: "test-99",
-            fields: JSON.stringify([
+            name: "test-99/test-99",
+            fields: [
               {
                 identifier: 'header',
                 useExistingField: true,
@@ -40,14 +38,14 @@ class AjaxRequestTest {
                 identifier: 'bodytext',
                 type: 'Text',
               }
-            ]),
-            basics: JSON.stringify([
+            ],
+            basics: [
               'TYPO3/Appearance',
               'TYPO3/Links',
-            ]),
+            ],
           },
         }
-         */
+
         /*
         // save content block with content type "Page Type"
         {
@@ -55,8 +53,7 @@ class AjaxRequestTest {
           contentType: "page-type",
           mode: "create",
           contentBlock: {
-            vendor: "test-99",
-            name: "test-99",
+            name: "test-99/test-99",
             type: 3242492,
           }
         }
@@ -68,8 +65,7 @@ class AjaxRequestTest {
           contentType: "record-type",
           mode: "create",
           contentBlock: {
-            vendor: "test-99",
-            name: "test-99",
+            name: "test-99/test-99",
           }
         }
         */
@@ -80,8 +76,7 @@ class AjaxRequestTest {
           contentType: "basic",
           mode: "create",
           contentBlock: {
-            vendor: "test-99",
-            name: "test-99",
+            name: "test-99/test-99",
             fields: JSON.stringify([
               {
                 identifier: 'appearance_tab',
@@ -104,11 +99,9 @@ class AjaxRequestTest {
           extension: "samples_copy",
           contentType: "content-element",
           mode: "copy",
-          initialVendor: "test-99",
-          initialName: "test-99",
+          initialName: "test-99/test-99",
           contentBlock: {
-            vendor: "copied-test-99",
-            name: "copied-test-99",
+            name: "copied-test-99/copied-test-99",
             fields: JSON.stringify([
               {
                 identifier: 'header',
@@ -132,6 +125,7 @@ class AjaxRequestTest {
           name: "example/tabs",
         }
       */
+    /*
       // saveTranslate
         {
           name: "example/tabs",
@@ -183,6 +177,7 @@ class AjaxRequestTest {
             }
           }
         }
+     */
       )
       .then(async function (response) {
         const resolved = await response.resolve();

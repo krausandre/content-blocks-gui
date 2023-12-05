@@ -33,8 +33,8 @@ class ContentTypeService
             'extension' => $getParsedBody['extension'],
             'mode' => $getParsedBody['mode'],
             'contentBlock' => [
-                'vendor' => $getParsedBody['contentBlock']['vendor'],
-                'name' => $getParsedBody['contentBlock']['name'],
+                'vendor' => explode('/', $getParsedBody['contentBlock']['name'])[0],
+                'name' => explode('/', $getParsedBody['contentBlock']['name'])[1],
             ]
         ];
 
@@ -214,6 +214,7 @@ class ContentTypeService
         } else {
             $this->buildContentType($yamlConfiguration, $extension, $contentType);
         }
+        $this->contentBlockLoader->loadUncached();
     }
     protected function buildContentType(array $yamlConfiguration, string $extension, ContentType $contentType): void
     {
@@ -278,8 +279,6 @@ class ContentTypeService
             GeneralUtility::getFileAbsFileName($initialContentBlock->getExtPath()),
             GeneralUtility::getFileAbsFileName($createdContentBlock->getExtPath())
         );
-
-        $this->contentBlockLoader->loadUncached();
     }
 
     protected function copyContentBlockFilesAndFolders($source, $destination): void
