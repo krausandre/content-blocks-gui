@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@pinia/testing": "^0.1.3"
+  }
+}
