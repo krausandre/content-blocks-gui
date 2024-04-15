@@ -1,5 +1,5 @@
 <template>
-  <draggable
+  <VueDraggable
     class="dragArea list-group leftpane-components"
     :list="FieldTypes.draggableVanillaFieldTypes()"
     :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
@@ -14,11 +14,11 @@
         :icon-identifier="FieldTypes.iconIdentifier(item)"
       />
     </template>
-  </draggable>
+  </VueDraggable>
 </template>
 
 <script setup lang='ts'>
-import draggable from "vuedraggable";
+import {VueDraggable} from "vue-draggable-plus";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import {FieldTypes} from "@/models/FieldTypes";
 

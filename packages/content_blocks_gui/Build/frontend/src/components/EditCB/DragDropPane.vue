@@ -1,6 +1,6 @@
 <template>
   <div class="drag-drop-pane">
-    <draggable
+    <VueDraggable
         class="dragArea list-group"
         :list="fieldsList"
         group="fieldTypes"
@@ -16,7 +16,7 @@
             :icon-identifier="FieldTypes.iconIdentifier(item)"
         />
       </template>
-    </draggable>
+    </VueDraggable>
   </div>
   <pre>
     {{ fieldsList }}
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import draggable from "vuedraggable";
+import {VueDraggable} from "vue-draggable-plus";
 
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {FieldTypes} from "@/models/FieldTypes";

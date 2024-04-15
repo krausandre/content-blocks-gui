@@ -11,7 +11,7 @@
         <span class="ms-2">{{ props.label }}</span>
         <Icon identifier="actions-delete" @click.stop="removeField(props.identifier)"/>
       </div>
-        <draggable v-if="props.isNested"
+        <VueDraggable v-if="props.isNested"
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'fieldTypes', put: true }"
@@ -25,8 +25,8 @@
                 :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
                 :icon-identifier="FieldTypes.iconIdentifier(item)"/>
             </template>
-        </draggable>
-      
+        </VueDraggable>
+
     </div>
   </div>
 </template>
@@ -35,7 +35,7 @@
 import Icon from "@/components/icons/Icon.vue";
 import {ref} from "vue";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
-import draggable from "vuedraggable";
+import {VueDraggable} from "vue-draggable-plus";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 import {FieldTypes} from "@/models/FieldTypes";
