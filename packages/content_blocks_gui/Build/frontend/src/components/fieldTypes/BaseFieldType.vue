@@ -13,31 +13,20 @@
       </div>
       <VueDraggable
         v-if="props.isNested"
+        class="dragArea nested list-group"
         v-model="nestedFields"
-        ghostClass="ghost"
         @change="addNestedFields(props.identifier ?? '', null)"
         :group="{ name: 'fieldTypes', put: true }"
         @click.stop
-        class="dragArea nested list-group">
-        <div class="test">
-          Testing
-        </div>
+      >
+        <component
+          v-for="item in nestedFields"
+          :isInDragArea="true"
+          :is="FieldTypes.componentName(item)"
+          :identifier="item.identifier"
+          :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
+          :icon-identifier="FieldTypes.iconIdentifier(item)"/>
       </VueDraggable>
-       <VueDraggable v-if="props.isNested"
-            class="dragArea nested list-group"
-            :list="nestedFields"
-            :group="{ name: 'fieldTypes', put: true }"
-            @click.stop>
-            <template #item="{ element: item }">
-              <component
-                :isInDragArea="true"
-                :is="FieldTypes.componentName(item)"
-                :identifier="item.identifier"
-                :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
-                :icon-identifier="FieldTypes.iconIdentifier(item)"/>
-            </template>
-        </VueDraggable>
-
     </div>
   </div>
 </template>

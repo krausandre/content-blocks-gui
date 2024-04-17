@@ -4,67 +4,12 @@
       <div class="d-flex flex-column">
         <div class="mb-3">
           <span>current selected element: {{ globalPropertiesStore.getCurrentSelectedFieldIdentifier }}</span>
-          <pre>
-            {{ contentBlockStore.getFields }}
-          </pre>
+<!--          <pre>-->
+<!--            {{ contentBlockStore.getFields }}-->
+<!--          </pre>-->
         </div>
 
-<!--        @todo: einzelne Input Felder in Komponenten auslagern. Nicht alles wird für alles benötigt. Size zum Beispiel nur für input, select, etc. -->
-        <div>
-          <h3>Benötigte Felder</h3>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">Identifier</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">Label</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">Description</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="required" aria-describedby="required">
-              <label for="required" class="form-check-label">use existing field?</label>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">prefixField</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">prefixType</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            <div class="mb-3">
-              <label for="defaultValue" class="form-label">displayCond</label>
-              <input type="text" class="form-control" id="defaultValue" aria-describedby="defaultValue">
-              <div id="defaultValueHelp" class="form-text">Default value set if a new record is created.</div>
-            </div>
-          </div>
-          <div>
-            onChange
-          </div>
-        </div>
-        <div>
+<!--        <div>
           <label for="@todo" class="form-label">Default value</label>
           <FieldProperty :field-identifier="globalPropertiesStore.getCurrentSelectedFieldIdentifier"
                          property-name="default"
@@ -73,7 +18,7 @@
                               'default'
                               )"
           />
-        </div>
+        </div>-->
 
         <div class="mb-3 form-check">
           <input type="checkbox" class="form-check-input" id="required" aria-describedby="required">

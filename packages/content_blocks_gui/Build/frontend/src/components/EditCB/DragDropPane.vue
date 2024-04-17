@@ -6,13 +6,16 @@
         :animation="150"
         group="fieldTypes"
     >
-      <div
+      <component
         v-for="item in fieldsList"
         :key="item.id"
         class="d-flex flex-row draggableItem gap-2"
-      >
-        <Icon :identifier="item.iconIdentifier" /> {{ item.type }}
-      </div>
+        :is-in-drag-area="true"
+        :is="FieldTypes.componentName(item)"
+        :identifier="item.identifier"
+        :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
+        :icon-identifier="FieldTypes.iconIdentifier(item)"
+      />
     </VueDraggable>
   </div>
   <pre>
