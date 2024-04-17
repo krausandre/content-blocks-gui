@@ -11,11 +11,22 @@
         <span class="ms-2">{{ props.label }}</span>
         <Icon identifier="actions-delete" @click.stop="removeField(props.identifier)"/>
       </div>
-        <VueDraggable v-if="props.isNested"
+      <VueDraggable
+        v-if="props.isNested"
+        v-model="nestedFields"
+        ghostClass="ghost"
+        @change="addNestedFields(props.identifier ?? '', null)"
+        :group="{ name: 'fieldTypes', put: true }"
+        @click.stop
+        class="dragArea nested list-group">
+        <div class="test">
+          Testing
+        </div>
+      </VueDraggable>
+       <VueDraggable v-if="props.isNested"
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'fieldTypes', put: true }"
-            @change="addNestedFields(props.identifier)"
             @click.stop>
             <template #item="{ element: item }">
               <component
