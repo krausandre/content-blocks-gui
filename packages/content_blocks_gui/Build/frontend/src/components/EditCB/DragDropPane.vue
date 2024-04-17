@@ -2,24 +2,21 @@
   <div class="drag-drop-pane">
     <VueDraggable
         class="dragArea list-group"
-        :list="fieldsList"
+        v-model="fieldsList"
+        :animation="150"
         group="fieldTypes"
-        @change="change"
-        item-key="identifier"
     >
-      <template #item="{ element: item }">
-        <component
-            :is-in-drag-area="true"
-            :is="FieldTypes.componentName(item)"
-            :identifier="item.identifier"
-            :label="FieldTypes.typeLabel(item) + ' (' + item.identifier + ')'"
-            :icon-identifier="FieldTypes.iconIdentifier(item)"
-        />
-      </template>
+      <div
+        v-for="item in fieldsList"
+        :key="item.id"
+        class="d-flex flex-row draggableItem gap-2"
+      >
+        <Icon :identifier="item.iconIdentifier" /> {{ item.type }}
+      </div>
     </VueDraggable>
   </div>
   <pre>
-    {{ fieldsList }}
+{{ fieldsList }}
   </pre>
 </template>
 
@@ -28,6 +25,7 @@ import {VueDraggable} from "vue-draggable-plus";
 
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {FieldTypes} from "@/models/FieldTypes";
+import Icon from "@/components/icons/Icon.vue";
 
 const contentBlockStore = useContentBlockStore();
 const fieldsList = contentBlockStore.getFields;
@@ -35,4 +33,12 @@ const fieldsList = contentBlockStore.getFields;
 const change = (evt) => contentBlockStore.setFields(fieldsList);
 
 </script>
-<style scoped></style>
+
+<style scoped>
+.draggableItem {
+  background-color: #f4f4f4;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 5px 0;
+}
+</style>
