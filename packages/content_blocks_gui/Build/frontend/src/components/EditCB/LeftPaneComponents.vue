@@ -3,7 +3,6 @@
     class="dragArea list-group leftpane-components"
     :animation="150"
     :group="{ name: 'fieldTypes', pull: 'clone', put: false }"
-    @clone="onClone"
     :sort="false"
     v-model="filteredFieldTypes" >
     <div
@@ -36,16 +35,26 @@ const cloneFieldType = (item: any) => {
   const identifier = (item.type ?? 'existing').toLowerCase() + "_" + idGlobal++;
   newItem.identifier = identifier;
   globalPropertiesStore.setCurrentSelectedFieldIdentifier(identifier);
+  console.log("newItem:" + newItem);
   return newItem;
 }
 
 function onClone(element: Record<'name' | 'id', string>) {
   console.log('onClone', element);
+
   const len = 1
-  return {
+  const newElement = {
     name: `${element.name}-clone-${len}`,
-    id: `${element.id}-clone-${len}`
+    id: `${element.id}-clone-${len}`,
+    identifier: "element" + "_" + idGlobal++
   }
+  console.log("newElement:" + JSON.stringify(newElement));
+  return element;
+  // return {
+  //   name: `${element.name}-clone-${len}`,
+  //   id: `${element.id}-clone-${len}`,
+  //   identifier: "element" + "_" + idGlobal++
+  // }
 }
 </script>
 
