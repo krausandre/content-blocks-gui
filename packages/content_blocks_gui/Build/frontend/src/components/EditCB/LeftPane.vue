@@ -1,6 +1,6 @@
 <template>
   <Tabs>
-    <Tab active="true" title="Settings">
+    <Tab active="true" title="Global settings">
       <LeftPaneSettings/>
     </Tab>
     <Tab title="Components">
