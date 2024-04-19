@@ -56,7 +56,7 @@ class ExtensionUtility
                 }
             }
             if(!$requiredContentBlocksPackage) {
-                continue;
+                // continue;
             }
             $availableExtensions[$packageKey] = [
                 'vendor' => explode('/', $availablePackages[$packageKey]->getValueFromComposerManifest('name'))[0],

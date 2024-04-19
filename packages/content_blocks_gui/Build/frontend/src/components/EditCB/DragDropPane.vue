@@ -19,8 +19,7 @@
     </draggable>
   </div>
   <pre>
-{{ contentBlockStore.getFields }}
-{{ fieldsList }}
+    {{ fieldsList }}
   </pre>
 </template>
 
@@ -30,8 +29,8 @@ import draggable from "vuedraggable";
 import {useContentBlockStore} from "@/store/contentBlockStore";
 import {FieldTypes} from "@/models/FieldTypes";
 
-const fieldsList = useContentBlockStore().getFields;
 const contentBlockStore = useContentBlockStore();
+const fieldsList = contentBlockStore.getFields;
 
 const change = (evt) => contentBlockStore.setFields(fieldsList);
 

@@ -29,8 +29,6 @@ class ContentTypeService
 
     public function getContentTypeData(array $getParsedBody): array
     {
-
-        // TODO title must be read from the content block here
         $data = [
             'contentType' => $getParsedBody['contentType'],
             'extension' => $getParsedBody['extension'],
@@ -46,6 +44,7 @@ class ContentTypeService
             $data['contentBlock']['initialName'] = $getParsedBody['initialName'];
         }
 
+        // TODO: Maybe extract title, priority, etc out of the if statement, as this is used for all three content types
         if($data['contentType'] === 'content-element') {
             $data['contentBlock']['fields'] = $getParsedBody['contentBlock']['fields'] ?? [];
             $data['contentBlock']['basics'] = $getParsedBody['contentBlock']['basics'] ?? [];
@@ -247,6 +246,7 @@ class ContentTypeService
             $extension,
             $contentType
         );
+        $filename = $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName();
         file_put_contents(
             $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
             Yaml::dump($yamlConfiguration, 10, 2),

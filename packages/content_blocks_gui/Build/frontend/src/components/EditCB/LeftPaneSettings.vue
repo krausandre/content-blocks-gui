@@ -37,7 +37,7 @@
       </label>
     </div>
     <div class="mb-3">
-      <label class="form-label" for="prefixType">Prefix typeasdasdds</label>
+      <label class="form-label" for="prefixType">Prefix type</label>
       <select
         class="form-control"
         id="prefixType"
@@ -82,9 +82,6 @@
           {{ item }} [{{ key }}]
         </option>
       </select>
-    </div>
-    <div class="mb-3">
-      fields -> werden über Drag and Drop befüllt
     </div>
     <div class="mb-3">
       <pre>

@@ -80,8 +80,8 @@ class ContentBlocksUtility
     public function saveContentType(object|array|null $getParsedBody): AnswerInterface
     {
         // TODO maybe redundant
-        $getParsedBody['initialVendor'] = $getParsedBody['vendor'];
-        $getParsedBody['initialName'] = $getParsedBody['name'];
+        $getParsedBody['initialVendor'] = $getParsedBody['vendor'] ?? '';
+        $getParsedBody['initialName'] = $getParsedBody['name'] ?? '';
         // $getParsedBody['name'] = $getParsedBody['initialVendor'] . '/' . $getParsedBody['initialName'];
 
         try {
