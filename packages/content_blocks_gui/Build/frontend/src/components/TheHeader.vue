@@ -37,6 +37,7 @@
             class="btn btn-primary"
             @click="handleAddRecordType"
             v-if="globalPropertiesStore.getIsCbListView"
+            disabled
         >
           <Icon identifier="actions-extension-add"/>
           Add record type
@@ -47,6 +48,7 @@
             class="btn btn-primary"
             @click="handleAddPageType"
             v-if="globalPropertiesStore.getIsCbListView"
+            disabled
         >
           <Icon identifier="actions-extension-add"/>
           Add page type
@@ -57,6 +59,7 @@
             class="btn btn-primary"
             @click="handleAddBasic"
             v-if="globalPropertiesStore.getIsCbListView"
+            disabled
         >
           <Icon identifier="actions-extension-add"/>
           Add Basic
