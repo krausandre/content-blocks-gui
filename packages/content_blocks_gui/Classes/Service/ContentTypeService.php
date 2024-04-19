@@ -26,15 +26,18 @@ class ContentTypeService
         protected readonly ContentBlockLoader $contentBlockLoader,
     ) {
     }
+
     public function getContentTypeData(array $getParsedBody): array
     {
+
+        // TODO title must be read from the content block here
         $data = [
             'contentType' => $getParsedBody['contentType'],
             'extension' => $getParsedBody['extension'],
             'mode' => $getParsedBody['mode'],
             'contentBlock' => [
-                'vendor' => explode('/', $getParsedBody['contentBlock']['name'])[0],
-                'name' => explode('/', $getParsedBody['contentBlock']['name'])[1],
+                'vendor' => explode('/', $getParsedBody['name'] ?? 'test/foobar')[0],
+                'name' => explode('/', $getParsedBody['name'] ?? 'test/foobar')[1]
             ]
         ];
 
@@ -44,13 +47,16 @@ class ContentTypeService
         }
 
         if($data['contentType'] === 'content-element') {
-            $data['contentBlock']['fields'] = $getParsedBody['contentBlock']['fields'];
+            $data['contentBlock']['fields'] = $getParsedBody['contentBlock']['fields'] ?? [];
             $data['contentBlock']['basics'] = $getParsedBody['contentBlock']['basics'] ?? [];
             $data['contentBlock']['group'] = $getParsedBody['contentBlock']['group'] ?? 'common';
             $data['contentBlock']['prefixFields'] = $getParsedBody['contentBlock']['prefixFields'] ?? true;
             $data['contentBlock']['prefixType'] = $getParsedBody['contentBlock']['prefixType'] ?? 'full';
             $data['contentBlock']['table'] = $getParsedBody['contentBlock']['table'] ?? 'tt_content';
             $data['contentBlock']['typeField'] = $getParsedBody['contentBlock']['typeField'] ?? 'CType';
+            $data['contentBlock']['priority'] = $getParsedBody['contentBlock']['priority'] ?? 0;
+            $data['contentBlock']['title'] = $getParsedBody['contentBlock']['title'] ?? '';
+            $data['contentBlock']['vendorPrefix'] = $getParsedBody['contentBlock']['vendorPrefix'] ?? '';
         } else if($data['contentType'] === 'page-type') {
             $data['contentBlock']['type'] = $getParsedBody['contentBlock']['type'];
             $data['contentBlock']['prefixFields'] = $getParsedBody['contentBlock']['prefixFields'] ?? true;
@@ -68,15 +74,18 @@ class ContentTypeService
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
         $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-            $data['contentBlock']['vendor'],
-            $data['contentBlock']['name'],
-            $data['contentBlock']['fields'],
-            $data['contentBlock']['basics'],
-            $data['contentBlock']['group'],
-            $data['contentBlock']['prefixFields'],
-            $data['contentBlock']['prefixType'],
-            $data['contentBlock']['table'],
-            $data['contentBlock']['typeField']
+            vendor: $data['contentBlock']['vendor'],
+            name: $data['contentBlock']['name'],
+            title: $data['contentBlock']['title'],
+            fields: $data['contentBlock']['fields'],
+            basics: $data['contentBlock']['basics'],
+            group: $data['contentBlock']['group'],
+            prefixFields: !($data['contentBlock']['prefixFields'] == 'false'),
+            prefixType: $data['contentBlock']['prefixType'],
+            vendorPrefix: $data['contentBlock']['vendorPrefix'],
+            table: $data['contentBlock']['table'],
+            typeField: $data['contentBlock']['typeField'],
+            priority: $data['contentBlock']['priority']
         );
 
         $this->handleContentType(

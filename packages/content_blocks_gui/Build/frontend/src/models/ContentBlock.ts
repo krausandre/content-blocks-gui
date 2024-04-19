@@ -36,21 +36,29 @@ export class Yaml {
   // @todo https://github.com/krausandre/content-blocks-gui/issues/2
   vendor?: string;
   name?: string;
-
+  title?: string;
+  group?: string = '';
   table: string = '';
   typeField: string = '';
   prefixFields: boolean = false;
   prefixType: 'full' | 'vendor' = 'full';
+  vendorPrefix: string = '';
   fields: ContentBlockField[] = [];
   basics?: string[] = [];
 }
 
 export type IconProvider = 'TYPO3\\CMS\\Core\\Imaging\\IconProvider\\SvgIconProvider';
 
+export enum PrefixTypes {
+  FULL = 'full',
+  VENDOR = 'vendor',
+}
 export class ContentBlock {
   // duplicated from YAML for _save
   name: string = '';
   vendor?: string = '';
+  group?: string = '';
+  priority: number = 0;
 
   // set for _copy
   initialVendor?: string = '';

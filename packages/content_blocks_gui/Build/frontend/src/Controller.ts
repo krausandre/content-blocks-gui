@@ -14,16 +14,20 @@ export class Controller {
     // @todo – this makes sure we drop type information and hydrate fine but looks funny of course
     const cb = JSON.parse(JSON.stringify(toRaw<ContentBlock>(contentBlockStore.contentBlock)))
 
+
+    // @todo: check if name and initialName is redundant at this point
     const data = {
       contentType: ContentBlock.contentType(cb),
       contentBlock: cb.yaml,
-      extension: 'samples',
+      extension: contentBlockStore.contentBlock.hostExtension,
       mode: contentBlockStore.mode,
+      vendor: contentBlockStore.contentBlock.vendor,
       initialVendor: contentBlockStore.contentBlock.initialVendor,
+      name: contentBlockStore.contentBlock.name,
       initialName: contentBlockStore.contentBlock.initialName,
     }
 
-    console.log('Saving', data)
+    console.log('Saving', JSON.stringify(data));
 
     globalPropertiesStore.setIsLoading(true);
     axios.postForm(
