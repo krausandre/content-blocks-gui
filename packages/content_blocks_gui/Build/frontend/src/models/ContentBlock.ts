@@ -34,7 +34,6 @@ export class ContentBlockFieldExisting extends ContentBlockField {
 
 export class Yaml {
   // @todo https://github.com/krausandre/content-blocks-gui/issues/2
-  vendor?: string;
   name?: string;
   title?: string;
   group?: string = '';
@@ -56,7 +55,6 @@ export enum PrefixTypes {
 export class ContentBlock {
   // duplicated from YAML for _save
   name: string = '';
-  vendor?: string = '';
   group?: string = '';
   priority: number = 0;
 
