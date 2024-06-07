@@ -23,6 +23,8 @@ import {createApp} from 'vue';
 import App from '@/App.vue'
 import {createPinia} from 'pinia'
 import { defineRule, configure } from 'vee-validate';
+import { plugin, defaultConfig } from '@formkit/vue'
+import config from '../formkit.config.ts'
 
 configure({
     validateOnInput: true, // Validiert Felder bei jedem Tastenanschlag
@@ -79,6 +81,7 @@ const pinia = createPinia();
 const app = createApp(App)
 
 app.use(pinia);
+app.use(plugin, defaultConfig);
 
 app.component('ListView', ListView)
 app.component('EditView', EditView)
