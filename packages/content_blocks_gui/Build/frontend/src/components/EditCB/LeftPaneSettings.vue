@@ -23,6 +23,7 @@
     <FormKit
       label="Name"
       name="name"
+      validation="required"
       :classes="{label: 'form-label', input: 'form-control', outer: 'mb-3'}"
       v-model="contentBlockStore.getContentBlock.name"
       help="The name of the content-block. Must contain a vendor and a name. <code>vendor/name</code>"

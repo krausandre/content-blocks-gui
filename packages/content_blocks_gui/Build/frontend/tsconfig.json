@@ -10,5 +10,9 @@
     {
       "path": "./tsconfig.vitest.json"
     }
+  ],
+  "include": [
+    "src/helper/**.d.ts",
+    // andere zu inkludierende Dateien oder Verzeichnisse
   ]
 }
