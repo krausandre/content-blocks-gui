@@ -6,12 +6,12 @@ use ContentBlocks\ContentBlocksGui\Answer\AnswerInterface;
 use ContentBlocks\ContentBlocksGui\Answer\DataAnswer;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockConfiguration;
-use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
+use TYPO3\CMS\ContentBlocks\Builder\ContentBlockBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentType;
+use TYPO3\CMS\ContentBlocks\Definition\ContentType\ContentTypeIcon;
 use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
 use TYPO3\CMS\ContentBlocks\Loader\LoadedContentBlock;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
-use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -21,8 +21,7 @@ class ContentTypeService
     public function __construct(
         protected readonly ContentBlockRegistry $contentBlockRegistry,
         protected readonly PackageResolver $packageResolver,
-        protected readonly CreateContentType $createContentType,
-        protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
+        protected readonly ContentBlockBuilder $contentBlockBuilder,
         protected readonly ContentBlockLoader $contentBlockLoader,
     ) {
     }
@@ -72,19 +71,18 @@ class ContentTypeService
     public function handleContentElement($data): AnswerInterface
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
-        $yamlConfiguration = $this->createContentType->createContentBlockContentElementConfiguration(
-            vendor: $data['contentBlock']['vendor'],
-            name: $data['contentBlock']['name'],
-            title: $data['contentBlock']['title'],
-            fields: $data['contentBlock']['fields'],
-            basics: $data['contentBlock']['basics'],
-            group: $data['contentBlock']['group'],
-            prefixFields: !($data['contentBlock']['prefixFields'] == 'false'),
-            prefixType: $data['contentBlock']['prefixType'],
-            vendorPrefix: $data['contentBlock']['vendorPrefix'],
-            table: $data['contentBlock']['table'],
-            typeField: $data['contentBlock']['typeField'],
-            priority: $data['contentBlock']['priority']
+        // TODO use ContentBlockBuilder instead of creating the configuration here
+
+        $extPath = "EXT:" . $data['extension'] . "/ContentBlocks/ContentElements/";
+        $extPath_ = ContentBlockPathUtility::getContentBlockExtPath($data['extension'], $data['contentBlock']['name'], ContentType::CONTENT_ELEMENT);
+        $yamlConfiguration = new LoadedContentBlock(
+            name: $contentTypeName,
+            yaml: $data['contentBlock'],
+            icon: new ContentTypeIcon(),
+            iconHideInMenu: new ContentTypeIcon(),
+            hostExtension: $data['extension'],
+            extPath: $extPath,
+            contentType: ContentType::CONTENT_ELEMENT
         );
 
         $this->handleContentType(
@@ -92,7 +90,7 @@ class ContentTypeService
             $data['extension'],
             $data['contentBlock']['vendor'],
             $data['contentBlock']['name'],
-            $yamlConfiguration,
+            $yamlConfiguration->toArray(),
             ContentType::CONTENT_ELEMENT,
             $data['contentBlock']['initialVendor'] ?? '',
             $data['contentBlock']['initialName'] ?? '',
@@ -110,11 +108,13 @@ class ContentTypeService
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
 
-        $yamlConfiguration = $this->createContentType->createContentBlockPageTypeConfiguration(
-            $data['contentBlock']['vendor'],
-            $data['contentBlock']['name'],
-            $data['contentBlock']['type']
-        );
+        // TODO use ContentBlockBuilder instead of creating the configuration here
+        $yamlConfiguration = [];
+        // $yamlConfiguration = $this->createContentType->createContentBlockPageTypeConfiguration(
+        //     $data['contentBlock']['vendor'],
+        //     $data['contentBlock']['name'],
+        //     $data['contentBlock']['type']
+        // );
 
         $this->handleContentType(
             $data['mode'],
@@ -140,11 +140,13 @@ class ContentTypeService
     {
         $contentTypeName = $data['contentBlock']['vendor'] . '/' . $data['contentBlock']['name'];
 
-        $yamlConfiguration = $this->createContentType->createContentBlockRecordTypeConfiguration(
-            $data['contentBlock']['vendor'],
-            $data['contentBlock']['name'],
-            $data['contentBlock']['typeName']
-        );
+        // TODO use ContentBlockBuilder instead of creating the configuration here
+        $yamlConfiguration = [];
+        // $yamlConfiguration = $this->createContentType->createContentBlockRecordTypeConfiguration(
+        //     $data['contentBlock']['vendor'],
+        //     $data['contentBlock']['name'],
+        //     $data['contentBlock']['typeName']
+        // );
 
         $this->handleContentType(
             $data['mode'],
@@ -220,36 +222,25 @@ class ContentTypeService
             }
             $this->copyContentType($yamlConfiguration, $name, $initialVendor . '/' . $initialName, $extension, $contentType);
         } else {
-            $this->buildContentType($yamlConfiguration, $extension, $contentType);
+            $this->contentBlockBuilder->create(LoadedContentBlock::fromArray($yamlConfiguration));
+            // $this->buildContentType($yamlConfiguration, $extension, $contentType);
         }
         $this->contentBlockLoader->loadUncached();
-    }
-    protected function buildContentType(array $yamlConfiguration, string $extension, ContentType $contentType): void
-    {
-        $contentBlockConfiguration = new ContentBlockConfiguration(
-            yamlConfig: $yamlConfiguration,
-            basePath: $this->createContentType->getBasePath(
-                $this->packageResolver->getAvailablePackages(),
-                $extension,
-                $contentType
-            ),
-            contentType: $contentType
-        );
-
-        $this->contentBlockBuilder->create($contentBlockConfiguration);
     }
 
     protected function editContentType(array $yamlConfiguration, string $name, string $extension, ContentType $contentType): void
     {
-        $basePath = $this->createContentType->getBasePath(
-            $this->packageResolver->getAvailablePackages(),
-            $extension,
-            $contentType
-        );
-        $filename = $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName();
+        $basePath = "";
+        // $basePath = $this->createContentType->getBasePath(
+        //     $this->packageResolver->getAvailablePackages(),
+        //     $extension,
+        //     $contentType
+        // );
+        $basePath = GeneralUtility::getFileAbsFileName($yamlConfiguration['extPath']);
+        $filename = $yamlConfiguration['extPath'] . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName();
         file_put_contents(
-            $basePath . '/' . $name . '/' . ContentBlockPathUtility::getContentBlockDefinitionFileName(),
-            Yaml::dump($yamlConfiguration, 10, 2),
+            $basePath . '/' . "EditorInterface.yaml",
+            Yaml::dump($yamlConfiguration['yaml'], 10, 2),
         );
     }
 
@@ -260,24 +251,32 @@ class ContentTypeService
         string $extension,
         ContentType $contentType
     ): void {
-        $contentBlockConfiguration = new ContentBlockConfiguration(
-            yamlConfig: $yamlConfiguration,
-            basePath: $this->createContentType->getBasePath(
-                $this->packageResolver->getAvailablePackages(),
-                $extension,
-                $contentType
-            ),
-            contentType: $contentType
-        );
+        // $contentBlockConfiguration = new ContentBlockConfiguration(
+        //     yamlConfig: $yamlConfiguration,
+        //     // basePath: $this->createContentType->getBasePath(
+        //     //     $this->packageResolver->getAvailablePackages(),
+        //     //     $extension,
+        //     //     $contentType
+        //     // ),
+        //     contentType: $contentType
+        // );
+        $contentBlockConfiguration  = new LoadedContentBlock(
+            name: $name,
+            yaml: $yamlConfiguration,
+            icon: new ContentTypeIcon(),
+            iconHideInMenu: new ContentTypeIcon(),
+            hostExtension: $extension,
+            extPath: '',
+            contentType: $contentType);
         $this->contentBlockBuilder->create($contentBlockConfiguration);
 
         $initialContentBlock = $this->contentBlockRegistry->getContentBlock($initialName);
-
+        // TODO
         $createdContentBlock = new LoadedContentBlock(
             name: $name,
             yaml: $yamlConfiguration,
             icon: $initialContentBlock->getIcon(),
-            iconProvider: $initialContentBlock->getIconProvider(),
+            iconHideInMenu: $initialContentBlock->getIconProvider(),
             hostExtension: $extension,
             extPath: ContentBlockPathUtility::getContentBlockExtPath($extension, $contentBlockConfiguration->getName(), $contentType),
             contentType: $contentType

@@ -36,6 +36,7 @@ use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsLoader;
 use TYPO3\CMS\ContentBlocks\Basics\BasicsRegistry;
+use TYPO3\CMS\ContentBlocks\Builder\ContentBlockBuilder;
 use TYPO3\CMS\ContentBlocks\Builder\ContentBlockSkeletonBuilder;
 use TYPO3\CMS\ContentBlocks\Definition\Factory\UniqueIdentifierCreator;
 use TYPO3\CMS\ContentBlocks\Definition\TableDefinitionCollection;
@@ -43,7 +44,6 @@ use TYPO3\CMS\ContentBlocks\Loader\ContentBlockLoader;
 use TYPO3\CMS\ContentBlocks\Loader\LoadedContentBlock;
 use TYPO3\CMS\ContentBlocks\Registry\ContentBlockRegistry;
 use TYPO3\CMS\ContentBlocks\Registry\LanguageFileRegistry;
-use TYPO3\CMS\ContentBlocks\Service\CreateContentType;
 use TYPO3\CMS\ContentBlocks\Service\PackageResolver;
 use TYPO3\CMS\ContentBlocks\Utility\ContentBlockPathUtility;
 use TYPO3\CMS\Core\Core\Environment;
@@ -68,8 +68,7 @@ class ContentBlocksUtility
         protected readonly BasicsRegistry $basicsRegistry,
         protected readonly BasicsLoader $basicsLoader,
         protected readonly PackageResolver $packageResolver,
-        protected readonly CreateContentType $createContentType,
-        protected readonly ContentBlockSkeletonBuilder $contentBlockBuilder,
+        protected readonly ContentBlockBuilder $contentBlockBuilder,
         protected readonly ContentTypeService $contentTypeService,
         protected readonly ContentBlockLoader $contentBlockLoader,
         protected readonly UsageFactory $usageFactory,
@@ -237,7 +236,7 @@ class ContentBlocksUtility
 
     protected function loadedContentBlockToArray(LoadedContentBlock $contentBlock): array
     {
-        $typeName = $contentBlock->getYaml()['typeName'] ?? UniqueIdentifierCreator::createContentTypeIdentifier($contentBlock);
+        $typeName = $contentBlock->getYaml()['typeName'] ?? UniqueIdentifierCreator::createContentTypeIdentifier($contentBlock->getName());
         $table = $contentBlock->getContentType()->getTable() ?? $contentBlock->getYaml()['table'];
         // @todo We might not want to add this feature. This could lead to performance problems.
         $usages = $this->usageFactory->countUsages($contentBlock->getContentType(), $typeName, $table);

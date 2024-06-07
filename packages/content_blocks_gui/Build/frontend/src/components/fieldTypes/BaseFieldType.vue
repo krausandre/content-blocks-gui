@@ -15,7 +15,7 @@
             class="dragArea nested list-group"
             :list="nestedFields"
             :group="{ name: 'fieldTypes', put: true }"
-            @change="addNestedFields(props.identifier)"
+            @change="addNestedFields(props.identifier, null)"
             @click.stop>
             <template #item="{ element: item }">
               <component
@@ -26,7 +26,7 @@
                 :icon-identifier="FieldTypes.iconIdentifier(item)"/>
             </template>
         </draggable>
-      
+
     </div>
   </div>
 </template>
@@ -37,7 +37,6 @@ import {ref} from "vue";
 import {useGlobalPropertiesStore} from "@/store/globalPropertiesStore";
 import draggable from "vuedraggable";
 import {useContentBlockStore} from "@/store/contentBlockStore";
-import BaseFieldType from "@/components/fieldTypes/BaseFieldType.vue";
 import {FieldTypes} from "@/models/FieldTypes";
 
 
@@ -96,7 +95,7 @@ const fieldsList = useContentBlockStore().getFields;
 
 let nestedFields = ref([]);
 
-const removeField = function(id) {
+const removeField = function(id: string|undefined) {
   console.log("DELETE PRESSED: " + id);
   let tempState = fieldsList;
   tempState.forEach(function(elem, index) {
@@ -108,9 +107,8 @@ const removeField = function(id) {
   contentBlockStore.setFields(fieldsList);
 }
 
-const addNestedFields = function(id, item) {
-  let tempState = fieldsList;
-  tempState.forEach(function(elem, index) {
+const addNestedFields = function(id: string|undefined, item: any) {
+  fieldsList.forEach(function(elem, index) {
     if (elem.identifier  === id) {
       elem.items = nestedFields.value;
     }

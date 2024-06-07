@@ -21,7 +21,6 @@ export class Controller {
       contentBlock: cb.yaml,
       extension: contentBlockStore.contentBlock.hostExtension,
       mode: contentBlockStore.mode,
-      vendor: contentBlockStore.contentBlock.vendor,
       initialVendor: contentBlockStore.contentBlock.initialVendor,
       name: contentBlockStore.contentBlock.name,
       initialName: contentBlockStore.contentBlock.initialName,
