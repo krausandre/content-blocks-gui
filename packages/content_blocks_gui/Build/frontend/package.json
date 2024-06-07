@@ -10,6 +10,7 @@
     "watch": "vite build --watch",
     "preview": "vite preview",
     "test:unit": "vitest --coverage",
+    "test:vitest": "vitest --environment jsdom --ui",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
@@ -32,6 +33,7 @@
     "@vitejs/plugin-vue": "^4.4.0",
     "@vitejs/plugin-vue-jsx": "^3.0.2",
     "@vitest/coverage-v8": "^1.0.1",
+    "@vitest/ui": "^1.6.0",
     "@vue/eslint-config-typescript": "^12.0.0",
     "@vue/test-utils": "^2.4.1",
     "@vue/tsconfig": "^0.4.0",
