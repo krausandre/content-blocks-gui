@@ -74,14 +74,16 @@
       (Copying from {{ contentBlockStore.contentBlock.initialVendor }}/{{ contentBlockStore.contentBlock.initialName }}
       in extension {{ contentBlockStore.contentBlock.hostExtension }})
     </div>
-    <div>
+
+    <div class="btn-group px-0 mb-2" role="group" aria-label="Main navigation">
       <button
-          type="button"
-          class="btn btn-primary"
-          @click="console.log(contentBlocksListStore.getList)"
-      >
-        Get Blocks List
-      </button>
+            type="button"
+            class="btn btn-secondary btn-sm"
+            @click="console.log(contentBlocksListStore.getList)"
+        >
+          Get Blocks List
+        </button>
+        <button class="btn btn-secondary btn-sm" id="ajaxTestBtn">AJAX Test-Button</button>
     </div>
   </div>
 </template>
