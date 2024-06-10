@@ -276,7 +276,7 @@ class ContentTypeService
             name: $name,
             yaml: $yamlConfiguration,
             icon: $initialContentBlock->getIcon(),
-            iconHideInMenu: $initialContentBlock->getIconProvider(),
+            iconHideInMenu: $initialContentBlock->getIconHideInMenu(),
             hostExtension: $extension,
             extPath: ContentBlockPathUtility::getContentBlockExtPath($extension, $contentBlockConfiguration->getName(), $contentType),
             contentType: $contentType
