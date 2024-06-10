@@ -5,6 +5,8 @@
         :list="fieldsList"
         group="fieldTypes"
         @change="change"
+        @sort="change"
+        :key="fieldsList"
         item-key="identifier"
     >
       <template #item="{ element: item }">
@@ -19,7 +21,6 @@
     </draggable>
   </div>
   <pre>
-{{ contentBlockStore.getFields }}
 {{ fieldsList }}
   </pre>
 </template>

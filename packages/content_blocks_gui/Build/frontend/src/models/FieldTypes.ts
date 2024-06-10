@@ -76,7 +76,7 @@ export class FieldTypes {
       <ContentBlockFieldNew>{
         type: 'Collection',
         identifier: '',
-        items: []
+        items: [],
       },
       <ContentBlockFieldNew>{
         type: 'Category',

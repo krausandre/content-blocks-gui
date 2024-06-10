@@ -61,8 +61,23 @@
   cursor: pointer;
 }
 
+.drag-drop-pane .dragArea .fieldtype {
+  max-width: 100%;
+  width: 100%;
+}
+
+.drag-drop-pane .dragArea .fieldtype .flex-row {
+  justify-content: center;
+  padding: 10px;
+}
+
 .dragabble-nested {
   flex-direction: column!important;
+  text-align: center;
+}
+
+.drag-drop-pane .dragArea .fieldtype .dragabble-nested {
+  margin-left: 25px;
 }
 
 .dragArea.nested  {
