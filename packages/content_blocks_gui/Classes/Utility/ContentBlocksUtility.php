@@ -298,7 +298,7 @@ class ContentBlocksUtility
         $resultList = [];
         foreach ($this->tableDefinitionCollection as $tableDefinition) {
             foreach ($tableDefinition->getContentTypeDefinitionCollection() ?? [] as $typeDefinition) {
-                $resultList[$typeDefinition->getName()] = $typeDefinition->getTypeIconIdentifier();
+                $resultList[$typeDefinition->getName()] = $typeDefinition->getTypeIcon()->toArray()['iconIdentifier'];
             }
         }
         return new DataAnswer(
