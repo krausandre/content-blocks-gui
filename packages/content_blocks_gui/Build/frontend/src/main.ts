@@ -24,7 +24,7 @@ import App from '@/App.vue'
 import {createPinia} from 'pinia'
 import { defineRule, configure } from 'vee-validate';
 import { plugin, defaultConfig } from '@formkit/vue'
-import config from '../formkit.config.ts'
+import config from '../formkit.config'
 
 configure({
     validateOnInput: true, // Validiert Felder bei jedem Tastenanschlag
